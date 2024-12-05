@@ -3,10 +3,32 @@ const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
-    name: {
+    fName: {
       type: String,
       trim: true,
-      required: [true, "name required"],
+      required: [true, "first name required"],
+    },
+    lName: {
+      type: String,
+      trim: true,
+      required: [true, "last name required"],
+    },
+    ssn: {
+      type: String,
+      required: [true, "ssn required"],
+      unique: [true, "ssn must be unique"],
+    },
+    title: String,
+    gov: String,
+    district: String,
+    city: String,
+    dateOfBirth: {
+      type: Date,
+      required: [true, "date of birth required"],
+    },
+    gender: {
+      type: Boolean,
+      required: [true, "gender must be specified"],
     },
     slug: {
       type: String,
@@ -25,7 +47,7 @@ const userSchema = new mongoose.Schema(
       required: [true, "password required"],
       minlength: [6, "password must be at least 6 characters"],
     },
-    passwordChangedAt: Date,
+    passwordChangedAt: { type: Date, default: Date.now() },
     role: {
       type: String,
       enum: ["doctor", "patient", "admin"],

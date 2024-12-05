@@ -5,17 +5,24 @@ const validatorMiddleware = require("../../middlewares/validatorMiddleware");
 const User = require("../../models/userModel");
 
 exports.createUserValidator = [
-  check("name")
+  check("fName")
     .notEmpty()
-    .withMessage("User name must be specified")
+    .withMessage("first User name must be specified")
+    .isLength({ min: 3 })
+    .withMessage("first User name is too short")
+    .isLength({ max: 15 })
+    .withMessage("first User name is too long")
+    .custom((value, { req }) => {
+      req.body.slug = slugify(value + " " + req.body.lName, { lower: true });
+      return true;
+    }),
+  check("lName")
+    .notEmpty()
+    .withMessage("last User name must be specified")
     .isLength({ min: 3 })
     .withMessage("User name is too short")
     .isLength({ max: 15 })
-    .withMessage("User name is too long")
-    .custom((value, { req }) => {
-      req.body.slug = slugify(value);
-      return true;
-    }),
+    .withMessage("User name is too long"),
   check("email")
     .notEmpty()
     .withMessage("email is required")
@@ -28,6 +35,23 @@ exports.createUserValidator = [
         }
       })
     ),
+  check("ssn")
+    .notEmpty()
+    .withMessage("ssn is required")
+    .isLength({ min: 14, max: 14 })
+    .withMessage("ssn must be 14 characters")
+    .custom((value) =>
+      User.findOne({ ssn: value }).then((user) => {
+        if (user) {
+          return Promise.reject("ssn already in use");
+        }
+      })
+    ),
+  check("dateOfBirth")
+    .notEmpty()
+    .withMessage("date of birth is required")
+    .isDate()
+    .withMessage("date of birth is invalid"),
   check("password")
     .notEmpty()
     .withMessage("password is required")
@@ -39,6 +63,13 @@ exports.createUserValidator = [
       }
       return true;
     }),
+  check("gov").optional().notEmpty().withMessage("gov must have a value"),
+  check("district")
+    .optional()
+    .notEmpty()
+    .withMessage("district must have a value"),
+  check("city").optional().notEmpty().withMessage("citymust have a value"),
+  check("gender").notEmpty().withMessage("gender must be specified"),
   check("passwordComfirm")
     .notEmpty()
     .withMessage("confirm password is required"),
@@ -87,16 +118,29 @@ exports.updateUserPasswordValidator = [
   validatorMiddleware,
 ];
 exports.updateUserValidator = [
-  check("name")
+  check("id").isMongoId().withMessage("Invalid User ID format"),
+  check("fName")
     .optional()
     .notEmpty()
-    .withMessage("User name must be specified")
+    .withMessage("first User name must be specified")
     .isLength({ min: 3 })
-    .withMessage("User name is too short")
+    .withMessage("first User name is too short")
     .isLength({ max: 15 })
-    .withMessage("User name is too long"),
-  check("id").isMongoId().withMessage("Invalid User ID format"),
+    .withMessage("first User name is too long")
+    .custom((value, { req }) => {
+      req.body.slug = slugify(value + " " + req.body.lName, { lower: true });
+      return true;
+    }),
+  check("lName")
+    .optional()
+    .notEmpty()
+    .withMessage("last User name must be specified")
+    .isLength({ min: 3 })
+    .withMessage("last User name is too short")
+    .isLength({ max: 15 })
+    .withMessage("last User name is too long"),
   check("email")
+    .optional()
     .notEmpty()
     .withMessage("email is required")
     .isEmail()
@@ -108,6 +152,18 @@ exports.updateUserValidator = [
         }
       })
     ),
+  check("dateOfBirth")
+    .optional()
+    .notEmpty()
+    .withMessage("date of birth is required")
+    .isDate()
+    .withMessage("date of birth is invalid"),
+  check("gov").optional().notEmpty().withMessage("gov must have a value"),
+  check("district")
+    .optional()
+    .notEmpty()
+    .withMessage("district must have a value"),
+  check("city").optional().notEmpty().withMessage("citymust have a value"),
   check("profileImg").optional(),
   check("phone")
     .optional()
