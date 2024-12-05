@@ -9,6 +9,7 @@ const globalError = require("./middlewares/errorMiddleware");
 //routes
 const userRoute = require("./routes/userRoutes");
 const authRoute = require("./routes/authRoute");
+const serviceRoute = require("./routes/serviceRoutes");
 // const subCategoryRoute = require("./routes/subCategoryRoute");
 // const brandRoute = require("./routes/brandRoute");
 // const productRoute = require("./routes/productRoute");
@@ -30,6 +31,7 @@ if (process.env.NODE_ENV === "development") {
 // mount routes
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/services", serviceRoute);
 
 // handle unvalid routes
 app.all("*", (req, res, next) => {
@@ -46,7 +48,9 @@ const server = app.listen(PORT, () => {
 
 // Handle rejections outside express
 process.on("unhandledRejection", (err) => {
-  console.error(` unhandled Error: ${err.name} | ${err.message}`);
+  console.error(
+    ` unhandled Error: ${err.name} | ${err.message} | ${err.stack}`
+  );
   server.close(() => {
     console.error("shutting down..... ");
     process.exit(1);

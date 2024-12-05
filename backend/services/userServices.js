@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const factory = require("./handlersFactory");
 const ApiError = require("../utils/apiError");
 const { uploadSingleImage } = require("../middlewares/uploadImageMiddleware");
-// const createToken = require("../utils/createToken");
+const createToken = require("../utils/createToken");
 const User = require("../models/userModel");
 
 // Upload single image
@@ -51,12 +51,20 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
   const document = await User.findByIdAndUpdate(
     req.params.id,
     {
-      name: req.body.name,
+      fName: req.body.fName,
+      lName: req.body.lName,
       slug: req.body.slug,
       phone: req.body.phone,
       email: req.body.email,
       profileImg: req.body.profileImg,
       role: req.body.role,
+      dateOfBirth: req.body.dateOfBirth,
+      ssn: req.body.ssn,
+      title: req.body.title,
+      gov: req.body.gov,
+      district: req.body.district,
+      city: req.body.city,
+      gender: req.body.gender,
     },
     {
       new: true,

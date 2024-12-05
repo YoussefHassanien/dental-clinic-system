@@ -3,12 +3,7 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const ApiError = require("../utils/apiError");
 const User = require("../models/userModel");
-const { use } = require("../routes/authRoute");
-
-const createToken = (payload) =>
-  jwt.sign({ id: payload }, process.env.JWT_SECRET_KEY, {
-    expiresIn: process.env.JWT_EXPIRE_TIME,
-  });
+const { createToken } = require("../utils/createToken");
 
 // @desc    signup user
 // @route   GET /api/v1/auth/signup
