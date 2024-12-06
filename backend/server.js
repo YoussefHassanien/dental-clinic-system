@@ -10,7 +10,9 @@ const globalError = require("./middlewares/errorMiddleware");
 const userRoute = require("./routes/userRoutes");
 const authRoute = require("./routes/authRoute");
 const serviceRoute = require("./routes/serviceRoutes");
+const supplierRoute = require("./routes/supplierRoute");
 const walletRoute = require("./routes/walletRoute");
+
 
 // database configuration
 dbconnection();
@@ -30,7 +32,9 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/services", serviceRoute);
+app.use("/api/v1/supplier", supplierRoute);
 app.use("/api/v1/wallet", walletRoute);
+
 
 // handle unvalid routes
 app.all("*", (req, res, next) => {
