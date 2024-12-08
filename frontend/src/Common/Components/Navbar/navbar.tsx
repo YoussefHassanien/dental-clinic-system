@@ -17,7 +17,7 @@ import useLanguageDropdown from "./hooks";
 import { languages, tabs } from "./constants";
 
 // Logo Image
-import dentistDayImage from "../../../assets/dentist-day.png";
+import logo from "../../../assets/dentist-day.png";
 
 // Define the Navbar component
 const Navbar: React.FC = () => {
@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
     <div className="flex justify-evenly items-center font-sans bg-custom-blue p-4">
       {/* Title */}
       <div className="w-80 space-x-4 items-center flex">
-        <img src={dentistDayImage} alt="Clinic Logo" className="h-16 w-16" />
+        <img src={logo} alt="Clinic Logo" className="h-16 w-16" />
         <h1 className="font-bold text-4xl text-white">Dentty Clinics</h1>
       </div>
 
