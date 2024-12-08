@@ -13,6 +13,7 @@ const serviceRoute = require("./routes/serviceRoutes");
 const supplierRoute = require("./routes/supplierRoute");
 const walletRoute = require("./routes/walletRoute");
 const patientRoute = require("./routes/patientRoute");
+const feedbackRoute = require("./routes/feedbackRoute");
 
 // database configuration
 dbconnection();
@@ -35,6 +36,7 @@ app.use("/api/v1/services", serviceRoute);
 app.use("/api/v1/supplier", supplierRoute);
 app.use("/api/v1/wallet", walletRoute);
 app.use("/api/v1/patient", patientRoute);
+app.use("/api/v1/feedback", feedbackRoute);
 
 // handle unvalid routes
 app.all("*", (req, res, next) => {
