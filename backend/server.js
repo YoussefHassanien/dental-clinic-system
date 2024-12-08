@@ -14,6 +14,7 @@ const supplierRoute = require("./routes/supplierRoute");
 const walletRoute = require("./routes/walletRoute");
 const patientRoute = require("./routes/patientRoute");
 const feedbackRoute = require("./routes/feedbackRoute");
+const materialRoute = require("./routes/materialRoute");
 
 // database configuration
 dbconnection();
@@ -37,6 +38,7 @@ app.use("/api/v1/supplier", supplierRoute);
 app.use("/api/v1/wallet", walletRoute);
 app.use("/api/v1/patient", patientRoute);
 app.use("/api/v1/feedback", feedbackRoute);
+app.use("/api/v1/material", materialRoute);
 
 // handle unvalid routes
 app.all("*", (req, res, next) => {
