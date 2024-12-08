@@ -1,9 +1,19 @@
-const App = () => {
-    return ( 
-        <div className="my-10">
-            <h1 className="text-center font-bold text-3xl">Dentty Clinics</h1>
-        </div>
-     );
-}
- 
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { routes } from './Routes/routes';
+
+const App: React.FC = () => {
+  return (
+    <Router>
+      <div className="app">
+        <Routes>
+          {routes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
 export default App;

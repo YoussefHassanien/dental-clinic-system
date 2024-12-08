@@ -3,22 +3,79 @@ const asyncHandler = require("express-async-handler");
 const bcrypt = require("bcryptjs");
 const ApiError = require("../utils/apiError");
 const User = require("../models/userModel");
+const Patient = require("../models/patientModel");
+const Wallet = require("../models/walletModel");
 const { createToken } = require("../utils/createToken");
 
 // @desc    signup user
 // @route   GET /api/v1/auth/signup
 // @access  public
 exports.signup = asyncHandler(async (req, res, next) => {
+  const {
+    fName,
+    lName,
+    ssn,
+    title,
+    gov,
+    district,
+    city,
+    dateOfBirth,
+    gender,
+    email,
+    phone,
+    profileImg,
+    password,
+    bloodType,
+    allergies,
+    cardNumber,
+    cvv,
+    credit,
+  } = req.body;
+  let wallet;
+
+  if (cardNumber && cvv && credit) {
+    wallet = await Wallet.create({
+      cardNumber,
+      cvv,
+      credit,
+    });
+  }
+
   const user = await User.create({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
+    fName,
+    lName,
+    ssn,
+    title: title || "N/A",
+    gov: gov || "Not provided",
+    district: district || "Not provided",
+    city: city || "Not provided",
+    phone: phone || "Not provided",
+    dateOfBirth,
+    gender,
+    email,
+    phone,
+    profileImg: profileImg || "Not provided",
+    password,
+    role: "patient",
   });
+
+  const patient = await Patient.create({
+    bloodType,
+    userId: user._id,
+    wallet: wallet ? wallet._id : "Not provided",
+    allergies: allergies || [],
+  });
+
   const token = createToken(user._id);
+
   res.status(201).json({
     status: "success",
     token,
-    data: user,
+    data: {
+      user,
+      patient,
+      wallet: wallet || "no wallet pprovided",
+    },
   });
 });
 

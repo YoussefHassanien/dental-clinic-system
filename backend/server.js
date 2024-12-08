@@ -11,10 +11,9 @@ const userRoute = require("./routes/userRoutes");
 const authRoute = require("./routes/authRoute");
 const serviceRoute = require("./routes/serviceRoutes");
 const supplierRoute = require("./routes/supplierRoute");
+const walletRoute = require("./routes/walletRoute");
+const patientRoute = require("./routes/patientRoute");
 const feedbackRoute = require("./routes/feedbackRoute");
-// const subCategoryRoute = require("./routes/subCategoryRoute");
-// const brandRoute = require("./routes/brandRoute");
-// const productRoute = require("./routes/productRoute");
 
 // database configuration
 dbconnection();
@@ -35,6 +34,8 @@ app.use("/api/v1/users", userRoute);
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/services", serviceRoute);
 app.use("/api/v1/supplier", supplierRoute);
+app.use("/api/v1/wallet", walletRoute);
+app.use("/api/v1/patient", patientRoute);
 app.use("/api/v1/feedback", feedbackRoute);
 
 // handle unvalid routes
