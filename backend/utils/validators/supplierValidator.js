@@ -10,7 +10,7 @@ exports.createSupplierValidator = [
     .isLength({ min: 2 })
     .withMessage("supplier name is too short")
     .isLength({ max: 50 })
-    .withMessage("service name is too long")
+    .withMessage("supplier name is too long")
     .custom((value, { req }) => {
       req.body.slug = slugify(value);
       return true;
