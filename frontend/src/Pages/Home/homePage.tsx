@@ -1,6 +1,6 @@
 import React from "react";
 import { Navbar } from "../../Common/Components/Navbar/navbar";
-import Carousel from "./components";
+import Carousel from "./Components/carousel";
 
 const HomePage: React.FC = () => {
   return (
