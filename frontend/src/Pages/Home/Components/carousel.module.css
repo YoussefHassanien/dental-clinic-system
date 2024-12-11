@@ -1,0 +1,153 @@
+.slider .single-slider {
+  height: 380px;
+}
+
+.slider .single-slider {
+  position: relative;
+}
+.slider .single-slider:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  opacity: 0.5;
+}
+.slider .single-slider h1 {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 35px;
+}
+.slider .single-slider .text {
+  margin-top: 80px;
+}
+.slider.index2 .single-slider .text {
+  margin-top: 80px;
+}
+.slider .owl-carousel .owl-nav div {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  border-radius: 4px;
+}
+
+.slider .single-slider {
+  height: 380px;
+}
+
+.pf-details .image-slider .owl-nav {
+  display: none;
+}
+
+.slider .single-slider {
+  position: relative;
+}
+.slider .single-slider:before {
+  position: absolute;
+  content: "";
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  opacity: 0.5;
+}
+.slider .single-slider h1 {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 25px;
+}
+.slider .single-slider p {
+  font-size: 13px;
+}
+.slider .single-slider .text {
+  margin-top: 20px;
+}
+.slider .single-slider .button .btn {
+  margin: 0;
+  width: 100%;
+  margin-bottom: 10px;
+}
+.slider .single-slider .button .btn:last-child {
+  margin-bottom: 0;
+}
+.slider .owl-carousel .owl-nav {
+  display: none;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+.container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.row {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col-lg-7 {
+  -ms-flex: 0 0 58.333333%;
+  flex: 0 0 58.333333%;
+  max-width: 58.333333%;
+}
+
+.col-lg-7 {
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+button {
+  -webkit-appearance: button;
+  appearance: button;
+  cursor: pointer;
+  color: #424646;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: none;
+  overflow: visible;
+}
+button[disabled] {
+  cursor: default;
+}
+button::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}

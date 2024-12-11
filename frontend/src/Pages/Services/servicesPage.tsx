@@ -1,5 +1,5 @@
 import React from "react";
-import { Navbar } from "../../Common/Components/Navbar/navbar";
+import Navbar from "../../Common/Components/Navbar/navbar";
 
 const ServicesPage: React.FC = () => {
   return (
