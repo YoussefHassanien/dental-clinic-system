@@ -36,7 +36,7 @@ const SubNavbar: React.FC = () => {
           {/* Phone Icon */}
           <img src={telephoneIcon} alt="phone-icon" className="w-6 h-6" />
           {/* Phone Number */}
-          <p>+880 1234 56789</p>
+          <p className="font-sans">+880 1234 56789</p>
         </div>
         {/* Email Container */}
         <div className="text-sm flex flex-row justify-start space-x-2 items-center hover:text-custom-blue">

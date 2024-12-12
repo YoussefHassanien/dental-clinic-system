@@ -2,7 +2,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { cards } from "./constants";
-import Button from "../../../Common/Components/Button/button";
+import Button from "../../../../Common/Components/Button/button";
 
 const NextArrow = ({ onClick }: { onClick?: () => void }) => (
   <button
@@ -79,11 +79,14 @@ const Carousel: React.FC = () => {
               }}
             >
               {/* Carousel Text Container */}
-              <div className="absolute top-28 translate-x-1/3 flex flex-col justify-center items-start font-serif w-3/5 space-y-8">
+              <div className="absolute top-28 translate-x-1/4 flex flex-col justify-center items-start font-serif w-3/5 space-y-8">
                 {/* Carousel Text */}
                 <div className="flex flex-col justify-center items-start space-y-4 text-black w-3/5">
                   {/* Carousel Title Text */}
-                  <p className="font-bold text-4xl">{card.text}</p>
+                  <p
+                    className="font-bold text-4xl"
+                    dangerouslySetInnerHTML={{ __html: card.text }}
+                  ></p>
                   {/* Carousel Sub-Text */}
                   <p className="text-lg">{card.subText}</p>
                 </div>
