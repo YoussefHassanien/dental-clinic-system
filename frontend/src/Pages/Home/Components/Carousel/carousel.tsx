@@ -62,7 +62,7 @@ const Carousel: React.FC = () => {
 
   return (
     // Carousel Container
-    <div>
+    <div aria-hidden="false">
       {/* Carousel Slider object*/}
       <Slider {...settings}>
         {cards.map((card) => (
@@ -70,7 +70,6 @@ const Carousel: React.FC = () => {
             {/* Carousel Image Container */}
             <div
               className="h-[600px] relative"
-              aria-hidden="false"
               style={{
                 backgroundImage: `url(${card.image})`,
                 backgroundSize: "cover",

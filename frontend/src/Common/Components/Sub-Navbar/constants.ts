@@ -4,7 +4,7 @@ export const languages = [
 ];
 
 export const subNavbarTabs = [
-  { path: "/about", label: "About" },
-  { path: "/team", label: "Team" },
-  { path: "/faq", label: "FAQ" },
+  { path: "#aboutUs", label: "About" },
+  { path: "#team", label: "Team" },
+  { path: "#faq", label: "FAQ" },
 ];

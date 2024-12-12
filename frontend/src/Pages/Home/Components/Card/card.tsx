@@ -9,15 +9,26 @@ interface CardsProps {
 }
 
 const Card: React.FC<CardsProps> = ({ title, paragraph, buttonText, icon }) => {
+  // Split the paragraph into lines
+  const lines = paragraph.split("\n");
+
   return (
     // Cards Container
-    <div className="relative flex flex-col justify-center items-start bg-custom-blue w-80 h-64 rounded-md p-4 space-y-8 hover:-translate-y-4 hover:shadow-xl hover:shadow-custom-blue ease-in-out duration-500">
+    <div className="relative flex flex-col justify-center items-start bg-custom-blue w-80 h-64 rounded-md p-4 space-y-8 hover:-translate-y-4 hover:shadow-xl hover:shadow-custom-blue ease-in-out duration-500 transition-all">
       {/* Card Title */}
       <p className="text-white font-bold font-serif text-md">{title}</p>
       {/* Card Text */}
-      <p className="text-white text-sm whitespace-pre-line font-sans">
-        {paragraph}
-      </p>
+      <div className="text-white text-sm font-sans w-full">
+        {lines.map((line, index) => {
+          const [day, time] = line.split(": ");
+          return (
+            <div key={index} className="flex justify-between">
+              <span>{day}</span>
+              <span>{time}</span>
+            </div>
+          );
+        })}
+      </div>
       {/*Card Link Container*/}
       <div
         className={`flex flex-row justify-between items-center w-28 text-white ${styles["tab"]}`}

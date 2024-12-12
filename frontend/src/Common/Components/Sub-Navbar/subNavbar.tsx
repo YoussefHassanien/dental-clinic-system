@@ -1,6 +1,5 @@
 import { subNavbarTabs, languages } from "./constants";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import telephoneIcon from "../../../assets/phone-call.png";
 
 // Define the Sub-Navbar component
@@ -22,11 +21,11 @@ const SubNavbar: React.FC = () => {
       <div className="flex flex-row items-center justify-start space-x-8">
         {subNavbarTabs.map((tab) => (
           // Link to the tab path
-          <Link key={tab.label} to={tab.path}>
+          <a key={tab.label} href={tab.path}>
             <button className="text-sm hover:text-custom-blue">
               {tab.label}
             </button>
-          </Link>
+          </a>
         ))}
       </div>
       {/* Languages, Email & Number Container */}
