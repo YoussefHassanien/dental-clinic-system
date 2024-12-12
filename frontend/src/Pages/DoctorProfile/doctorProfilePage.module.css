@@ -1,0 +1,184 @@
+/* Updated Doctor Profile with custom-blue */
+
+.doctorProfile {
+  background-color: #f8f9fa; 
+  padding: 40px 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.profileCard {
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  max-width: 800px;
+  width: 100%;
+}
+
+.imageSection {
+  flex: 1;
+  background-color: #e6f7ff; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profileImage {
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin: 20px;
+}
+
+.detailsSection {
+  flex: 2;
+  padding: 20px;
+  color: #333;
+}
+
+.doctorName {
+  font-size: 1.8rem;
+  color: #1a76d1; /* Updated to custom-blue */
+  margin-bottom: 10px;
+}
+
+.specialization {
+  font-size: 1.2rem;
+  color: #1a76d1; /* Updated to custom-blue */
+  margin-bottom: 10px;
+}
+
+.hospital {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.info p {
+  margin: 5px 0;
+}
+
+.specialties ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.specialties li {
+  display: inline-block;
+  background-color: #e6f7ff;
+  color: #1a76d1; /* Updated to custom-blue */
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin: 5px;
+  font-size: 0.9rem;
+}
+
+.contact p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.pageContainer {
+  font-family: "Arial", sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+.content {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.doctorCard {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.doctorCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.doctorImage {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.details {
+  font-size: 0.9rem;
+  color: #666;
+  text-align: left;
+}
+
+.details p {
+  margin-bottom: 8px;
+}
+
+.viewerPanel {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.viewerPanel h2 {
+  font-size: 1.6rem;
+  color: #1a76d1; /* Updated to custom-blue */
+  margin-bottom: 15px;
+}
+
+/* DICOM Viewer Container */
+.viewerContainer {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.05);
+}
+
+.contactCard {
+  background: #ffffff;
+  border-radius: 15px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  padding: 20px;
+  text-align: left;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contactCard:hover {
+  transform: scale(1.05);
+  box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.contactItem svg {
+  margin-right: 10px;
+  color: #1a76d1; /* Updated to custom-blue */
+}
+
+.contactItem p {
+  margin: 0;
+  font-size: 1rem;
+  color: #555;
+}
