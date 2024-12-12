@@ -17,13 +17,13 @@ const SubNavbar: React.FC = () => {
 
   return (
     // Sub-Navbar Container
-    <div className="justify-between flex flex-row my-8 p-4 font-serif items-center">
+    <div className="justify-between flex flex-row p-4 font-serif items-center border-b-2 border-gray-100 w-[1400px]">
       {/* Sub-Navbar Tabs Container */}
       <div className="flex flex-row items-center justify-start space-x-8">
         {subNavbarTabs.map((tab) => (
           // Link to the tab path
           <Link key={tab.label} to={tab.path}>
-            <button className="text-lg hover:text-custom-blue">
+            <button className="text-sm hover:text-custom-blue">
               {tab.label}
             </button>
           </Link>
@@ -32,14 +32,14 @@ const SubNavbar: React.FC = () => {
       {/* Languages, Email & Number Container */}
       <div className="flex flex-row items-center space-x-8">
         {/* Phone Number Container */}
-        <div className="text-lg flex flex-row justify-start space-x-2 items-center">
+        <div className="text-sm flex flex-row justify-start space-x-2 items-center">
           {/* Phone Icon */}
           <img src={telephoneIcon} alt="phone-icon" className="w-6 h-6" />
           {/* Phone Number */}
           <p>+880 1234 56789</p>
         </div>
         {/* Email Container */}
-        <div className="text-lg flex flex-row justify-start space-x-2 items-center hover:text-custom-blue">
+        <div className="text-sm flex flex-row justify-start space-x-2 items-center hover:text-custom-blue">
           {/* Email Icon */}
           <svg
             xmlns="http://www.w3.org/2000/svg"

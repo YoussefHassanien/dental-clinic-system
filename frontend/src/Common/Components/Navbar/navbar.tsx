@@ -11,7 +11,7 @@ const Navbar: React.FC = () => {
 
   return (
     //Navbar Container
-    <div className="flex flex-row justify-start items-center my-8 space-x-32 font-serif p-4">
+    <div className="flex flex-row justify-start items-center space-x-32 font-serif p-4 w-[1500px]">
       {/* Title and Logo Container */}
       <div className="flex flex-row items-center space-x-4">
         {/*Logo Image*/}

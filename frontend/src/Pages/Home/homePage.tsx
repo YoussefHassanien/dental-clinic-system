@@ -5,10 +5,14 @@ import Carousel from "./Components/carousel";
 
 const HomePage: React.FC = () => {
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center absolute max-w-full">
       <SubNavbar />
-      <Navbar />
-      <Carousel />
+      <div className="translate-x-24">
+        <Navbar />
+      </div>
+      <div className="w-full translate-y-[6.6px]">
+        <Carousel />
+      </div>
     </div>
   );
 };
