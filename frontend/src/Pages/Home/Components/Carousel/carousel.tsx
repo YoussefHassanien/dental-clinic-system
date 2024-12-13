@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const NextArrow = ({ onClick }: { onClick?: () => void }) => (
   <button
-    className="absolute top-1/2 right-2 transform -translate-y-1/2 z-10 cursor-pointer text-white bg-custom-blue rounded-full p-2 shadow-lg hover:bg-black"
+    className="absolute top-1/2 right-2 transform -translate-y-1/2 z-10 cursor-pointer text-white bg-customBlue rounded-full p-2 shadow-lg hover:bg-black"
     onClick={onClick}
     aria-label="Next slide"
     tabIndex={-1}
@@ -29,7 +29,7 @@ const NextArrow = ({ onClick }: { onClick?: () => void }) => (
 
 const PrevArrow = ({ onClick }: { onClick?: () => void }) => (
   <button
-    className="absolute top-1/2 left-2 transform -translate-y-1/2 z-10 cursor-pointer text-white bg-custom-blue rounded-full p-2 shadow-lg hover:bg-black"
+    className="absolute top-1/2 left-2 transform -translate-y-1/2 z-10 cursor-pointer text-white bg-customBlue rounded-full p-2 shadow-lg hover:bg-black"
     onClick={onClick}
     aria-label="Previous slide"
     tabIndex={-1}

@@ -68,7 +68,7 @@ const StatisticCard: React.FC<StatisticCardProps> = ({
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="size-20 rounded-full border-2 text-white p-4 group-hover:bg-white group-hover:text-custom-blue transition-colors ease-in-out duration-500"
+        className="size-20 rounded-full border-2 text-white p-4 group-hover:bg-white group-hover:text-customBlue transition-colors ease-in-out duration-500"
       >
         <path strokeLinecap="round" strokeLinejoin="round" d={iconPath} />
       </svg>

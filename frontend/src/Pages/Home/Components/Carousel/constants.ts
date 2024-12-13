@@ -5,7 +5,7 @@ import sliderImage3 from "../../../../Assets/slider3.jpg";
 export const cards = [
   {
     image: sliderImage1,
-    text: "The <span class='text-custom-blue'>Easiest</span> Way To Book Your <span class='text-custom-blue'>Dental</span> Appointment",
+    text: "The <span class='text-customBlue'>Easiest</span> Way To Book Your <span class='text-customBlue'>Dental</span> Appointment",
     subText:
       "Experience hassle-free scheduling with our user-friendly platform. Your perfect smile is just a click away!",
     buttonText: "Book Now",
@@ -14,7 +14,7 @@ export const cards = [
   },
   {
     image: sliderImage2,
-    text: "Get The <span class='text-custom-blue'>Smile</span> You Deserve With The Help Of Our <span class='text-custom-blue'>Experts</span>",
+    text: "Get The <span class='text-customBlue'>Smile</span> You Deserve With The Help Of Our <span class='text-customBlue'>Experts</span>",
     subText:
       "Trust our experienced dental professionals to provide personalized care and advanced treatments for a healthier, brighter smile.",
     buttonText: "Learn More",
@@ -23,7 +23,7 @@ export const cards = [
   },
   {
     image: sliderImage3,
-    text: "We <span class='text-custom-blue'>Provide</span> Dental Services That You Can <span class='text-custom-blue'>Trust!</span>",
+    text: "We <span class='text-customBlue'>Provide</span> Dental Services That You Can <span class='text-customBlue'>Trust!</span>",
     subText:
       "Rely on our dedicated team of professionals for comprehensive and compassionate care tailored to your needs.",
     buttonText: "Our Services",

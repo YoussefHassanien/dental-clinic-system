@@ -22,7 +22,7 @@ const SectionContent: React.FC<SectionContentProps> = ({
       <div className="flex flex-col justify-start items-start space-y-8 w-[600px]">
         {/* Who Are We Header Text */}
         <p className="text-2xl font-bold font-serif">
-          <span className="underline underline-offset-[24px] decoration-custom-blue">
+          <span className="underline underline-offset-[24px] decoration-customBlue">
             {headerText.split(" ")[0]}
           </span>{" "}
           {headerText.split(" ").slice(1).join(" ")}
