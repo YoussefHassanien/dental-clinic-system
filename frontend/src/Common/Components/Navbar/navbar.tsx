@@ -17,7 +17,7 @@ const Navbar: React.FC = () => {
         {/* Logo Image */}
         <img src={logo} alt="logo" className="w-16 h-16" />
         {/* Title */}
-        <h1 className="text-4xl font-bold text-custom-blue">
+        <h1 className="text-4xl font-bold text-customBlue">
           Denti
           <span className="text-black">Plus</span>
         </h1>
