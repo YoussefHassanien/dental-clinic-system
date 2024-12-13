@@ -41,8 +41,20 @@ const Navbar: React.FC = () => {
       {/* Login & Register Buttons Container*/}
       <div className="flex flex-row justify-evenly items-center space-x-4">
         {/*Login & Register Buttons*/}
-        <Button text="Login" bgColor="" hoverBgColor="" />
-        <Button text="Register" bgColor="#2c2d3f" hoverBgColor="#1a76d1" />
+        <Button
+          text="Login"
+          bgColor=""
+          hoverBgColor=""
+          textColor=""
+          hoverTextColor=""
+        />
+        <Button
+          text="Register"
+          bgColor="#2c2d3f"
+          hoverBgColor="#1a76d1"
+          textColor=""
+          hoverTextColor=""
+        />
       </div>
     </div>
   );

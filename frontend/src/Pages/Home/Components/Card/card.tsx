@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import styles from "./card.module.css";
 
 interface CardsProps {
@@ -6,9 +5,16 @@ interface CardsProps {
   paragraph: string;
   buttonText: string;
   icon: string;
+  buttonRedirectPath: string;
 }
 
-const Card: React.FC<CardsProps> = ({ title, paragraph, buttonText, icon }) => {
+const Card: React.FC<CardsProps> = ({
+  title,
+  paragraph,
+  buttonText,
+  icon,
+  buttonRedirectPath,
+}) => {
   // Split the paragraph into lines
   const lines = paragraph.split("\n");
 
@@ -34,9 +40,12 @@ const Card: React.FC<CardsProps> = ({ title, paragraph, buttonText, icon }) => {
         className={`flex flex-row justify-between items-center w-28 text-white ${styles["tab"]}`}
       >
         {/* Card Redirect Link */}
-        <Link to="" className="text-sm font-bold font-serif">
+        <a
+          href={buttonRedirectPath}
+          className="text-sm font-bold font-serif scroll-smooth"
+        >
           {buttonText}
-        </Link>
+        </a>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"

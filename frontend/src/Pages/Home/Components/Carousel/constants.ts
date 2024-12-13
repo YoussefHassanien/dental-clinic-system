@@ -10,6 +10,7 @@ export const cards = [
       "Experience hassle-free scheduling with our user-friendly platform. Your perfect smile is just a click away!",
     buttonText: "Book Now",
     id: 1,
+    cardRedirectPath: "/book-appointment",
   },
   {
     image: sliderImage2,
@@ -18,6 +19,7 @@ export const cards = [
       "Trust our experienced dental professionals to provide personalized care and advanced treatments for a healthier, brighter smile.",
     buttonText: "Learn More",
     id: 2,
+    cardRedirectPath: "#aboutUs",
   },
   {
     image: sliderImage3,
@@ -26,5 +28,6 @@ export const cards = [
       "Rely on our dedicated team of professionals for comprehensive and compassionate care tailored to your needs.",
     buttonText: "Our Services",
     id: 3,
+    cardRedirectPath: "/services",
   },
 ];

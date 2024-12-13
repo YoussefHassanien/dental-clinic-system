@@ -1,20 +1,14 @@
 import HomePage from "../Pages/Home/homePage";
-import AboutPage from "../Pages/About/aboutPage";
 import ContactPage from "../Pages/Contact/contactPage";
 import ServicesPage from "../Pages/Services/servicesPage";
 import DoctorsPage from "../Pages/Doctors/doctorsPage";
-import DoctorProfilePage from "../Pages/DoctorProfile/doctorsProfile"; // Import the doctor profile page
+import DoctorProfilePage from "../Pages/DoctorProfile/doctorsProfile";
 
 export const routes = [
   {
     path: "/",
     element: <HomePage />,
     name: "Home",
-  },
-  {
-    path: "/about",
-    element: <AboutPage />,
-    name: "About",
   },
   {
     path: "/contact",
@@ -32,7 +26,7 @@ export const routes = [
     name: "Doctors",
   },
   {
-    path: "/doctor", 
+    path: "/doctor-profile",
     element: <DoctorProfilePage />,
     name: "Doctor Profile",
   },
