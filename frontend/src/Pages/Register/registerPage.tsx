@@ -121,7 +121,7 @@ const RegisterPage: React.FC = () => {
             <input
               type="number"
               id="ssn"
-              className="text-gray-400 rounded-md border-2 p-2 w-full"
+              className="text-gray-400 rounded-md border-2 p-2 w-full font-serif"
               placeholder="Social Security Number"
             />
           </div>
@@ -130,7 +130,7 @@ const RegisterPage: React.FC = () => {
             <input
               type="number"
               id="phone"
-              className="text-gray-400 rounded-md border-2 p-2 w-full"
+              className="text-gray-400 rounded-md border-2 p-2 w-full font-serif"
               placeholder="Phone Number"
             />
           </div>
@@ -139,7 +139,7 @@ const RegisterPage: React.FC = () => {
             <input
               type="email"
               id="email"
-              className="text-gray-400 rounded-md border-2 p-2 w-full"
+              className="text-gray-400 rounded-md border-2 p-2 w-full font-serif"
               placeholder="Email Address"
             />
           </div>
