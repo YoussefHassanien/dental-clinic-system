@@ -4,12 +4,14 @@ import clinicLogo from "../../assets/tooth.png";
 import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../Common/Components/Error-Message/errorMessage";
 import { useState } from "react";
+import { handleLogin } from "./services";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col justify-between items-center">
@@ -28,8 +30,9 @@ const LoginPage: React.FC = () => {
         <ReusableCard backgroundColor="white">
           <form
             className="w-[400px]"
-            action={import.meta.env.LOGIN_API}
-            method="POST"
+            onSubmit={(e) =>
+              handleLogin(e, email, password, setIsErrorVisible, navigate)
+            }
             id="loginForm"
           >
             <div className="flex flex-col space-y-4 p-4 font-serif items-center">
@@ -91,7 +94,10 @@ const LoginPage: React.FC = () => {
                   </svg>
                 )}
               </div>
-              <ErrorMessage text="Invalid email or password" />
+              <ErrorMessage
+                text="Invalid email or password"
+                isVisible={isErrorVisible}
+              />
               <button
                 className="bg-customBlue text-white w-full p-2 rounded-md hover:bg-black transition-colors duration-300 ease-in-out"
                 type="submit"
