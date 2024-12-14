@@ -64,6 +64,7 @@ const Navbar: React.FC = () => {
           hoverBgColor="#1a76d1"
           textColor=""
           hoverTextColor=""
+          onClick={() => navigate("/register")}
         />
       </div>
     </div>

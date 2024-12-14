@@ -4,6 +4,7 @@ import ServicesPage from "../Pages/Services/servicesPage";
 import DoctorsPage from "../Pages/Doctors/doctorsPage";
 import DoctorProfilePage from "../Pages/DoctorProfile/doctorsProfile";
 import LoginPage from "../Pages/Login/loginPage";
+import RegisterPage from "../Pages/Register/registerPage";
 
 export const routes = [
   {
@@ -35,5 +36,10 @@ export const routes = [
     path: "/login",
     element: <LoginPage />,
     name: "Login",
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+    name: "Register",
   },
 ];
