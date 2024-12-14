@@ -13,7 +13,7 @@ const RegisterPage: React.FC = () => {
 
   return (
     <div className="h-fit flex flex-col justify-between items-center">
-      <div className="flex flex-row justify-start items-center space-x-4 my-4">
+      <div className="flex flex-row justify-start items-center space-x-4 my-8">
         <img src={clinicLogo} alt="clinic logo" className="size-20" />
         <p className="text-4xl text-black font-bold font-serif">
           <span className="text-customBlue">Denti</span>
@@ -24,7 +24,7 @@ const RegisterPage: React.FC = () => {
       <ReusableCard backgroundColor="white">
         <div className="flex flex-col items-center font-serif p-4">
           <p className="font-bold text-xl">
-            Welcome to DentiPlus registeration form
+            Welcome to dentiplus clinics registeration form
           </p>
           <p className="text-gray-600 text-md">
             It's quick and easy to register with us
