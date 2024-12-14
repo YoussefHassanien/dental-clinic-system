@@ -1,10 +1,8 @@
-import facebookIcon from "../../../assets/Facebook.svg";
-import linkedinIcon from "../../../assets/LinkedIn.svg";
-import twitterIcon from "../../../assets/Twitter.svg";
-import instagramIcon from "../../../assets/Instagram.svg";
-import { Link } from "react-router-dom";
+import { socialMediaLinks, navigationLinks } from "./constants";
+import { Link, useLocation } from "react-router-dom";
 
 const Footer: React.FC = () => {
+  const location = useLocation();
   const handleSmoothScroll = (
     event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
     path: string
@@ -28,70 +26,34 @@ const Footer: React.FC = () => {
             Providing exceptional dental care since{" "}
             <span className="font-sans">1992</span>
           </p>
-          <div className="mt-4 md:mt-0 flex space-x-4">
-            <a
-              href="https://www.facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-gray-400"
-            >
-              <img src={facebookIcon} alt="facebook-icon" className="w-6 h-6" />
-            </a>
-            <a
-              href="https://www.linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-gray-400"
-            >
-              <img src={linkedinIcon} alt="linkedin-icon" className="w-6 h-6" />
-            </a>
-            <a
-              href="https://www.twitter.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-gray-400"
-            >
-              <img src={twitterIcon} alt="twitter-icon" className="w-6 h-6" />
-            </a>
-            <a
-              href="https://www.instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white hover:text-gray-400"
-            >
-              <img
-                src={instagramIcon}
-                alt="instagram-icon"
-                className="w-6 h-6"
-              />
-            </a>
+          <div className="mt-4 flex space-x-4">
+            {socialMediaLinks.map((link, index) => (
+              <a
+                key={index}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-gray-400"
+              >
+                <img src={link.src} alt={link.alt} className="w-6 h-6" />
+              </a>
+            ))}
           </div>
         </div>
         <div className="flex space-x-4">
-          <Link
-            to="/"
-            className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
-          >
-            Home
-          </Link>
-          <Link
-            to="/doctors"
-            className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
-          >
-            Doctors
-          </Link>
-          <Link
-            to="/services"
-            className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
-          >
-            Services
-          </Link>
-          <Link
-            to="/contact"
-            className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
-          >
-            Contact Us
-          </Link>
+          {navigationLinks.map((link, index) => (
+            <Link
+              key={index}
+              to={link.to}
+              className={`hover:underline underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300 ${
+                location.pathname === link.to
+                  ? "text-customBlue underline underline-offset-8"
+                  : ""
+              }`}
+            >
+              {link.text}
+            </Link>
+          ))}
           <a
             className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
             href=""
