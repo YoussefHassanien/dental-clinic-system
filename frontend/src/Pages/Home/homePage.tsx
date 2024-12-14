@@ -29,7 +29,7 @@ const HomePage: React.FC = () => {
     <div className="flex flex-col justify-center items-center relative max-w-full scroll-smooth">
       <SubNavbar />
       {/* Navbar Container*/}
-      <div className="translate-x-24">
+      <div className="translate-x-24" id="home">
         <Navbar />
       </div>
       {/* Carousel Container*/}

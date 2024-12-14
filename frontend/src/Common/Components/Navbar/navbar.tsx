@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CSSProperties } from "react";
 import logo from "../../../assets/tooth.png";
 import { navbarTabs } from "./constants";
@@ -8,6 +8,8 @@ import Button from "../Button/button";
 const Navbar: React.FC = () => {
   // Get the current location
   const location = useLocation();
+  // Navigate to a new location
+  const navigate = useNavigate();
 
   return (
     // Navbar Container
@@ -54,6 +56,7 @@ const Navbar: React.FC = () => {
           hoverBgColor=""
           textColor=""
           hoverTextColor=""
+          onClick={() => navigate("/login")}
         />
         <Button
           text="Register"

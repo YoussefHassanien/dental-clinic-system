@@ -68,13 +68,18 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div className="flex space-x-4">
-          <a
+          <Link
+            to="/"
             className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
-            href=""
-            onClick={(event) => handleSmoothScroll(event, "#aboutUs")}
           >
-            About Us
-          </a>
+            Home
+          </Link>
+          <Link
+            to="/doctors"
+            className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
+          >
+            Doctors
+          </Link>
           <Link
             to="/services"
             className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
@@ -85,14 +90,15 @@ const Footer: React.FC = () => {
             to="/contact"
             className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
           >
-            Contact
+            Contact Us
           </Link>
-          <Link
-            to="/doctors"
+          <a
             className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
+            href=""
+            onClick={(event) => handleSmoothScroll(event, "#aboutUs")}
           >
-            Doctors
-          </Link>
+            About Us
+          </a>
         </div>
         <div className="mt-4 md:mt-0">
           <p className="text-sm">

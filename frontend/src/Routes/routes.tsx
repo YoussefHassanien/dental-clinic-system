@@ -3,6 +3,7 @@ import ContactPage from "../Pages/Contact/contactPage";
 import ServicesPage from "../Pages/Services/servicesPage";
 import DoctorsPage from "../Pages/Doctors/doctorsPage";
 import DoctorProfilePage from "../Pages/DoctorProfile/doctorsProfile";
+import LoginPage from "../Pages/Login/loginPage";
 
 export const routes = [
   {
@@ -29,5 +30,10 @@ export const routes = [
     path: "/doctor-profile",
     element: <DoctorProfilePage />,
     name: "Doctor Profile",
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+    name: "Login",
   },
 ];

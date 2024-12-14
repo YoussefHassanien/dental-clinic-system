@@ -31,13 +31,13 @@ const LoginPage: React.FC = () => {
                 <input
                   type="email"
                   id="loginEmail"
-                  className="text-gray-400 rounded-md border-2 p-2 w-full"
+                  className="text-gray-400 rounded-md border-1 p-2 w-full"
                   placeholder="Email Address"
                 />
                 <input
                   type="password"
                   id="loginPassword"
-                  className="text-gray-400 rounded-md border-2 p-2 w-full"
+                  className="text-gray-400 rounded-md border-1 p-2 w-full"
                   placeholder="Password"
                 />
                 <ErrorMessage text="Invalid email or password" />
