@@ -34,12 +34,14 @@ const LoginPage: React.FC = () => {
                 id="loginEmail"
                 className="text-gray-400 rounded-md border-2 p-2 w-full"
                 placeholder="Email Address"
+                required={true}
               />
               <input
                 type="password"
                 id="loginPassword"
                 className="text-gray-400 rounded-md border-2 p-2 w-full"
                 placeholder="Password"
+                required={true}
               />
               <ErrorMessage text="Invalid email or password" />
               <button

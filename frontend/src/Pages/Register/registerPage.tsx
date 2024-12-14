@@ -43,12 +43,14 @@ const RegisterPage: React.FC = () => {
               id="firstName"
               className="text-gray-400 rounded-md border-2 p-2 w-full"
               placeholder="First Name"
+              required={true}
             />
             <input
               type="text"
               id="lastName"
               className="text-gray-400 rounded-md border-2 p-2 w-full"
               placeholder="last Name"
+              required={true}
             />
           </div>
           <p className="text-gray-600 text-sm font-serif p-2">Date of Birth</p>
@@ -58,6 +60,7 @@ const RegisterPage: React.FC = () => {
               className="text-gray-400 rounded-md border-2 p-2 w-full"
               value={day}
               onChange={(e) => setDay(e.target.value)}
+              required={true}
             >
               <option value="">Day</option>
               {days.map((d) => (
@@ -71,6 +74,7 @@ const RegisterPage: React.FC = () => {
               className="text-gray-400 rounded-md border-2 p-2 w-full"
               value={month}
               onChange={(e) => setMonth(e.target.value)}
+              required={true}
             >
               <option value="">Month</option>
               {months.map((m, index) => (
@@ -84,6 +88,7 @@ const RegisterPage: React.FC = () => {
               className="text-gray-400 rounded-md border-2 p-2 w-full"
               value={year}
               onChange={(e) => setYear(e.target.value)}
+              required={true}
             >
               <option value="">Year</option>
               {years.map((y) => (
@@ -103,6 +108,7 @@ const RegisterPage: React.FC = () => {
                 value="male"
                 checked={gender === "male"}
                 onChange={(e) => setGender(e.target.value)}
+                required={true}
               />
             </div>
             <div className="flex flex-row justify-between p-2 font-serif items-center w-full rounded-md border-2">
@@ -113,6 +119,7 @@ const RegisterPage: React.FC = () => {
                 value="female"
                 checked={gender === "female"}
                 onChange={(e) => setGender(e.target.value)}
+                required={true}
               />
             </div>
           </div>
@@ -123,6 +130,7 @@ const RegisterPage: React.FC = () => {
               id="ssn"
               className="text-gray-400 rounded-md border-2 p-2 w-full font-serif"
               placeholder="Social Security Number"
+              required={true}
             />
           </div>
           <div className="flex p-2">
@@ -132,6 +140,7 @@ const RegisterPage: React.FC = () => {
               id="phone"
               className="text-gray-400 rounded-md border-2 p-2 w-full font-serif"
               placeholder="Phone Number"
+              required={true}
             />
           </div>
           <div className="flex p-2">
@@ -141,6 +150,7 @@ const RegisterPage: React.FC = () => {
               id="email"
               className="text-gray-400 rounded-md border-2 p-2 w-full font-serif"
               placeholder="Email Address"
+              required={true}
             />
           </div>
           <div className="flex flex-row space-x-4 p-2 font-serif items-center">
@@ -149,12 +159,14 @@ const RegisterPage: React.FC = () => {
               id="password"
               className="text-gray-400 rounded-md border-2 p-2 w-full"
               placeholder="Password"
+              required={true}
             />
             <input
               type="password"
               id="confirmPassword"
               className="text-gray-400 rounded-md border-2 p-2 w-full"
               placeholder="Confirm Password"
+              required={true}
             />
           </div>
 
