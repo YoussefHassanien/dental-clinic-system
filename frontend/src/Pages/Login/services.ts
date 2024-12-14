@@ -1,3 +1,5 @@
+const loginAPI = import.meta.env.VITE_LOGIN_API;
+
 export const handleLogin = async (
   event: React.FormEvent,
   email: string,
@@ -6,30 +8,21 @@ export const handleLogin = async (
   navigate: (path: string) => void
 ) => {
   event.preventDefault();
-  // Simulate an error
-  if (email === "" || password === "") {
-    setIsErrorVisible(true);
-  } else {
-    setIsErrorVisible(false);
-    // Handle login logic here
-    try {
-      const response = await fetch("http://localhost:3000/api/v1/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      console.log(response);
-      if (!response.ok) {
-        console.log("API response not okay");
-        throw new Error("Login failed");
-      }
-      // Handle successful login
-      navigate("/");
-      console.log("Login successful");
-    } catch {
-      setIsErrorVisible(true);
+  // Handle login logic here
+  try {
+    const response = await fetch(`${loginAPI}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+    if (!response.ok) {
+      throw new Error("Login failed");
     }
+    // Handle successful login
+    navigate("/");
+  } catch {
+    setIsErrorVisible(true);
   }
 };

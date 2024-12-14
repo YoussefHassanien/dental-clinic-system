@@ -1,24 +1,34 @@
 import ReusableCard from "../../Common/Components/Reusable-Card/reusableCard";
 import clinicLogo from "../../assets/tooth.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../Common/Components/Error-Message/errorMessage";
 import { useState } from "react";
-import { days, months, years } from "./constants";
+import { days, months, years, countryCodes } from "./constants";
+import { handleRegister } from "./services";
 
 const RegisterPage: React.FC = () => {
+  const navigate = useNavigate();
   const [day, setDay] = useState("Day");
   const [month, setMonth] = useState("Month");
   const [year, setYear] = useState("Year");
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState("male");
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [countryCode, setCountryCode] = useState("+20");
   const [password, setPassword] = useState("");
   const [isConfirmPasswordVisible, setIsConfrimPasswordVisible] =
     useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [isErrorVisible, setIsErrorVisible] = useState(false);
+  const [email, setEmail] = useState("");
+  const [errorText, setErrorText] = useState("");
+  const [ssn, setSsn] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   return (
     <div className="h-fit flex flex-col justify-between items-center">
-      <div className="flex flex-row justify-start items-center space-x-4 my-8">
+      <div className="flex flex-row justify-start items-center space-x-4 my-4">
         <img src={clinicLogo} alt="clinic logo" className="size-20" />
         <p className="text-4xl text-black font-bold font-serif">
           <span className="text-customBlue">Denti</span>
@@ -38,9 +48,28 @@ const RegisterPage: React.FC = () => {
         <hr className="bg-gray-500 my-2 w-full" />
         <form
           className="w-full"
-          action={import.meta.env.REGISTER_API}
-          method="POST"
+          onSubmit={(e) =>
+            handleRegister(
+              e,
+              email,
+              password,
+              confirmPassword,
+              ssn,
+              phoneNumber,
+              countryCode,
+              day,
+              month,
+              year,
+              firstName,
+              lastName,
+              gender,
+              setIsErrorVisible,
+              setErrorText,
+              navigate
+            )
+          }
           id="loginForm"
+          encType="application/x-www-form-urlencoded"
         >
           <div className="flex flex-row space-x-4 p-2 font-serif items-center">
             <input
@@ -49,6 +78,8 @@ const RegisterPage: React.FC = () => {
               className="text-gray-400 rounded-md border-2 p-2 w-full"
               placeholder="First Name"
               required={true}
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
             />
             <input
               type="text"
@@ -56,13 +87,15 @@ const RegisterPage: React.FC = () => {
               className="text-gray-400 rounded-md border-2 p-2 w-full"
               placeholder="last Name"
               required={true}
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
             />
           </div>
           <p className="text-gray-600 text-sm font-serif p-2">Date of Birth</p>
           <div className="flex flex-row space-x-4 p-2 font-serif items-center">
             <select
               id="day"
-              className="text-gray-400 rounded-md border-2 p-2 w-full"
+              className="text-gray-400 rounded-md border-2 p-2 w-full font-sans"
               value={day}
               onChange={(e) => setDay(e.target.value)}
               required={true}
@@ -76,7 +109,7 @@ const RegisterPage: React.FC = () => {
             </select>
             <select
               id="month"
-              className="text-gray-400 rounded-md border-2 p-2 w-full"
+              className="text-gray-400 rounded-md border-2 p-2 w-full font-sans"
               value={month}
               onChange={(e) => setMonth(e.target.value)}
               required={true}
@@ -90,7 +123,7 @@ const RegisterPage: React.FC = () => {
             </select>
             <select
               id="year"
-              className="text-gray-400 rounded-md border-2 p-2 w-full"
+              className="text-gray-400 rounded-md border-2 p-2 w-full font-sans"
               value={year}
               onChange={(e) => setYear(e.target.value)}
               required={true}
@@ -133,19 +166,36 @@ const RegisterPage: React.FC = () => {
             <input
               type="number"
               id="ssn"
-              className="text-gray-400 rounded-md border-2 p-2 w-full font-serif"
+              className="text-gray-400 rounded-md border-2 p-2 w-full font-sans"
               placeholder="Social Security Number"
               required={true}
+              value={ssn}
+              onChange={(e) => setSsn(e.target.value)}
             />
           </div>
-          <div className="flex p-2">
-            {" "}
+          <div className="flex flex-row space-x-4 p-2 font-serif items-center">
+            <select
+              id="countryCode"
+              className="text-gray-400 rounded-md border-2 p-2 w-2/5 font-sans"
+              value={countryCode}
+              onChange={(e) => setCountryCode(e.target.value)}
+              required={true}
+            >
+              <option value="">Country Codes</option>
+              {countryCodes.map((c) => (
+                <option key={c.country} value={c.code}>
+                  {c.code} - {c.country}
+                </option>
+              ))}
+            </select>{" "}
             <input
               type="number"
               id="phone"
-              className="text-gray-400 rounded-md border-2 p-2 w-full font-serif"
+              className="text-gray-400 rounded-md border-2 p-2 w-full font-sans"
               placeholder="Phone Number"
               required={true}
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </div>
           <div className="flex p-2">
@@ -156,6 +206,8 @@ const RegisterPage: React.FC = () => {
               className="text-gray-400 rounded-md border-2 p-2 w-full font-serif"
               placeholder="Email Address"
               required={true}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="flex flex-row space-x-4 p-2 font-serif items-center">
@@ -168,6 +220,8 @@ const RegisterPage: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-md border-2 p-2"
+                pattern="(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}"
+                title="Password must be at least 8 characters long and include at least one number, one capital letter, and one special character."
               />
               {isPasswordVisible ? (
                 <svg
@@ -217,6 +271,8 @@ const RegisterPage: React.FC = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full rounded-md border-2 p-2"
+                pattern="(?=.*\d)(?=.*[A-Z])(?=.*\W).{8,}"
+                title="Password must be at least 8 characters long and include at least one number, one capital letter, and one special character."
               />
               {isConfirmPasswordVisible ? (
                 <svg
@@ -264,9 +320,8 @@ const RegisterPage: React.FC = () => {
           </div>
 
           <hr className="bg-gray-500 my-2 w-full" />
-          <ErrorMessage text="Invalid email or password" />
-          <div className="flex flex-col justify-center items-center p-4 space-y-4">
-            {" "}
+          <div className="flex flex-col justify-center items-center p-4 space-y-2">
+            <ErrorMessage text={errorText} isVisible={isErrorVisible} />
             <button
               className="bg-customBlue text-white w-full p-2 rounded-md hover:bg-black transition-colors duration-300 ease-in-out"
               type="submit"

@@ -8,7 +8,11 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
   isVisible = false,
 }) => {
   return (
-    <p className={`${isVisible ? "block" : "hidden"} text-red-600 my-4`}>
+    <p
+      className={`${
+        isVisible ? "block" : "hidden"
+      } text-red-600 p-2 font-sans text-md`}
+    >
       {text}
     </p>
   );

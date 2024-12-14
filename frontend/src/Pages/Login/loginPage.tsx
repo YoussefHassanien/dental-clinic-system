@@ -34,6 +34,7 @@ const LoginPage: React.FC = () => {
               handleLogin(e, email, password, setIsErrorVisible, navigate)
             }
             id="loginForm"
+            encType="application/x-www-form-urlencoded"
           >
             <div className="flex flex-col space-y-4 p-4 font-serif items-center">
               <input
