@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../Common/Components/Navbar/navbar";
 import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 import styles from "./doctorProfilePage.module.css";
@@ -12,18 +12,24 @@ import {
 
 const DoctorProfilePage: React.FC = () => {
   const doctor = {
-    name: "Dr. Michel Jordan",
-    specialization: "Dental Surgeon, Cardiologist",
-    hospital: "Macy General Hospital",
+    specialization: "Dental Surgeon",
+    hospital: "DentiPlus clinic",
     experience: "19 Years",
     languages: ["English", "Spanish"],
     types: "Surgeon",
-    specialties: ["Dentistry", "Surgery", "Implantology", "Pediatric"],
+    specialties: ["Dentistry", "Surgery", "Implantology"],
     image: doctorImage,
-    email: "macy@mail.com",
-    phone: "0123 456 789",
-    address: "35 Blue Area, NY",
   };
+
+  const[doctorData,setdoctorData]=useState({})
+  useEffect(()=>{
+   let data= localStorage.getItem("DoctorData")
+   if (data){
+   console.log(JSON.parse(data).fName)
+
+   setdoctorData(JSON.parse(data))
+   }
+  }, [] )
 
   return (
     <div className={styles.pageContainer}>
@@ -38,16 +44,18 @@ const DoctorProfilePage: React.FC = () => {
               alt={doctor.name}
               className={styles.doctorImage}
             />
-            <h2 className={styles.doctorName}>{doctor.name}</h2>
+            <h2 className={styles.doctorName}>{doctorData.fName} {doctorData.lName}</h2>
             <p className={styles.specialization}>{doctor.specialization}</p>
             <p className={styles.hospital}>{doctor.hospital}</p>
             <div className={styles.details}>
-              <p>
-                <strong>Experience:</strong> {doctor.experience}
-              </p>
+              
               <p>
                 <strong>Specialties:</strong> {doctor.specialties.join(", ")}
               </p>
+              <p>
+                <strong>ssn:</strong> {doctorData.ssn}
+              </p> 
+              
             </div>
           </div>
 
@@ -56,15 +64,15 @@ const DoctorProfilePage: React.FC = () => {
             <h3>Contact Info</h3>
             <div className={styles.contactItem}>
               <FaPhone />
-              <p>{doctor.phone}</p>
+              <p>{doctorData.phone}</p>
             </div>
             <div className={styles.contactItem}>
               <FaEnvelope />
-              <p>{doctor.email}</p>
+              <p>{doctorData.email}</p>
             </div>
             <div className={styles.contactItem}>
               <FaMapMarkerAlt />
-              <p>{doctor.address}</p>
+              <p>{doctorData.district}, {doctorData.gov}, {doctorData.city}</p>
             </div>
             <div className={styles.contactItem}>
               <FaLanguage />

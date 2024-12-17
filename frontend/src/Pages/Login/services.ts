@@ -21,7 +21,17 @@ export const handleLogin = async (
       throw new Error("Login failed");
     }
     // Handle successful login
-    navigate("/");
+    const data=await response.json()
+    console.log(data)
+    localStorage.setItem("token", data.token)
+    localStorage.setItem("DoctorData", JSON.stringify(data.data))
+    if (data.role === "patient"){
+      navigate("/patient")
+    }
+    else{
+      navigate("/doctor-profile")
+    }
+     
   } catch {
     setIsErrorVisible(true);
   }
