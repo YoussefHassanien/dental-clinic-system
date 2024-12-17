@@ -27,6 +27,19 @@ exports.resizeImage = asyncHandler(async (req, res, next) => {
   next();
 });
 
+exports.getDoctorByUserId = asyncHandler(async (req, res, next) => {
+  const doctor = await Doctor.findOne({ userId: req.params.id });
+  if (!doctor) {
+    return next(new ApiError("Doctor not found", 404));
+  }
+  res.status(200).json({
+    status: "success",
+    data: {
+      doctor,
+    },
+  });
+});
+
 // @desc    add doctor
 // @route   GET /api/v1/doctors
 // @access  Private/Admin
@@ -150,3 +163,23 @@ exports.createDoctor = factory.createOne(Doctor);
 // @route   DELETE /api/v1/doctors/:id
 // @access  Private/Admin
 exports.deleteDoctor = factory.deleteOne(Doctor);
+
+exports.getLoggedDoctorData = asyncHandler(async (req, res, next) => {
+  const user = req.user;
+  const doctor = await Doctor.findOne({ userId: req.user._id });
+  if (!user) {
+    return next(new ApiError("user not found", 404));
+  }
+  if (!doctor) {
+    return next(new ApiError("Doctor not found", 404));
+  }
+  const doctorPlain = doctor.toObject();
+  const userPlain = user.toObject();
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      doctorProfile: { ...userPlain, ...doctorPlain },
+    },
+  });
+});
