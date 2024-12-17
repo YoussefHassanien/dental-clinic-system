@@ -7,6 +7,7 @@ const {
   updateDocument,
   deleteDocument,
   getDocument,
+  createFilterObject,
 } = require("../services/documentServices.js");
 
 const {
@@ -16,11 +17,11 @@ const {
   deleteDocumentValidator,
 } = require("../utils/validators/documentValidator.js");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 router
   .route("/")
-  .get(getAllDocument)
+  .get(createFilterObject, getAllDocument)
   .post(
     uploadDocumentFile,
     saveDocumentFile,
