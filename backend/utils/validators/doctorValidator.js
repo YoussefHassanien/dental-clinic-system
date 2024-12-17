@@ -30,13 +30,12 @@ exports.addDoctorValidator = [
     .withMessage("Email is required")
     .isEmail()
     .withMessage("Email is invalid")
-    .custom((value) =>
-      User.findOne({ email: value }).then((user) => {
-        if (user) {
-          return Promise.reject("Email already in use");
-        }
-      })
-    ),
+    .custom(async (value) => {
+      const user = await User.findOne({ email: value });
+      if (user) {
+        return Promise.reject("email already exists");
+      }
+    }),
   check("ssn")
     .notEmpty()
     .withMessage("SSN is required")
@@ -44,13 +43,12 @@ exports.addDoctorValidator = [
     .withMessage("SSN must be exactly 14 digits")
     .matches(/^\d+$/)
     .withMessage("SSN must be numeric")
-    .custom((value) =>
-      User.findOne({ ssn: value }).then((user) => {
-        if (user) {
-          return Promise.reject("SSN already exists");
-        }
-      })
-    ),
+    .custom(async (value) => {
+      const user = await User.findOne({ ssn: value });
+      if (user) {
+        return Promise.reject("SSN already exists");
+      }
+    }),
   check("dateOfBirth")
     .notEmpty()
     .withMessage("date of birth is required")
@@ -85,7 +83,7 @@ exports.addDoctorValidator = [
   check("gender")
     .notEmpty()
     .withMessage("gender must be specified")
-    .isBoolean()
+    .isIn(["male", "female"])
     .withMessage("Invalid gender "),
 
   check("profileImg").optional(),

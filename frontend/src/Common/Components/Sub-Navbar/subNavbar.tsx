@@ -1,17 +1,21 @@
-import { subNavbarTabs, languages } from "./constants";
-import { useState } from "react";
+import { subNavbarTabs } from "./constants";
 import telephoneIcon from "../../../assets/phone-call.png";
 
 // Define the Sub-Navbar component
 const SubNavbar: React.FC = () => {
-  // Define the selected language state
-  const [selectedLanguage, setSelectedLanguage] = useState("EN");
-
-  // Define the language change handler
-  const handleLanguageChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
+  const handleSmoothScroll = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    path: string
   ) => {
-    setSelectedLanguage(event.target.value);
+    event.preventDefault();
+    if (path.startsWith("#")) {
+      const element = document.querySelector(path);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.location.href = path;
+    }
   };
 
   return (
@@ -21,10 +25,13 @@ const SubNavbar: React.FC = () => {
       <div className="flex flex-row items-center justify-start space-x-8">
         {subNavbarTabs.map((tab) => (
           // Link to the tab path
-          <a key={tab.label} href={tab.path}>
-            <button className="text-sm hover:text-custom-blue">
-              {tab.label}
-            </button>
+          <a
+            key={tab.label}
+            href={tab.path}
+            className="text-sm hover:text-customBlue"
+            onClick={(event) => handleSmoothScroll(event, tab.path)}
+          >
+            {tab.label}
           </a>
         ))}
       </div>
@@ -38,7 +45,7 @@ const SubNavbar: React.FC = () => {
           <p className="font-sans">+880 1234 56789</p>
         </div>
         {/* Email Container */}
-        <div className="text-sm flex flex-row justify-start space-x-2 items-center hover:text-custom-blue">
+        <div className="text-sm flex flex-row justify-start space-x-2 items-center hover:text-customBlue">
           {/* Email Icon */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -60,22 +67,6 @@ const SubNavbar: React.FC = () => {
             info@dentiplus.com
           </a>
         </div>
-        {/* Language Selector */}
-        <select
-          className="text-md cursor-pointer"
-          value={selectedLanguage}
-          onChange={handleLanguageChange}
-        >
-          {languages.map((language) => (
-            <option
-              key={language.code}
-              value={language.code}
-              className="hover:bg-custom-blue"
-            >
-              {language.label}
-            </option>
-          ))}
-        </select>
       </div>
     </div>
   );

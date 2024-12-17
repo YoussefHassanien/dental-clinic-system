@@ -1,20 +1,39 @@
-import { Link } from "react-router-dom";
-import styles from "./card.module.css";
-
-interface CardsProps {
+interface InfoCardProps {
   title: string;
   paragraph: string;
   buttonText: string;
   icon: string;
+  buttonRedirectPath: string;
 }
 
-const Card: React.FC<CardsProps> = ({ title, paragraph, buttonText, icon }) => {
+const InfoCard: React.FC<InfoCardProps> = ({
+  title,
+  paragraph,
+  buttonText,
+  icon,
+  buttonRedirectPath,
+}) => {
   // Split the paragraph into lines
   const lines = paragraph.split("\n");
 
+  const handleSmoothScroll = (
+    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+    path: string
+  ) => {
+    event.preventDefault();
+    if (path.startsWith("#")) {
+      const element = document.querySelector(path);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      window.location.href = path;
+    }
+  };
+
   return (
     // Cards Container
-    <div className="relative flex flex-col justify-center items-start bg-custom-blue w-80 h-64 rounded-md p-4 space-y-8 hover:-translate-y-4 hover:shadow-xl hover:shadow-custom-blue ease-in-out duration-500 transition-all">
+    <div className="relative flex flex-col justify-center items-start bg-customBlue w-80 h-64 rounded-md p-4 space-y-8 hover:-translate-y-4 hover:shadow-xl hover:shadow-customBlue ease-in-out duration-500 transition-all">
       {/* Card Title */}
       <p className="text-white font-bold font-serif text-md">{title}</p>
       {/* Card Text */}
@@ -31,12 +50,24 @@ const Card: React.FC<CardsProps> = ({ title, paragraph, buttonText, icon }) => {
       </div>
       {/*Card Link Container*/}
       <div
-        className={`flex flex-row justify-between items-center w-28 text-white ${styles["tab"]}`}
+        className="flex flex-row justify-between items-center w-28 text-white tab"
+        style={
+          {
+            "--tab-color": "white",
+            "--tab-hover-color": "white",
+            "--tab-selected-color": "white",
+            "--tab-border-bottom": "-10px",
+          } as React.CSSProperties
+        }
       >
         {/* Card Redirect Link */}
-        <Link to="" className="text-sm font-bold font-serif">
+        <a
+          href={buttonRedirectPath}
+          className="text-sm font-bold font-serif"
+          onClick={(event) => handleSmoothScroll(event, buttonRedirectPath)}
+        >
           {buttonText}
-        </Link>
+        </a>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -66,4 +97,4 @@ const Card: React.FC<CardsProps> = ({ title, paragraph, buttonText, icon }) => {
   );
 };
 
-export default Card;
+export default InfoCard;

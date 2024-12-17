@@ -5,6 +5,7 @@ dotenv.config({ path: "config.env" });
 const ApiError = require("./utils/apiError");
 const dbconnection = require("./config/database");
 const globalError = require("./middlewares/errorMiddleware");
+const cors = require("cors");
 
 //routes
 const userRoute = require("./routes/userRoutes");
@@ -16,7 +17,8 @@ const patientRoute = require("./routes/patientRoute");
 const feedbackRoute = require("./routes/feedbackRoute");
 const materialRoute = require("./routes/materialRoute");
 const doctorRoute = require("./routes/doctorRoute");
-
+const appointmentRoute = require("./routes/appointmentRoute");
+const documentRoute = require("./routes/documnetRoute");
 
 // database configuration
 dbconnection();
@@ -26,6 +28,7 @@ const app = express();
 
 //middleware
 app.use(express.json());
+app.use(cors());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -42,7 +45,8 @@ app.use("/api/v1/patient", patientRoute);
 app.use("/api/v1/feedback", feedbackRoute);
 app.use("/api/v1/material", materialRoute);
 app.use("/api/v1/doctors", doctorRoute);
-
+app.use("/api/v1/appointments", appointmentRoute);
+app.use("/api/v1/documents", documentRoute);
 
 // handle unvalid routes
 app.all("*", (req, res, next) => {

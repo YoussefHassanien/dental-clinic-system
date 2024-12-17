@@ -1,6 +1,6 @@
 /* button.module.css */
 .btn {
-  color: #fff;
+  color: var(--text-color, #fff); /* Default text color */
   padding: 13px 25px;
   font-size: 14px;
   text-transform: capitalize;
@@ -15,7 +15,7 @@
   border-radius: 4px;
 }
 .btn:hover {
-  color: #fff;
+  color: var(--hover-text-color, #fff); /* Default hover text color */
 }
 .btn:before {
   content: "";

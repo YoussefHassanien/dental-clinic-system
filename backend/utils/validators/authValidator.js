@@ -85,12 +85,11 @@ exports.signupValidator = [
   check("gender")
     .notEmpty()
     .withMessage("gender must be specified")
-    .isBoolean()
-    .withMessage("Invalid gender "),
-
+    .isIn(["male", "female"])
+    .withMessage("invalid gender"),
   check("profileImg").optional(),
-
   check("bloodType")
+    .optional()
     .notEmpty()
     .withMessage("Blood type is required")
     .isIn(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"])

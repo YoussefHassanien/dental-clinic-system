@@ -27,7 +27,8 @@ const userSchema = new mongoose.Schema(
       required: [true, "date of birth required"],
     },
     gender: {
-      type: Boolean,
+      type: String,
+      enum: ["male", "female"],
       required: [true, "gender must be specified"],
     },
     slug: {

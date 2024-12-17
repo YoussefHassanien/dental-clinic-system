@@ -69,7 +69,11 @@ exports.createUserValidator = [
     .notEmpty()
     .withMessage("district must have a value"),
   check("city").optional().notEmpty().withMessage("city must have a value"),
-  check("gender").notEmpty().withMessage("gender must be specified"),
+  check("gender")
+    .notEmpty()
+    .withMessage("gender must be specified")
+    .isIn(["male", "female"])
+    .withMessage("invalid gender"),
   check("passwordComfirm")
     .notEmpty()
     .withMessage("confirm password is required"),

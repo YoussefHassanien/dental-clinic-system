@@ -56,9 +56,10 @@ const StatisticCard: React.FC<StatisticCardProps> = ({
   }, [isVisible, actualClinicCount]);
 
   return (
+    // Statistic Card Container
     <div
       ref={ref}
-      className="flex flex-row justify-center items-center space-x-4 font-bold text-white"
+      className="flex flex-row justify-center items-center space-x-4 font-bold text-white group transition-colors ease-in-out duration-1000"
     >
       {/* Icon */}
       <svg
@@ -67,7 +68,7 @@ const StatisticCard: React.FC<StatisticCardProps> = ({
         viewBox="0 0 24 24"
         strokeWidth={1.5}
         stroke="currentColor"
-        className="size-20 rounded-full border-2 text-white p-4 hover:bg-white hover:text-custom-blue"
+        className="size-20 rounded-full border-2 text-white p-4 group-hover:bg-white group-hover:text-customBlue transition-colors ease-in-out duration-500"
       >
         <path strokeLinecap="round" strokeLinejoin="round" d={iconPath} />
       </svg>
