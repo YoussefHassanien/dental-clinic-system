@@ -8,12 +8,13 @@ import Button from "../Button/button";
 const Navbar: React.FC = () => {
   // Get the current location
   const location = useLocation();
+
   // Navigate to a new location
   const navigate = useNavigate();
 
   return (
     // Navbar Container
-    <div className="flex flex-row justify-start items-center space-x-32 font-serif p-4 w-[1500px]">
+    <div className="flex flex-row justify-start items-center space-x-32 font-serif p-4 w-full">
       {/* Title and Logo Container */}
       <div className="flex flex-row items-center space-x-4">
         {/* Logo Image */}

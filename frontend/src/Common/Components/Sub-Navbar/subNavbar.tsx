@@ -1,5 +1,6 @@
 import { subNavbarTabs } from "./constants";
 import telephoneIcon from "../../../assets/phone-call.png";
+import { Link } from "react-router-dom";
 
 // Define the Sub-Navbar component
 const SubNavbar: React.FC = () => {
@@ -20,19 +21,19 @@ const SubNavbar: React.FC = () => {
 
   return (
     // Sub-Navbar Container
-    <div className="justify-between flex flex-row p-4 font-serif items-center border-b-2 border-gray-100 w-[1400px]">
+    <div className="justify-around flex flex-row p-4 font-serif items-center border-b-2 border-gray-100 w-full">
       {/* Sub-Navbar Tabs Container */}
       <div className="flex flex-row items-center justify-start space-x-8">
         {subNavbarTabs.map((tab) => (
           // Link to the tab path
-          <a
+          <Link
             key={tab.label}
-            href={tab.path}
+            to={tab.path}
             className="text-sm hover:text-customBlue"
             onClick={(event) => handleSmoothScroll(event, tab.path)}
           >
             {tab.label}
-          </a>
+          </Link>
         ))}
       </div>
       {/* Languages, Email & Number Container */}
