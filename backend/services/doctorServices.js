@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const { v4: uuidv4 } = require("uuid");
 const factory = require("./handlersFactory");
+const sharp = require("sharp");
 const ApiError = require("../utils/apiError");
 const { uploadSingleImage } = require("../middlewares/uploadImageMiddleware");
 const User = require("../models/userModel");
@@ -10,14 +11,14 @@ const Doctor = require("../models/doctorModel");
 exports.uploadUserImage = uploadSingleImage("profileImg");
 // Image processing
 exports.resizeImage = asyncHandler(async (req, res, next) => {
-  const filename = `user-${uuidv4()}-${Date.now()}.jpeg`;
+  const filename = `doctor-${uuidv4()}-${Date.now()}.jpeg`;
 
   if (req.file) {
     await sharp(req.file.buffer)
       .resize(600, 600)
       .toFormat("jpeg")
       .jpeg({ quality: 95 })
-      .toFile(`uploads/users/${filename}`);
+      .toFile(`uploads/doctors/${filename}`);
 
     // Save image into our db
     req.body.profileImg = filename;

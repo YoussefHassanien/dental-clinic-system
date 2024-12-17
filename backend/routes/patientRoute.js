@@ -14,8 +14,10 @@ const {
   deletePatientValidator,
 } = require("../utils/validators/patientValidator");
 
-const router = express.Router();
+const documentRoute = require("./documnetRoute");
 
+const router = express.Router();
+router.use("/:patientId/documents", documentRoute);
 router.route("/").get(getPatients).post(createPatientValidator, createPatient);
 
 router

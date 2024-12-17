@@ -41,7 +41,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/services", serviceRoute);
 app.use("/api/v1/supplier", supplierRoute);
 app.use("/api/v1/wallet", walletRoute);
-app.use("/api/v1/patient", patientRoute);
+app.use("/api/v1/patients", patientRoute);
 app.use("/api/v1/feedback", feedbackRoute);
 app.use("/api/v1/material", materialRoute);
 app.use("/api/v1/doctors", doctorRoute);

@@ -34,13 +34,21 @@ exports.saveDocumentFile = asyncHandler(async (req, res, next) => {
 
   next();
 });
+
+exports.createFilterObject = (req, res, next) => {
+  let filterObj = {};
+  if (req.params.patientId) filterObj = { patientId: req.params.patientId };
+  req.filterObj = filterObj;
+  next();
+};
+
 //@desc Create document
-//@route POST /api/v1/documents
+//@route POST /api/v1/documentsx
 //@access patient/doctor
 exports.createDocument = factory.createOne(Document);
 
 //@desc get all documents
-//@route GET /api/v1/documents/
+//@route GET /api/v1/patient/:id/documents
 //@access patient/doctor
 exports.getAllDocument = factory.getAll(Document);
 
