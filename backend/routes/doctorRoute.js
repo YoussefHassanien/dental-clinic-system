@@ -9,6 +9,7 @@ const {
   createDoctor,
   uploadUserImage,
   resizeImage,
+  getLoggedDoctorData,
 } = require("../services/doctorServices.js");
 
 const {
@@ -20,9 +21,12 @@ const {
   deleteDoctorValidator,
 } = require("../utils/validators/doctorValidator.js");
 
+const { auth } = require("../services/authServices");
+
 const router = express.Router();
 
 router.route("/").get(getDoctors).post(createDoctorValidator, createDoctor);
+router.route("/me").get(auth, getLoggedDoctorData);
 router
   .route("/addDoctor")
   .post(uploadUserImage, resizeImage, addDoctorValidator, addDoctor);
