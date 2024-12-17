@@ -7,17 +7,21 @@ const {
   deletPatient,
 } = require("../services/patientService");
 
-// const {
-//   getSupplierValidator,
-//   createSupplierValidator,
-//   updateSupplierValidator,
-//   deleteSupplierValidator,
-// } = require("../utils/validators/supplierValidator.js");
+const {
+  getPatientValidator,
+  createPatientValidator,
+  updatePatientValidator,
+  deletePatientValidator,
+} = require("../utils/validators/patientValidator");
 
 const router = express.Router();
 
-router.route("/").get(getPatients).post(createPatient);
+router.route("/").get(getPatients).post(createPatientValidator, createPatient);
 
-router.route("/:id").get(getPatient).put(updatePatient).delete(deletPatient);
+router
+  .route("/:id")
+  .get(getPatientValidator, getPatient)
+  .put(updatePatientValidator, updatePatient)
+  .delete(deletePatientValidator, deletPatient);
 
 module.exports = router;

@@ -5,10 +5,13 @@ const multerOptions = () => {
   const multerStorage = multer.memoryStorage();
 
   const multerFilter = function (req, file, cb) {
-    if (file.mimetype.startsWith("image")) {
+    if (
+      file.mimetype.startsWith("image") ||
+      file.mimetype === "application/pdf"
+    ) {
       cb(null, true);
     } else {
-      cb(new ApiError("Only Images allowed", 400), false);
+      cb(new ApiError("Only images and PDF files are allowed", 400), false);
     }
   };
 
@@ -21,3 +24,5 @@ exports.uploadSingleImage = (fieldName) => multerOptions().single(fieldName);
 
 exports.uploadMixOfImages = (arrayOfFields) =>
   multerOptions().fields(arrayOfFields);
+
+exports.uploadSingleFile = (fieldName) => multerOptions().single(fieldName);
