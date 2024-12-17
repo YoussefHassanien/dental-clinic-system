@@ -49,6 +49,9 @@ exports.addDoctor = asyncHandler(async (req, res, next) => {
     rating,
     description,
     numberOfRatings,
+    languages,
+    specialities,
+    experience,
   } = req.body;
 
   const user = await User.create({
@@ -76,6 +79,9 @@ exports.addDoctor = asyncHandler(async (req, res, next) => {
     rating: rating || 1,
     description: description || "",
     numberOfRatings: numberOfRatings || 0,
+    languages: languages || ["Arabic"],
+    specialities: specialities,
+    experience: experience,
   });
   res.status(201).json({
     status: "success",

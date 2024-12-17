@@ -95,6 +95,20 @@ exports.addDoctorValidator = [
     .optional()
     .isFloat({ min: 1, max: 5 })
     .withMessage("Rating must be a number between 1 and 5"),
+  check("languages")
+    .optional()
+    .isArray()
+    .withMessage("Languages must be an array"),
+  check("specialities")
+    .notEmpty()
+    .withMessage("Specialities are required")
+    .isArray()
+    .withMessage("Specialities must be an array"),
+  check("experience")
+    .notEmpty()
+    .withMessage()
+    .isNumeric()
+    .withMessage("Experience must be a number"),
   validatorMiddleware,
 ];
 exports.createDoctorValidator = [
@@ -125,6 +139,21 @@ exports.createDoctorValidator = [
     .optional()
     .isFloat({ min: 1, max: 5 })
     .withMessage("Rating must be a number between 1 and 5"),
+  check("languages")
+    .optional()
+    .isArray()
+    .withMessage("Languages must be an array"),
+  check("specialities")
+    .notEmpty()
+    .withMessage("Specialities are required")
+    .isArray()
+    .withMessage("Specialities must be an array"),
+  check("experience")
+    .notEmpty()
+    .withMessage()
+    .isNumeric()
+    .withMessage("Experience must be a number"),
+
   validatorMiddleware,
 ];
 exports.addRatingValidator = [
@@ -149,10 +178,26 @@ exports.updateDoctorValidator = [
     .optional()
     .isLength({ max: 500 })
     .withMessage("Description cannot exceed 500 characters"),
-  check("rating")
+  check("description")
     .optional()
-    .isFloat({ min: 1, max: 5 })
-    .withMessage("Rating must be a number between 1 and 5"),
+    .isLength({ max: 500 })
+    .withMessage("Description cannot exceed 500 characters"),
+  check("languages")
+    .optional()
+    .isArray()
+    .withMessage("Languages must be an array"),
+  check("specialities")
+    .optional()
+    .notEmpty()
+    .withMessage("Specialities are required")
+    .isArray()
+    .withMessage("Specialities must be an array"),
+  check("experience")
+    .optional()
+    .notEmpty()
+    .withMessage()
+    .isNumeric()
+    .withMessage("Experience must be a number"),
   validatorMiddleware,
 ];
 

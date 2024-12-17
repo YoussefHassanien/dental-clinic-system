@@ -32,6 +32,19 @@ const doctorSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    specialities: {
+      type: [String],
+      default: [],
+      required: [true, "Specialities are required"],
+    },
+    experience: {
+      type: Number,
+      default: 0,
+    },
+    languages: {
+      type: [String],
+      default: [],
+    },
   },
   { timestamps: true }
 );

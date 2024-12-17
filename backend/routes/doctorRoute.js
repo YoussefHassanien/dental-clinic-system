@@ -7,6 +7,8 @@ const {
   updateDoctor,
   deleteDoctor,
   createDoctor,
+  uploadUserImage,
+  resizeImage,
 } = require("../services/doctorServices.js");
 
 const {
@@ -21,7 +23,9 @@ const {
 const router = express.Router();
 
 router.route("/").get(getDoctors).post(createDoctorValidator, createDoctor);
-router.route("/addDoctor").post(addDoctorValidator, addDoctor);
+router
+  .route("/addDoctor")
+  .post(uploadUserImage, resizeImage, addDoctorValidator, addDoctor);
 
 router
   .route("/:id")
