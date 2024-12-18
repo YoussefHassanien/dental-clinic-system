@@ -2,6 +2,7 @@ const asyncHandler = require("express-async-handler");
 const factory = require("./handlersFactory");
 const ApiError = require("../utils/apiError");
 const Patient = require("../models/patientModel");
+const Wallet = require("../models/walletModel");
 
 // @desc    Get list of patients
 // @route   GET /api/v1/patients
@@ -27,3 +28,31 @@ exports.updatePatient = factory.updateOne(Patient);
 // @route   DELETE /api/v1/patient/:id
 // @access  Private/Admin
 exports.deletPatient = factory.deleteOne(Patient);
+
+exports.getLoggedPatientData = asyncHandler(async (req, res, next) => {
+  const user = req.user;
+  const patient = await Patient.findOne({ userId: req.user._id });
+  if (!user) {
+    return next(new ApiError("user not found", 404));
+  }
+  if (!patient) {
+    return next(new ApiError("Patient not found", 404));
+  }
+  const patientPlain = patient.toObject();
+  const userPlain = user.toObject();
+  let wallet;
+  if (patient.wallet !== "not provided") {
+    wallet = await Wallet.findById(patient.wallet);
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      doctorProfile: {
+        ...userPlain,
+        ...patientPlain,
+        wallet: wallet || "not provided",
+      },
+    },
+  });
+});
