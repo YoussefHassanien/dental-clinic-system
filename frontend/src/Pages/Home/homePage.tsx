@@ -26,7 +26,7 @@ const HomePage: React.FC = () => {
 
   return (
     // HomePage Container
-    <div className="flex flex-col justify-center items-center relative max-w-full scroll-smooth">
+    <div className="flex flex-col justify-center items-center relative max-w-full">
       <SubNavbar />
       {/* Navbar Container*/}
       <div className="translate-x-24" id="home">
@@ -51,7 +51,7 @@ const HomePage: React.FC = () => {
       </div>
       {/* About Us Section */}
       {/* Section Header Container*/}
-      <div className="-translate-y-14 scroll-smooth" id="aboutUs">
+      <div className="-translate-y-14  " id="aboutUs">
         {" "}
         {/* Section Header */}
         <SectionHeader
@@ -80,7 +80,7 @@ const HomePage: React.FC = () => {
         ))}
       </SectionBackground>
       {/* Patients' Feedback Section */}
-      <div id="patientsFeedback" className="scroll-smooth">
+      <div id="patientsFeedback" className=" ">
         {" "}
         <SectionHeader
           headerText="We Always Strive To Provide The Best Dental Care For Our Patients"
@@ -133,7 +133,7 @@ const HomePage: React.FC = () => {
       </SectionBackground>
 
       {/* Team Container */}
-      <div id="team" className="scroll-smooth">
+      <div id="team" className=" ">
         <SectionHeader
           headerText="Meet Our Experienced Co-Founders of DentiPlus Clinics"
           subText="Our co-founders are highly skilled Biomedical and Healthcare Data Engineers dedicated to providing exceptional software solutions. They are committed to ensuring your comfort and satisfaction during every visit to DentiPlus Clinics."

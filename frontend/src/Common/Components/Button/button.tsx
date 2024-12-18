@@ -4,10 +4,10 @@ import styles from "./button.module.css";
 
 interface ButtonProps {
   text: string;
-  bgColor: string;
-  hoverBgColor: string;
-  textColor: string;
-  hoverTextColor: string;
+  bgColor?: string;
+  hoverBgColor?: string;
+  textColor?: string;
+  hoverTextColor?: string;
   onClick?: () => void | Promise<void>;
 }
 
