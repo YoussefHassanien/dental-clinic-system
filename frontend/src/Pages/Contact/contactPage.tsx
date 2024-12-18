@@ -1,13 +1,14 @@
 import React from "react";
 import Navbar from "../../Common/Components/Navbar/navbar";
+import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 
 const ContactPage: React.FC = () => {
   return (
-    <div className="bg-custom-blue min-h-screen flex flex-col">
-      <Navbar />
-      <div className="flex-grow flex flex-col justify-center items-center">
-        <h1 className="text-white text-4xl">Contact Page</h1>
-        <p className="text-white text-lg">Welcome to the contact page</p>
+    <div className="flex flex-col justify-start items-center relative max-w-full h-screen font-serif">
+      <SubNavbar />
+      {/* Navbar Container*/}
+      <div className="translate-x-24 mb-5">
+        <Navbar />
       </div>
     </div>
   );
