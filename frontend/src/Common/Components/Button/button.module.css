@@ -3,7 +3,6 @@
   color: var(--text-color, #fff); /* Default text color */
   padding: 13px 25px;
   font-size: 14px;
-  text-transform: capitalize;
   font-weight: 500;
   background: var(--bg-color, #1a76d1); /* Default background color */
   position: relative;
