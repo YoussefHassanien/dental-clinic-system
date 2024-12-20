@@ -1,32 +1,45 @@
-import React, { useState, ReactNode } from "react";
-import { AuthContext, AuthContextType } from "./AuthContext";
+import { useReducer, useEffect, ReactNode } from "react";
+import { AuthContext } from "./AuthContext";
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
-  const [token, setToken] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
-  const [role, setRole] = useState<string | null>(null);
+interface AuthState {
+  user: { role: string; token: string } | null;
+}
 
-  const login = (token: string, userId: string, role: string) => {
-    setToken(token);
-    setUserId(userId);
-    setRole(role);
-    localStorage.setItem("token", token);
-    localStorage.setItem("userId", userId);
-    localStorage.setItem("role", role);
-  };
+export interface AuthAction {
+  type: "LOGIN" | "LOGOUT";
 
-  const logout = () => {
-    setToken(null);
-    setUserId(null);
-    setRole(null);
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.removeItem("role");
-  };
+  payload?: { role: string; token: string } | null;
+}
 
-  const value: AuthContextType = { token, userId, role, login, logout };
+const authReducer = (state: AuthState, action: AuthAction): AuthState => {
+  switch (action.type) {
+    case "LOGIN":
+      return { user: action.payload ?? null };
+    case "LOGOUT":
+      return { user: null };
+    default:
+      return state;
+  }
+};
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
+  const [state, dispatch] = useReducer(authReducer, {
+    user: null,
+  });
+
+  useEffect(() => {
+    const user = localStorage.getItem("user")
+      ? JSON.parse(localStorage.getItem("user") as string)
+      : null;
+
+    if (user) {
+      dispatch({ type: "LOGIN", payload: user });
+    }
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ ...state, dispatch }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };

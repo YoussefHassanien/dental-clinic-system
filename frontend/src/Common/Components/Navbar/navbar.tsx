@@ -3,12 +3,21 @@ import { CSSProperties } from "react";
 import logo from "../../../assets/tooth.png";
 import { navbarTabs } from "./constants";
 import Button from "../Button/button";
-import { useAuth } from "../../Contexts/Auth/AuthHook"; // Import the Auth context
+import { useAuthContext } from "../../Contexts/Auth/AuthHook";
 
 const Navbar: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { token, role, logout } = useAuth(); // Use the Auth context
+  const { user, dispatch } = useAuthContext();
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+
+    // dispatch logout action
+    dispatch({ type: "LOGOUT" });
+    navigate("/login", { replace: true });
+  };
 
   return (
     <div className="flex flex-row justify-start items-center space-x-32 font-serif p-4 w-full">
@@ -42,7 +51,7 @@ const Navbar: React.FC = () => {
       </div>
 
       <div className="flex flex-row justify-evenly items-center space-x-4">
-        {token ? (
+        {user ? (
           <>
             <Button
               text="Profile"
@@ -50,7 +59,7 @@ const Navbar: React.FC = () => {
               hoverBgColor=""
               textColor=""
               hoverTextColor=""
-              onClick={() => navigate(`profile-${role}`)}
+              onClick={() => navigate(`/${user.role}-profile`)}
             />
             <Button
               text="Log out"

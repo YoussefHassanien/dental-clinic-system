@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ErrorMessage from "../../Common/Components/Error-Message/errorMessage";
 import { useState } from "react";
 import { handleLogin } from "./services";
+import { useAuthContext } from "../../Common/Contexts/Auth/AuthHook";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -12,6 +13,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isErrorVisible, setIsErrorVisible] = useState(false);
+  const { dispatch } = useAuthContext();
 
   return (
     <div className="min-h-screen flex flex-col justify-between items-center">
@@ -31,7 +33,14 @@ const LoginPage: React.FC = () => {
           <form
             className="w-[400px]"
             onSubmit={(e) =>
-              handleLogin(e, email, password, setIsErrorVisible, navigate)
+              handleLogin(
+                e,
+                email,
+                password,
+                setIsErrorVisible,
+                navigate,
+                dispatch
+              )
             }
             id="loginForm"
             encType="application/x-www-form-urlencoded"

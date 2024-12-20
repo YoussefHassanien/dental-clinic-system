@@ -5,6 +5,7 @@ import DoctorsPage from "../Pages/Doctors/doctorsPage";
 import DoctorProfilePage from "../Pages/DoctorProfile/doctorsProfile";
 import LoginPage from "../Pages/Login/loginPage";
 import RegisterPage from "../Pages/Register/registerPage";
+import ProtectedRoute from "./routeProtection";
 
 export const routes = [
   {
@@ -29,7 +30,11 @@ export const routes = [
   },
   {
     path: "/doctor-profile",
-    element: <DoctorProfilePage />,
+    element: (
+      <ProtectedRoute requiredRole="doctor">
+        <DoctorProfilePage />
+      </ProtectedRoute>
+    ),
     name: "Doctor Profile",
   },
   {

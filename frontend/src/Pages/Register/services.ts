@@ -2,6 +2,8 @@ import {
   combineCountryCodeWithPhoneNumber,
   combineDate,
 } from "../../Utils/helpers";
+import { Dispatch } from "react";
+import { AuthAction } from "../../Common/Contexts/Auth/AuthProvider";
 
 const registerAPI = import.meta.env.VITE_REGISTER_API;
 
@@ -21,7 +23,8 @@ export const handleRegister = async (
   gender: string,
   setIsErrorVisible: React.Dispatch<React.SetStateAction<boolean>>,
   setErrorText: React.Dispatch<React.SetStateAction<string>>,
-  navigate: (path: string) => void
+  navigate: (path: string) => void,
+  dispatch: Dispatch<AuthAction>
 ) => {
   event.preventDefault();
 
@@ -63,8 +66,19 @@ export const handleRegister = async (
     if (!response.ok) {
       throw new Error("Could not register you, please try again later");
     }
+    const data = await response.json();
 
-    navigate("/");
+    const formattedData = {
+      role: data.data.role,
+      token: data.token,
+    };
+
+    localStorage.setItem("user", JSON.stringify(formattedData.role));
+    localStorage.setItem("token", JSON.stringify(formattedData.token));
+
+    dispatch({ type: "LOGIN", payload: formattedData });
+
+    navigate(`/${formattedData.role}-profile`);
   } catch (error) {
     if (error instanceof Error) {
       setErrorText(error.message);

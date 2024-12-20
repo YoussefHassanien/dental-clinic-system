@@ -5,6 +5,7 @@ import ErrorMessage from "../../Common/Components/Error-Message/errorMessage";
 import { useState } from "react";
 import { days, months, years, countryCodes } from "./constants";
 import { handleRegister } from "./services";
+import { useAuthContext } from "../../Common/Contexts/Auth/AuthHook";
 
 const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
@@ -25,6 +26,7 @@ const RegisterPage: React.FC = () => {
   const [ssn, setSsn] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const { dispatch } = useAuthContext();
 
   return (
     <div className="h-fit flex flex-col justify-between items-center">
@@ -65,7 +67,8 @@ const RegisterPage: React.FC = () => {
               gender,
               setIsErrorVisible,
               setErrorText,
-              navigate
+              navigate,
+              dispatch
             )
           }
           id="loginForm"

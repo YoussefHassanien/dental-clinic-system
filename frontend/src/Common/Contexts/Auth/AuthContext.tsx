@@ -1,13 +1,14 @@
 import { createContext } from "react";
+import { AuthAction } from "./AuthProvider";
 
-export interface AuthContextType {
-  token: string | null;
-  userId: string | null;
-  role: string | null;
-  login: (token: string, userId: string, role: string) => void;
-  logout: () => void;
+interface AuthContextType {
+  user: { role: string; token: string } | null;
+
+  dispatch: React.Dispatch<AuthAction>;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(
-  undefined
-);
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
+
+  dispatch: () => null,
+});

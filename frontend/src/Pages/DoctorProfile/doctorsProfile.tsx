@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
 import Navbar from "../../Common/Components/Navbar/navbar";
 import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 import styles from "./doctorProfilePage.module.css";
@@ -21,15 +21,15 @@ const DoctorProfilePage: React.FC = () => {
     image: doctorImage,
   };
 
-  const[doctorData,setdoctorData]=useState({})
-  useEffect(()=>{
-   let data= localStorage.getItem("DoctorData")
-   if (data){
-   console.log(JSON.parse(data).fName)
+  // const [doctorData, setdoctorData] = useState({});
+  // useEffect(() => {
+  //   let data = localStorage.getItem("DoctorData");
+  //   if (data) {
+  //     console.log(JSON.parse(data).fName);
 
-   setdoctorData(JSON.parse(data))
-   }
-  }, [] )
+  //     setdoctorData(JSON.parse(data));
+  //   }
+  // }, []);
 
   return (
     <div className={styles.pageContainer}>
@@ -41,21 +41,21 @@ const DoctorProfilePage: React.FC = () => {
           <div className={styles.doctorCard}>
             <img
               src={doctor.image}
-              alt={doctor.name}
+              alt={"Doctor"}
               className={styles.doctorImage}
             />
-            <h2 className={styles.doctorName}>{doctorData.fName} {doctorData.lName}</h2>
+            <h2 className={styles.doctorName}>
+              {"John"} {"Doe"}
+            </h2>
             <p className={styles.specialization}>{doctor.specialization}</p>
             <p className={styles.hospital}>{doctor.hospital}</p>
             <div className={styles.details}>
-              
               <p>
                 <strong>Specialties:</strong> {doctor.specialties.join(", ")}
               </p>
               <p>
-                <strong>ssn:</strong> {doctorData.ssn}
-              </p> 
-              
+                <strong>ssn:</strong> {"123456789"}
+              </p>
             </div>
           </div>
 
@@ -64,15 +64,17 @@ const DoctorProfilePage: React.FC = () => {
             <h3>Contact Info</h3>
             <div className={styles.contactItem}>
               <FaPhone />
-              <p>{doctorData.phone}</p>
+              <p>{"1234567891"}</p>
             </div>
             <div className={styles.contactItem}>
               <FaEnvelope />
-              <p>{doctorData.email}</p>
+              <p>{"johndoe@example.com"}</p>
             </div>
             <div className={styles.contactItem}>
               <FaMapMarkerAlt />
-              <p>{doctorData.district}, {doctorData.gov}, {doctorData.city}</p>
+              <p>
+                {""}, {""}, {""}
+              </p>
             </div>
             <div className={styles.contactItem}>
               <FaLanguage />

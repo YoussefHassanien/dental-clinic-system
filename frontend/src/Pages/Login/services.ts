@@ -1,3 +1,6 @@
+import { Dispatch } from "react";
+import { AuthAction } from "../../Common/Contexts/Auth/AuthProvider";
+
 const loginAPI = import.meta.env.VITE_LOGIN_API;
 
 export const handleLogin = async (
@@ -5,7 +8,8 @@ export const handleLogin = async (
   email: string,
   password: string,
   setIsErrorVisible: React.Dispatch<React.SetStateAction<boolean>>,
-  navigate: (path: string) => void
+  navigate: (path: string) => void,
+  dispatch: Dispatch<AuthAction>
 ) => {
   event.preventDefault();
   // Handle login logic here
@@ -20,18 +24,20 @@ export const handleLogin = async (
     if (!response.ok) {
       throw new Error("Login failed");
     }
-    // Handle successful login
-    const data=await response.json()
-    console.log(data)
-    localStorage.setItem("token", data.token)
-    localStorage.setItem("DoctorData", JSON.stringify(data.data))
-    if (data.role === "patient"){
-      navigate("/patient")
-    }
-    else{
-      navigate("/doctor-profile")
-    }
-     
+
+    const data = await response.json();
+
+    const formattedData = {
+      role: data.data.role,
+      token: data.token,
+    };
+
+    localStorage.setItem("user", JSON.stringify(formattedData.role));
+    localStorage.setItem("token", JSON.stringify(formattedData.token));
+
+    dispatch({ type: "LOGIN", payload: formattedData });
+
+    navigate(`/${formattedData.role}-profile`);
   } catch {
     setIsErrorVisible(true);
   }
