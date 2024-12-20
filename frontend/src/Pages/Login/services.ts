@@ -28,7 +28,7 @@ export const handleLogin = async (
     const data = await response.json();
 
     const formattedData = {
-      role: data.data.role,
+      role: data.role,
       token: data.token,
     };
 
