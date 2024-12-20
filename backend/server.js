@@ -19,6 +19,7 @@ const materialRoute = require("./routes/materialRoute");
 const doctorRoute = require("./routes/doctorRoute");
 const appointmentRoute = require("./routes/appointmentRoute");
 const documentRoute = require("./routes/documnetRoute");
+const requestRoute = require("./routes/requestRoute");
 
 // database configuration
 dbconnection();
@@ -47,6 +48,7 @@ app.use("/api/v1/material", materialRoute);
 app.use("/api/v1/doctors", doctorRoute);
 app.use("/api/v1/appointments", appointmentRoute);
 app.use("/api/v1/documents", documentRoute);
+app.use("/api/v1/requests", requestRoute);
 
 // handle unvalid routes
 app.all("*", (req, res, next) => {

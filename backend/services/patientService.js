@@ -29,6 +29,9 @@ exports.updatePatient = factory.updateOne(Patient);
 // @access  Private/Admin
 exports.deletPatient = factory.deleteOne(Patient);
 
+// @desc    Delete logged patient data
+// @route   get /api/v1/patients/me
+// @access  Private/Admin
 exports.getLoggedPatientData = asyncHandler(async (req, res, next) => {
   const user = req.user;
   const patient = await Patient.findOne({ userId: req.user._id });

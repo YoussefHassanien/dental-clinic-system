@@ -71,11 +71,7 @@ exports.signup = asyncHandler(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     token,
-    data: {
-      user,
-      patient,
-      wallet: wallet || "no wallet pprovided",
-    },
+    role: user.role,
   });
 });
 
@@ -92,7 +88,7 @@ exports.login = asyncHandler(async (req, res, next) => {
   res.status(201).json({
     status: "success",
     token,
-    data: user,
+    role: user.role,
   });
 });
 
@@ -108,7 +104,6 @@ exports.auth = asyncHandler(async (req, res, next) => {
     return next(new ApiError("Please login to get access", 401));
   }
   const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-  console.log(decoded);
   const user = await User.findById(decoded.id);
   if (!user) {
     return next(new ApiError("User not found", 401));
@@ -123,3 +118,14 @@ exports.auth = asyncHandler(async (req, res, next) => {
   req.user = user;
   next();
 });
+
+// @desc    Authorization (User Permissions)
+exports.allowedTo = (...roles) =>
+  asyncHandler(async (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new ApiError("You are not allowed to access this route", 403)
+      );
+    }
+    next();
+  });
