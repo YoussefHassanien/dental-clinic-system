@@ -4,7 +4,6 @@ const patientSchema = new mongoose.Schema(
   {
     bloodType: {
       type: String,
-      required: [true, "Blood type is required"],
       trim: true,
       enum: {
         values: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
@@ -20,7 +19,6 @@ const patientSchema = new mongoose.Schema(
     wallet: {
       type: mongoose.Schema.ObjectId,
       ref: "Wallet",
-      required: [true, "Wallet reference is required"],
       index: true,
     },
     totalVisits: {

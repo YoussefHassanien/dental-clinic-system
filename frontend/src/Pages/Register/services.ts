@@ -69,10 +69,9 @@ export const handleRegister = async (
     const data = await response.json();
 
     const formattedData = {
-      role: data.data.role,
+      role: data.role,
       token: data.token,
     };
-
     localStorage.setItem("user", JSON.stringify(formattedData.role));
     localStorage.setItem("token", JSON.stringify(formattedData.token));
 
