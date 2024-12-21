@@ -68,16 +68,12 @@ export const handleRegister = async (
     }
     const data = await response.json();
 
-    const formattedData = {
-      role: data.role,
-      token: data.token,
-    };
-    localStorage.setItem("user", JSON.stringify(formattedData.role));
-    localStorage.setItem("token", JSON.stringify(formattedData.token));
+    localStorage.setItem("user", JSON.stringify(data.role));
+    localStorage.setItem("token", JSON.stringify(data.token));
 
-    dispatch({ type: "LOGIN", payload: formattedData });
+    dispatch({ type: "LOGIN", payload: data });
 
-    navigate(`/${formattedData.role}-profile`);
+    navigate(`/${data.role}-profile`);
   } catch (error) {
     if (error instanceof Error) {
       setErrorText(error.message);
