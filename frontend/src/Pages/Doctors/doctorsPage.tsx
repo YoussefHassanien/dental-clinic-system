@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../../Common/Components/Navbar/navbar";
 import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 import Footer from "../../Common/Components/Footer/footer";
@@ -11,12 +11,39 @@ const DoctorsPage: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
+  const [currentDoctors, setCurrentDoctors] = useState(doctors);
   const itemsPerPage = 6;
 
-  const paginatedDoctors = doctors.slice(
+  const paginatedDoctors = currentDoctors.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
+
+  useEffect(() => {
+    if (selectedFilter === "female") {
+      setCurrentDoctors(doctors.filter((doctor) => doctor.gender === "female"));
+    } else if (selectedFilter === "male") {
+      setCurrentDoctors(doctors.filter((doctor) => doctor.gender === "male"));
+    } else if (selectedFilter === "rating") {
+      setCurrentDoctors(doctors.sort((a, b) => b.rating - a.rating));
+    } else if (selectedFilter === "nearestAppointment") {
+      setCurrentDoctors(
+        doctors.sort(
+          (a, b) =>
+            new Date(a.appointment).getTime() -
+            new Date(b.appointment).getTime()
+        )
+      );
+    } else if (selectedFilter === "sessions") {
+      setCurrentDoctors(doctors.sort((a, b) => b.sessions - a.sessions));
+    } else {
+      setCurrentDoctors(
+        doctors.filter((doctor) =>
+          doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      );
+    }
+  }, [selectedFilter, searchTerm]);
 
   const handlePageChange = (selectedPage: { selected: number }) => {
     setCurrentPage(selectedPage.selected);
@@ -170,6 +197,7 @@ const DoctorsPage: React.FC = () => {
                   onClick={() => {
                     setSearchTerm("");
                     setSelectedFilter("");
+                    setCurrentDoctors(doctors);
                   }}
                 />
               </div>
@@ -177,7 +205,7 @@ const DoctorsPage: React.FC = () => {
           </div>
         </ReusableCard>
         {/* Doctors Container */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6 shadow-lg mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6 shadow-lg mb-5 grid-rows-2">
           {paginatedDoctors.map((doctor, index) => (
             <div
               key={index}
@@ -250,7 +278,10 @@ const DoctorsPage: React.FC = () => {
 
                   {/* Appointment */}
                   <div className="text-sm text-gray-700 mb-4 font-sans">
-                    <p>🕒 Nearest Appointment: {doctor.appointment}</p>
+                    <p>
+                      🕒 Nearest Appointment:
+                      {` ${doctor.appointment.toLocaleDateString()} ${doctor.appointment.toLocaleTimeString()}`}
+                    </p>
                   </div>
                   <Button text="Book Now" />
                 </div>
@@ -292,11 +323,11 @@ const DoctorsPage: React.FC = () => {
             />
           </svg>
         }
-        pageCount={Math.ceil(doctors.length / itemsPerPage)}
+        pageCount={Math.ceil(currentDoctors.length / itemsPerPage)}
         onPageChange={handlePageChange}
         containerClassName="flex justify-center flex-row space-x-2 my-4 ml-40"
         pageClassName="cursor-pointer px-4 py-2 bg-gray-100 rounded-full"
-        activeClassName="bg-black text-white"
+        activeClassName="bg-gray-900 text-white"
         previousClassName="cursor-pointer p-2 bg-gray-100 rounded-full hover:bg-black hover:text-white"
         nextClassName="cursor-pointer p-2 bg-gray-100 rounded-full hover:bg-black hover:text-white"
       />

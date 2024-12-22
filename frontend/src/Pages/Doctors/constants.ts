@@ -7,8 +7,9 @@ export const doctors = [
     rating: 4.8,
     sessions: 120,
     interests: ["Dental Implants", "Teeth Whitening", "Smile Makeover"],
-    appointment: "Saturday, Dec. 21 at 09:00 PM",
+    appointment: new Date(new Date().setDate(new Date().getDate() + 7)), // 1 week in the future
     topRated: true,
+    gender: "male",
   },
   {
     name: "Dr. Jane Smith",
@@ -18,8 +19,9 @@ export const doctors = [
     rating: 4.7,
     sessions: 100,
     interests: ["Cosmetic Dentistry", "Teeth Whitening", "Dental Bonding"],
-    appointment: "Sunday, Dec. 22 at 10:30 AM",
+    appointment: new Date(),
     topRated: true,
+    gender: "female",
   },
   {
     name: "Dr. Emily Johnson",
@@ -29,8 +31,9 @@ export const doctors = [
     rating: 4.9,
     sessions: 150,
     interests: ["Braces", "Invisalign", "Clear Aligners", "Jaw Alignment"],
-    appointment: "Monday, Dec. 23 at 02:15 PM",
+    appointment: new Date(),
     topRated: true,
+    gender: "female",
   },
   {
     name: "Dr. Michael Brown",
@@ -40,8 +43,9 @@ export const doctors = [
     rating: 4.6,
     sessions: 200,
     interests: ["Oral Surgery", "Wisdom Teeth Removal", "Dental Implants"],
-    appointment: "Tuesday, Dec. 24 at 11:45 AM",
+    appointment: new Date(new Date().setMonth(new Date().getMonth() + 1)), // 1 month in the future
     topRated: false,
+    gender: "male",
   },
   {
     name: "Dr. Sarah Davis",
@@ -55,8 +59,9 @@ export const doctors = [
       "Fluoride Treatments",
       "Cavity Prevention",
     ],
-    appointment: "Wednesday, Dec. 25 at 03:30 PM",
+    appointment: new Date(),
     topRated: true,
+    gender: "female",
   },
   {
     name: "Dr. William Wilson",
@@ -66,8 +71,9 @@ export const doctors = [
     rating: 4.7,
     sessions: 110,
     interests: ["Gum Diseases", "Dental Cleaning", "Plaque Management"],
-    appointment: "Thursday, Dec. 26 at 04:45 PM",
+    appointment: new Date(new Date().setDate(new Date().getDate() + 14)), // 2 weeks in the future
     topRated: true,
+    gender: "male",
   },
   {
     name: "Dr. Linda Martinez",
@@ -77,8 +83,9 @@ export const doctors = [
     rating: 4.8,
     sessions: 130,
     interests: ["Root Canal", "Dental Pain Relief", "Oral Health"],
-    appointment: "Friday, Dec. 27 at 01:30 PM",
+    appointment: new Date(),
     topRated: true,
+    gender: "female",
   },
   {
     name: "Dr. Robert Garcia",
@@ -88,19 +95,21 @@ export const doctors = [
     rating: 4.9,
     sessions: 140,
     interests: ["Dental Crowns", "Dentures", "Smile Reconstruction"],
-    appointment: "Saturday, Dec. 28 at 10:00 AM",
+    appointment: new Date(new Date().setDate(new Date().getDate() + 21)), // 3 weeks in the future
     topRated: true,
+    gender: "male",
   },
   {
-    name: "Dr. Angela White",
+    name: "Dr. Angela Jackson",
     specialty: "Orthodontist",
     yearsOfExperience: 10,
     description: "Specialist in braces and aligners.",
     rating: 4.5,
     sessions: 80,
     interests: ["Braces", "Clear Aligners", "Space Maintainers"],
-    appointment: "Sunday, Dec. 29 at 11:30 AM",
+    appointment: new Date(),
     topRated: false,
+    gender: "female",
   },
   {
     name: "Dr. Paul Adams",
@@ -110,8 +119,9 @@ export const doctors = [
     rating: 4.6,
     sessions: 190,
     interests: ["Dental Bridges", "Dentures", "Tooth Restoration"],
-    appointment: "Monday, Dec. 30 at 02:45 PM",
+    appointment: new Date(),
     topRated: false,
+    gender: "male",
   },
   {
     name: "Dr. Anna Thompson",
@@ -121,8 +131,9 @@ export const doctors = [
     rating: 4.7,
     sessions: 115,
     interests: ["Root Canal", "Oral Pain Relief", "Tooth Preservation"],
-    appointment: "Tuesday, Jan. 2 at 04:15 PM",
+    appointment: new Date(),
     topRated: true,
+    gender: "female",
   },
   {
     name: "Dr. Steven Lee",
@@ -132,8 +143,9 @@ export const doctors = [
     rating: 4.4,
     sessions: 170,
     interests: ["Gum Diseases", "Dental Implants", "Periodontal Surgery"],
-    appointment: "Wednesday, Jan. 3 at 10:45 AM",
+    appointment: new Date(new Date().setMonth(new Date().getMonth() + 2)), // 2 months in the future
     topRated: false,
+    gender: "male",
   },
   {
     name: "Dr. Julia Robinson",
@@ -143,8 +155,9 @@ export const doctors = [
     rating: 4.8,
     sessions: 85,
     interests: ["Fluoride Treatments", "Cavity Prevention", "Sealants"],
-    appointment: "Thursday, Jan. 4 at 01:45 PM",
+    appointment: new Date(),
     topRated: true,
+    gender: "female",
   },
   {
     name: "Dr. Kevin Scott",
@@ -154,8 +167,9 @@ export const doctors = [
     rating: 4.5,
     sessions: 95,
     interests: ["Dental Cleaning", "Cavity Fillings", "Oral Exams"],
-    appointment: "Friday, Jan. 5 at 04:30 PM",
+    appointment: new Date(),
     topRated: false,
+    gender: "male",
   },
   {
     name: "Dr. Olivia Harris",
@@ -165,8 +179,9 @@ export const doctors = [
     rating: 4.9,
     sessions: 140,
     interests: ["Teeth Whitening", "Dental Veneers", "Smile Design"],
-    appointment: "Saturday, Jan. 6 at 09:15 AM",
+    appointment: new Date(),
     topRated: true,
+    gender: "female",
   },
 ];
 
