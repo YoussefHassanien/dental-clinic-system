@@ -14,19 +14,16 @@ const ServicesPage: React.FC = () => {
     <div className="flex flex-col justify-start items-center relative max-w-full h-screen font-serif">
       <SubNavbar />
       {/* Navbar Container*/}
-      <div className="translate-x-24 mb-16">
+      <div className="translate-x-24 mb-5">
         <Navbar />
       </div>
-
+      <hr className="bg-gray-100 -translate-y-[14px] w-full mb-10" />
       <div className="flex flex-row justify-around items-start space-x-8">
         {/* Dental Services Container */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6 mb-5 grid-rows-2 shadow-lg">
           {dentalServices &&
             dentalServices.map((service, index) => (
-              <div
-                key={index}
-                className="max-w-[450px] min-w-[400px] max-h-[300px] min-h-[250px] m-10"
-              >
+              <div key={index} className="w-[450px] h-[300px] m-10">
                 <ReusableCard backgroundColor="white">
                   <div className="p-4 w-full flex flex-col justify-center items-center space-y-4">
                     {/* Service Details */}

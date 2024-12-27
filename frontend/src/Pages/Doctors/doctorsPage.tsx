@@ -57,7 +57,7 @@ const DoctorsPage: React.FC = () => {
       <div className="translate-x-24 mb-5">
         <Navbar />
       </div>
-
+      <hr className="bg-gray-100 -translate-y-[14px] w-full mb-10" />
       <div className="flex flex-row justify-around items-start space-x-8">
         <ReusableCard backgroundColor="white">
           <div className="flex flex-col justify-start items-center shadow-lg p-4 w-96">

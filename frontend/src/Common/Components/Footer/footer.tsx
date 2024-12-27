@@ -3,20 +3,6 @@ import { Link, useLocation } from "react-router-dom";
 
 const Footer: React.FC = () => {
   const location = useLocation();
-  const handleSmoothScroll = (
-    event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
-    path: string
-  ) => {
-    event.preventDefault();
-    if (path.startsWith("#")) {
-      const element = document.querySelector(path);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    } else {
-      window.location.href = path;
-    }
-  };
   return (
     <footer className="bg-gray-800 text-white py-8 w-full font-serif">
       <div className="container mx-auto flex flex-col md:flex-row justify-between items-center">
@@ -54,13 +40,6 @@ const Footer: React.FC = () => {
               {link.text}
             </Link>
           ))}
-          <a
-            className="hover:underline under underline-offset-8 decoration-customBlue hover:text-customBlue transition-colors ease-in-out duration-300"
-            href=""
-            onClick={(event) => handleSmoothScroll(event, "#aboutUs")}
-          >
-            About Us
-          </a>
         </div>
         <div className="mt-4 md:mt-0">
           <p className="text-sm">
