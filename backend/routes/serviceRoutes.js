@@ -11,12 +11,23 @@ const {
   getServiceValidator,
   createServiceValidator,
   updateServiceValidator,
+  updatePaidValidator,
   deleteServiceValidator,
 } = require("../utils/validators/serviceValidator.js");
 
+const { auth, allowedTo } = require("../services/authServices.js");
+
 const router = express.Router();
 
-router.route("/").get(getServices).post(createServiceValidator, createService);
+router
+  .route("/")
+  .get(auth, allowedTo("admin"), getServices)
+  .post(
+    auth,
+    allowedTo("admin", "doctor"),
+    createServiceValidator,
+    createService
+  );
 
 router
   .route("/:id")
