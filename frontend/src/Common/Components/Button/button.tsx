@@ -8,6 +8,7 @@ interface ButtonProps {
   hoverBgColor?: string;
   textColor?: string;
   hoverTextColor?: string;
+  width?: string;
   onClick?: () => void | Promise<void>;
 }
 
@@ -17,11 +18,12 @@ const Button: React.FC<ButtonProps> = ({
   hoverBgColor,
   textColor,
   hoverTextColor,
+  width,
   onClick,
 }) => {
   return (
     <button
-      className={styles.btn}
+      className={styles.btn + " " + width}
       style={
         {
           backgroundColor: bgColor,

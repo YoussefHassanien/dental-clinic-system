@@ -6,12 +6,14 @@ import ReusableCard from "../../Common/Components/Reusable-Card/reusableCard";
 import { doctors } from "./constants";
 import Button from "../../Common/Components/Button/button";
 import ReactPaginate from "react-paginate";
+// import Loading from "../../Common/Components/Loading/loading";
 
 const DoctorsPage: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [currentDoctors, setCurrentDoctors] = useState(doctors);
+  // const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 6;
 
   const paginatedDoctors = currentDoctors.slice(
@@ -199,6 +201,7 @@ const DoctorsPage: React.FC = () => {
                     setSelectedFilter("");
                     setCurrentDoctors(doctors);
                   }}
+                  width="w-3/5"
                 />
               </div>
             </div>
@@ -206,88 +209,92 @@ const DoctorsPage: React.FC = () => {
         </ReusableCard>
         {/* Doctors Container */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6 shadow-lg mb-5 grid-rows-2">
-          {paginatedDoctors.map((doctor, index) => (
-            <div
-              key={index}
-              className="max-w-[450px] min-w-[400px] max-h-[300px] min-h-[250px]"
-            >
-              {" "}
-              <ReusableCard backgroundColor="white">
-                <div className="p-4 w-full">
-                  {/* Top Section: Doctor Image, Name, Specialty, and Rating */}
-                  <div className="flex items-center gap-4 mb-4">
-                    {/* Doctor Avatar (placeholder icon) */}
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-9"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-                      />
-                    </svg>
+          {/* {isLoading && <Loading />} */}
+          {paginatedDoctors &&
+            paginatedDoctors.map((doctor, index) => (
+              <div
+                key={index}
+                className="max-w-[450px] min-w-[400px] max-h-[300px] min-h-[250px]"
+              >
+                {" "}
+                <ReusableCard backgroundColor="white">
+                  <div className="p-4 w-full">
+                    {/* Top Section: Doctor Image, Name, Specialty, and Rating */}
+                    <div className="flex items-center gap-4 mb-4">
+                      {/* Doctor Avatar (placeholder icon) */}
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-9"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                        />
+                      </svg>
 
-                    <div>
-                      {/* Name and Sessions */}
-                      <div className="flex flex-row justify-between items-center space-x-10 mb-1">
-                        <h2 className="text-lg font-semibold text-gray-800">
-                          {doctor.name}
-                        </h2>
-                        <p className="bg-customBlue text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md font-sans">
-                          {doctor.sessions}+ Sessions
+                      <div>
+                        {/* Name and Sessions */}
+                        <div className="flex flex-row justify-between items-center space-x-10 mb-1">
+                          <h2 className="text-lg font-semibold text-gray-800">
+                            {doctor.name}
+                          </h2>
+                          <p className="bg-customBlue text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md font-sans">
+                            {doctor.sessions}+ Sessions
+                          </p>
+                        </div>
+
+                        {/* Specialty */}
+                        <p className="text-customBlue text-sm font-medium">
+                          {doctor.specialty}
                         </p>
-                      </div>
 
-                      {/* Specialty */}
-                      <p className="text-customBlue text-sm font-medium">
-                        {doctor.specialty}
-                      </p>
-
-                      {/* Rating and Top Rated Badge */}
-                      <div className="flex items-center space-x-2 text-yellow-500">
-                        <p className="text-sm font-sans">
-                          ⭐⭐⭐⭐⭐ {doctor.rating} (Reviews)
-                        </p>
-                        {doctor.topRated && (
-                          <span className="text-xs font-semibold">
-                            🏵️ Top Rated
-                          </span>
-                        )}
+                        {/* Rating and Top Rated Badge */}
+                        <div className="flex items-center space-x-2 text-yellow-500">
+                          <p className="text-sm font-sans">
+                            ⭐⭐⭐⭐⭐ {doctor.rating} (Reviews)
+                          </p>
+                          {doctor.topRated && (
+                            <span className="text-xs font-semibold">
+                              🏵️ Top Rated
+                            </span>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Interests Section */}
-                  <div className="mb-4">
-                    {doctor.interests.map((interest, index) => (
-                      <span
-                        key={index}
-                        className={`inline-block ${
-                          index % 2 === 0 ? "bg-green-100" : "bg-gray-100"
-                        } text-gray-600 px-3 py-1 rounded-full text-xs mr-2`}
-                      >
-                        {interest}
-                      </span>
-                    ))}
-                  </div>
+                    {/* Interests Section */}
+                    <div className="mb-4">
+                      {doctor.interests.map((interest, index) => (
+                        <span
+                          key={index}
+                          className={`inline-block ${
+                            index % 2 === 0 ? "bg-green-100" : "bg-gray-100"
+                          } text-gray-600 px-3 py-1 rounded-full text-xs mr-2`}
+                        >
+                          {interest}
+                        </span>
+                      ))}
+                    </div>
 
-                  {/* Appointment */}
-                  <div className="text-sm text-gray-700 mb-4 font-sans">
-                    <p>
-                      🕒 Nearest Appointment:
-                      {` ${doctor.appointment.toLocaleDateString()} ${doctor.appointment.toLocaleTimeString()}`}
-                    </p>
+                    {/* Appointment */}
+                    <div className="text-sm text-gray-700 mb-4 font-sans">
+                      <p>
+                        🕒 Nearest Appointment:
+                        {` ${doctor.appointment.toLocaleDateString()} ${doctor.appointment.toLocaleTimeString()}`}
+                      </p>
+                    </div>
+                    <div className="flex flex-row justify-center w-full">
+                      <Button text="Book Now" width="w-3/5" />
+                    </div>
                   </div>
-                  <Button text="Book Now" />
-                </div>
-              </ReusableCard>
-            </div>
-          ))}
+                </ReusableCard>
+              </div>
+            ))}
         </div>
       </div>
       <ReactPaginate
