@@ -3,7 +3,7 @@ interface ErrorMessageProps {
   isVisible?: boolean;
 }
 
-const ErrorMessage: React.FC<ErrorMessageProps> = ({
+const SuccessMessage: React.FC<ErrorMessageProps> = ({
   text,
   isVisible = false,
 }) => {
@@ -14,4 +14,4 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({
   );
 };
 
-export default ErrorMessage;
+export default SuccessMessage;

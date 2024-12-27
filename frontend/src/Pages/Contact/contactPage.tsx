@@ -6,12 +6,14 @@ import ReusableCard from "../../Common/Components/Reusable-Card/reusableCard";
 import Footer from "../../Common/Components/Footer/footer";
 import Button from "../../Common/Components/Button/button";
 import { useState } from "react";
+import SuccessMessage from "../../Common/Components/Success-Message/successMessage";
 
 const ContactPage: React.FC = () => {
   const [name, setName] = useState("");
   const [subject, setSubject] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   return (
     <div className="flex flex-col justify-start items-center relative w-full h-screen font-serif">
@@ -80,8 +82,22 @@ const ContactPage: React.FC = () => {
             </div>
           </form>
           <hr className="bg-gray-500 my-2 w-full" />
-          <div className="w-full p-4 my-2 justify-center flex flex-row">
-            <Button text="Send" width="w-3/5"></Button>
+          <div className="w-full p-2">
+            {" "}
+            <SuccessMessage
+              text="Your message has been sent successfully, A confirmation email will be sent to you"
+              isVisible={showSuccessMessage}
+            />
+          </div>
+
+          <div className="w-full p-4 justify-center flex flex-row">
+            <Button
+              text="Send"
+              width="w-3/5"
+              onClick={() => {
+                setShowSuccessMessage(true);
+              }}
+            ></Button>
           </div>
         </ReusableCard>
       </div>
