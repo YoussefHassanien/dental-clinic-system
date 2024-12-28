@@ -384,7 +384,7 @@ const DoctorsPage: React.FC = () => {
       {showPopup && (
         <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
           <ReusableCard backgroundColor="white">
-            <div className="p-6 min-w-96  max-w-[700px]flex flex-col justify-center items-start">
+            <div className="p-6 min-w-96 flex flex-col justify-center items-start">
               <h2 className="text-xl font-bold mb-4 flex flex-row justify-center w-full">
                 Booking Confirmation
               </h2>
