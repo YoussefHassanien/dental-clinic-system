@@ -78,6 +78,7 @@ const DoctorsPage: React.FC = () => {
     setShowPopup(false);
     setSelectedDoctor(null);
     setShowSuccessMessage(false);
+    setSelectedSlot(null);
   };
 
   return (
