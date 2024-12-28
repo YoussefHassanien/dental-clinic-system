@@ -3,16 +3,25 @@ import Navbar from "../../Common/Components/Navbar/navbar";
 import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 import Footer from "../../Common/Components/Footer/footer";
 import ReusableCard from "../../Common/Components/Reusable-Card/reusableCard";
-import { doctors } from "./constants";
+import { doctors, Doctor, availableSlots } from "./constants";
 import Button from "../../Common/Components/Button/button";
 import ReactPaginate from "react-paginate";
 // import Loading from "../../Common/Components/Loading/loading";
+import SuccessMessage from "../../Common/Components/Success-Message/successMessage";
 
 const DoctorsPage: React.FC = () => {
   const [selectedFilter, setSelectedFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [currentDoctors, setCurrentDoctors] = useState(doctors);
+  const [showPopup, setShowPopup] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState<{
+    day: string;
+    hour: string;
+  } | null>(null);
+
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
   // const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 6;
 
@@ -22,34 +31,55 @@ const DoctorsPage: React.FC = () => {
   );
 
   useEffect(() => {
+    let filteredDoctors = doctors;
+
     if (selectedFilter === "female") {
-      setCurrentDoctors(doctors.filter((doctor) => doctor.gender === "female"));
+      filteredDoctors = doctors.filter((doctor) => doctor.gender === "female");
     } else if (selectedFilter === "male") {
-      setCurrentDoctors(doctors.filter((doctor) => doctor.gender === "male"));
+      filteredDoctors = doctors.filter((doctor) => doctor.gender === "male");
     } else if (selectedFilter === "rating") {
-      setCurrentDoctors(doctors.sort((a, b) => b.rating - a.rating));
+      filteredDoctors = [...doctors].sort((a, b) => b.rating - a.rating);
     } else if (selectedFilter === "nearestAppointment") {
-      setCurrentDoctors(
-        doctors.sort(
-          (a, b) =>
-            new Date(a.appointment).getTime() -
-            new Date(b.appointment).getTime()
-        )
+      filteredDoctors = [...doctors].sort(
+        (a, b) =>
+          new Date(a.appointment).getTime() - new Date(b.appointment).getTime()
       );
     } else if (selectedFilter === "sessions") {
-      setCurrentDoctors(doctors.sort((a, b) => b.sessions - a.sessions));
-    } else {
-      setCurrentDoctors(
-        doctors.filter((doctor) =>
-          doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
-        )
+      filteredDoctors = [...doctors].sort((a, b) => b.sessions - a.sessions);
+    }
+
+    if (searchTerm) {
+      filteredDoctors = filteredDoctors.filter((doctor) =>
+        doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
+
+    setCurrentDoctors(filteredDoctors);
+    setCurrentPage(0); // Reset to first page after applying filter or search
   }, [selectedFilter, searchTerm]);
 
-  const handlePageChange = (selectedPage: { selected: number }) => {
-    setCurrentPage(selectedPage.selected);
+  const handleBookNow = (doctor: {
+    name: string;
+    specialty: string;
+    yearsOfExperience: number;
+    description: string;
+    rating: number;
+    sessions: number;
+    interests: string[];
+    appointment: Date;
+    topRated: boolean;
+    gender: string;
+  }) => {
+    setSelectedDoctor(doctor);
+    setShowPopup(true);
   };
+
+  const closePopup = () => {
+    setShowPopup(false);
+    setSelectedDoctor(null);
+    setShowSuccessMessage(false);
+  };
+
   return (
     <div className="flex flex-col justify-start items-center relative max-w-full h-screen font-serif">
       <SubNavbar />
@@ -71,6 +101,7 @@ const DoctorsPage: React.FC = () => {
                 onChange={(e) => {
                   setSearchTerm(e.target.value);
                   setSelectedFilter("");
+                  setCurrentPage(0);
                 }}
               />
               <svg
@@ -249,8 +280,11 @@ const DoctorsPage: React.FC = () => {
                         </div>
 
                         {/* Specialty */}
-                        <p className="text-customBlue text-sm font-medium">
-                          {doctor.specialty}
+                        <p className="text-customBlue text-sm font-medium mb-2">
+                          <span className="font-sans">
+                            {doctor.yearsOfExperience}
+                          </span>{" "}
+                          years of experience
                         </p>
 
                         {/* Rating and Top Rated Badge */}
@@ -289,7 +323,13 @@ const DoctorsPage: React.FC = () => {
                       </p>
                     </div>
                     <div className="flex flex-row justify-center w-full">
-                      <Button text="Book Now" width="w-3/5" />
+                      <Button
+                        text="Book Now"
+                        width="w-3/5"
+                        onClick={() => {
+                          handleBookNow(doctor);
+                        }}
+                      />
                     </div>
                   </div>
                 </ReusableCard>
@@ -331,13 +371,91 @@ const DoctorsPage: React.FC = () => {
           </svg>
         }
         pageCount={Math.ceil(currentDoctors.length / itemsPerPage)}
-        onPageChange={handlePageChange}
+        onPageChange={(selectedPage: { selected: number }) => {
+          setCurrentPage(selectedPage.selected);
+        }}
         containerClassName="flex justify-center flex-row space-x-2 my-4 ml-40"
         pageClassName="cursor-pointer px-4 py-2 bg-gray-100 rounded-full"
         activeClassName="bg-gray-900 text-white"
         previousClassName="cursor-pointer p-2 bg-gray-100 rounded-full hover:bg-black hover:text-white"
         nextClassName="cursor-pointer p-2 bg-gray-100 rounded-full hover:bg-black hover:text-white"
       />
+      {/* Popup */}
+      {showPopup && (
+        <div className="fixed top-0 left-0 w-full h-full bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
+          <ReusableCard backgroundColor="white">
+            <div className="p-6 min-w-96  max-w-[700px]flex flex-col justify-center items-start">
+              <h2 className="text-xl font-bold mb-4 flex flex-row justify-center w-full">
+                Booking Confirmation
+              </h2>
+              <div className="flex flex-row justify-start  items-center space-x-4">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-9"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
+                  />
+                </svg>
+                <p className="font-bold text-customBlue">
+                  {selectedDoctor?.name}
+                </p>
+              </div>
+              {/* Display Available Slots by Day */}
+              <div className="mt-4 w-full">
+                <h3 className="font-semibold mb-2">Available Slots:</h3>
+                {availableSlots && Object.keys(availableSlots).length > 0 ? (
+                  <div className="space-y-4">
+                    {Object.entries(availableSlots).map(([day, hours]) => (
+                      <div key={day}>
+                        <h4 className="font-medium mb-2">{day}</h4>
+                        <div className="grid grid-cols-8 gap-2">
+                          {hours.map((hour, index) => (
+                            <button
+                              key={index}
+                              className={`px-2 py-1 border border-gray-300 rounded font-sans ${
+                                selectedSlot?.day === day &&
+                                selectedSlot?.hour === hour
+                                  ? "bg-green-500 text-white"
+                                  : "hover:bg-customBlue"
+                              }`}
+                              onClick={() => setSelectedSlot({ day, hour })}
+                            >
+                              {hour}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p>No slots available</p>
+                )}
+              </div>
+              <SuccessMessage
+                text="Your booking request is sent, A confirmation email will be sent once accepted"
+                isVisible={showSuccessMessage}
+              ></SuccessMessage>
+              <div className="flex justify-between flex-row w-full mt-4">
+                <Button
+                  text="Confirm"
+                  width="w-2/5"
+                  onClick={() => {
+                    setShowSuccessMessage(true);
+                  }}
+                />
+                <Button text="Cancel" width="w-2/5" onClick={closePopup} />
+              </div>
+            </div>{" "}
+          </ReusableCard>
+        </div>
+      )}
 
       <Footer />
     </div>
