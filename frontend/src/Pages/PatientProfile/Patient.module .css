@@ -1,0 +1,259 @@
+.patientContainer{
+  font-family: 'Roboto', sans-serif;
+  background-color: #f5f7fa;
+  padding: 20px;
+  height: 905px;
+  width: 100%
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.backIcon{
+  color: #3a8ddf;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.patientProfileHeading{
+  color: #3a8ddf;
+  font-size: 30px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.bookAppointmentBtn{
+  background-color: #3a8ddf;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.bookAppointmentBtn:hover{
+  background-color: #2a76b3;
+}
+
+.mainContent {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.leftPanel {
+  width: 35%;
+  text-align: center;
+}
+
+.profileCard {
+  font-size: 25px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.editIcon {
+    font-size: 24px;
+    color:  #3a8ddf;
+    transition: color 0.3s ease;
+  }
+.profileImageContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.profileImageLarge {
+  border-radius: 50%;
+  width: 175px;
+  height: 175px;
+}
+
+.contactDetails{
+  margin-top: 30px;
+  font-size: 19px;
+  text-align: left;
+  display:flex;
+  flex-direction: column;
+}
+
+h2{
+  font-size: 23px; 
+  font-weight: bold; 
+  color: #3f4449; 
+}
+
+.contactDetails  p {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  color: #747373;
+}
+
+.contactDetails .icon {
+  margin-right: 8px;
+  color: #3a8ddf;
+}
+
+/*
+.icon {
+  margin-right: 10px;
+  color: #3a8ddf;
+}
+*/
+
+.labResultsCard {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+  text-align: left;
+}
+
+.labResultsCard h3 {
+  font-size: 23px; 
+  font-weight: bold; 
+  color: #3f4449; 
+  margin-bottom: 15px;
+}
+
+.labResultsCard ul {
+  list-style-type: none; 
+  padding: 0;
+  margin-bottom: 20px;
+  font-size: 19px;
+  color: #3f4449; 
+}
+
+.uploadFilesBtn {
+  background-color: #3a8ddf;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/*
+.uploadFilesBtn:hover {
+  background-color: #2a76b3;
+}
+*/
+
+.rightPanel {
+  width: 60%;
+  text-align: center;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.overviewCard {
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.overviewDetails {
+  margin-top: 10px;
+}
+
+.overviewCard h3 { 
+  font-size: 23px; 
+  font-weight: bold; 
+  color: #3f4449; 
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.overviewRowWrapper {
+  display:inline-block;
+  justify-content: space-between;
+  padding: 2% 4%;  /* Responsive padding */
+  flex: 1;  /* Evenly distribute space */
+  text-align: left;
+}
+
+.overviewRow {
+  display:inline-block;
+  justify-content: space-between;
+  padding: 2% 4%;  /* Responsive padding */
+  flex: 1;  /* Evenly distribute space */
+  text-align: left;
+}
+
+.label {
+  font-size: 18px;
+  font-weight: bold;
+  color: #747373;
+}
+
+.valueLarge {
+  font-size: 23px;
+  font-weight: bold;
+  color: #3a8ddf; 
+}
+
+.actionButtonsCard {
+  padding:5%;
+  text-align: left;
+}
+
+.actionButtons{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.actionButtons button {
+  background-color: #3a8ddf;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 2% 4%;  /* Responsive padding */
+  flex: 1;  /* Evenly distribute space */
+  text-align: center;
+}
+
+h4{
+  font-size: 15px;
+  font-weight: bold;
+  color: #3f4449; 
+}
+
+.tabContent {
+  margin-top: 20px;
+}
+
+.tableContainer {
+  margin-top: 10px;
+}
+
+table{
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background-color: #f5f7fa;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
