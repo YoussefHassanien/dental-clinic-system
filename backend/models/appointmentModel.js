@@ -25,8 +25,16 @@ const appointmentSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["pending", "approved", "rejected"],
+      enum: ["pending", "approved", "rejected", "completed"],
       default: "pending",
+    },
+    startTime: {
+      type: String,
+      required: [true, "start time required"],
+    },
+    endTime: {
+      type: String,
+      required: [true, "end time required"],
     },
   },
   { timestamps: true }

@@ -20,7 +20,7 @@ const doctorRoute = require("./routes/doctorRoute");
 const appointmentRoute = require("./routes/appointmentRoute");
 const documentRoute = require("./routes/documnetRoute");
 const requestRoute = require("./routes/requestRoute");
-
+const slotRoute = require("./routes/slotRoute");
 // database configuration
 dbconnection();
 
@@ -49,6 +49,7 @@ app.use("/api/v1/doctors", doctorRoute);
 app.use("/api/v1/appointments", appointmentRoute);
 app.use("/api/v1/documents", documentRoute);
 app.use("/api/v1/requests", requestRoute);
+app.use("/api/v1/slots", slotRoute);
 
 // handle unvalid routes
 app.all("*", (req, res, next) => {

@@ -6,6 +6,8 @@ const ApiError = require("../utils/apiError");
 const { uploadSingleImage } = require("../middlewares/uploadImageMiddleware");
 const User = require("../models/userModel");
 const Doctor = require("../models/doctorModel");
+const Appointment = require("../models/appointmentModel");
+const { generateWeeklySlots } = require("../utils/slotsCreators");
 
 // Upload single image
 exports.uploadUserImage = uploadSingleImage("profileImg");
@@ -129,7 +131,30 @@ exports.addRating = asyncHandler(async (req, res, next) => {
 // @desc    Get list of doctors
 // @route   GET /api/v1/doctors
 // @access  Private/Admin
-exports.getDoctors = factory.getAll(Doctor);
+exports.getDoctors = asyncHandler(async (req, res, next) => {
+  const doctors = await User.find({ role: "doctor" });
+  const data = await Promise.all(
+    doctors.map(async (doctor) => {
+      const doctorProfile = await Doctor.findOne({ userId: doctor.id });
+      return {
+        firstName: doctor.fName,
+        lastName: doctor.lName,
+        userId: doctor.id,
+        gender: doctor.gender,
+        totalNumberOfSessions: doctorProfile.numberOfSessions || 0,
+        rating: doctorProfile.rating,
+        specialities: doctorProfile.specialities || ["Not provided"],
+        nearestAppointment: "Not implemented",
+        profilePicture: doctor.profileImg,
+        yearsOfExperience: doctorProfile.experience || 0,
+      };
+    })
+  );
+  res.status(200).json({
+    status: "success",
+    data,
+  });
+});
 
 exports.updateDoctor = asyncHandler(async (req, res, next) => {
   const { patients, currentPatients, description } = req.body;
@@ -153,6 +178,33 @@ exports.updateDoctor = asyncHandler(async (req, res, next) => {
 // @route   GET /api/v1/doctors/:id
 // @access  Private/Admin
 exports.getDoctor = factory.getOne(Doctor);
+
+exports.addNextWeekSlots = asyncHandler(async (req, res, next) => {
+  const doctor = await Doctor.findOne({ userId: req.user.id });
+  if (!doctor) {
+    return next(new ApiError("Doctor not found", 404));
+  }
+
+  const { startHour, endHour } = req.body;
+
+  if (!startHour || !endHour) {
+    return next(
+      new ApiError("Both 'startHour' and 'endHour' are required", 400)
+    );
+  }
+
+  const weeklySlots = generateWeeklySlots(startHour, endHour);
+
+  doctor.thisWeekAvailability = weeklySlots;
+  await doctor.save();
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      doctor,
+    },
+  });
+});
 
 // @desc    Create doctor
 // @route   POST  /api/v1/doctors
@@ -180,6 +232,27 @@ exports.getLoggedDoctorData = asyncHandler(async (req, res, next) => {
     status: "success",
     data: {
       doctorProfile: { ...userPlain, ...doctorPlain },
+    },
+  });
+});
+
+exports.getDoctorAvailability = asyncHandler(async (req, res, next) => {
+  const doctor = await Doctor.findOne({ userId: req.params.id });
+  if (!doctor) {
+    return next(new ApiError("Doctor not found", 404));
+  }
+  const appointments = await Appointment.find({ doctorId: doctor.userId });
+  appointments.forEach((appointment) => {
+    const date = new Date(appointment.date);
+    const day = date.getDay();
+    const time = date.getHours();
+    doctor.thisWeekAvailability[day][time] = false;
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      availability: doctor.thisWeekAvailability,
     },
   });
 });

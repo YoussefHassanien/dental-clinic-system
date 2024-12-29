@@ -10,6 +10,8 @@ const {
   uploadUserImage,
   resizeImage,
   getLoggedDoctorData,
+  addNextWeekSlots,
+  getDoctorAvailability,
 } = require("../services/doctorServices.js");
 
 const {
@@ -19,9 +21,10 @@ const {
   updateDoctorValidator,
   createDoctorValidator,
   deleteDoctorValidator,
+  addNextWeekSlotsValidator,
 } = require("../utils/validators/doctorValidator.js");
 
-const { auth } = require("../services/authServices");
+const { auth, allowedTo } = require("../services/authServices");
 
 const router = express.Router();
 
@@ -30,6 +33,10 @@ router.route("/me").get(auth, getLoggedDoctorData);
 router
   .route("/addDoctor")
   .post(uploadUserImage, resizeImage, addDoctorValidator, addDoctor);
+router
+  .route("/slots")
+  .put(auth, allowedTo("doctor"), addNextWeekSlotsValidator, addNextWeekSlots);
+router.route("/:id/slots").get(getDoctorAvailability);
 
 router
   .route("/:id")

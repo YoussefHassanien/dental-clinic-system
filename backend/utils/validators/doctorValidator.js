@@ -209,3 +209,37 @@ exports.deleteDoctorValidator = [
     .withMessage("Invalid Doctor ID format"),
   validatorMiddleware,
 ];
+
+exports.addNextWeekSlotsValidator = [
+  check("startHour")
+    .notEmpty()
+    .withMessage("Start hour is required")
+    .matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
+    .withMessage("Start hour must be in HH:mm format (24-hour)"),
+  check("endHour")
+    .notEmpty()
+    .withMessage("End hour is required")
+    .matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
+    .withMessage("End hour must be in HH:mm format (24-hour)")
+    .custom((value, { req }) => {
+      const [startHour, startMinute] = req.body.startHour
+        .split(":")
+        .map(Number);
+      const [endHour, endMinute] = value.split(":").map(Number);
+      if (
+        endHour < startHour ||
+        (endHour === startHour && endMinute <= startMinute)
+      ) {
+        throw new Error("End hour must be greater than start hour");
+      }
+      return true;
+    })
+    .custom((value, { req }) => {
+      const doctor = Doctor.findOne({ userId: req.user.id });
+      if (!doctor) {
+        throw new Error("Doctor not found");
+      }
+      return true;
+    }),
+  validatorMiddleware,
+];
