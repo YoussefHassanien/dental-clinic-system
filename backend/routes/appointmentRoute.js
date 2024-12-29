@@ -15,7 +15,6 @@ const {
   bookAppointmentValidator,
 } = require("../utils/validators/appointmentValidator");
 const { auth, allowedTo } = require("../services/authServices");
-const { bookSlotValidator } = require("../utils/validators/slotvalidator");
 
 const router = express.Router();
 
