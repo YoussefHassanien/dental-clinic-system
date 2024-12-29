@@ -1,5 +1,8 @@
-import { useState } from "react";
-import styles from "./Patient.module.css"; // Import the CSS module
+import React, { useEffect, useState } from "react";
+import Navbar from "../../Common/Components/Navbar/navbar";
+import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
+import styles from "./Patient.module.css"; 
+import {get_current_patient} from "./services";
 import {
   FaPhoneAlt,
   FaEnvelope,
@@ -16,13 +19,27 @@ import {
 const Patient = () => {
   const [activeTab, setActiveTab] = useState("Appointments");
 
+  const [patientData, setpatientData] = useState({});
+    useEffect(() => {
+      let token= localStorage.getItem("token")
+      
+      if (token){
+       token=JSON.parse(token)   
+       get_current_patient(token).then((data)=>setpatientData(data.data.doctorProfile)).catch((e)=>alert("something went wrong"))
+      }
+      
+      
+    }, []);
+  
+
   return (
     <div className={styles.patientContainer}>
+      <SubNavbar />
+      <Navbar />
       {" "}
       {/* Apply CSS module class */}
       <div className={styles.header}>
-        <FaArrowLeft className={styles.backIcon} />
-        <h1 className={styles.patientProfileHeading}>Patient Profile</h1>
+        
         <button className={styles.bookAppointmentBtn}>Book Appointment</button>
       </div>
       <div className={styles.mainContent}>
@@ -38,18 +55,17 @@ const Patient = () => {
                 alt="Jane Moore"
                 className={styles.profileImageLarge}
               />
-              <h2 className={styles.profileName}>Ms. Jane Moore</h2>
+              <h2 className={styles.profileName}>{patientData.title} {patientData.fName} {patientData.lName}</h2>
             </div>
             <div className={styles.contactDetails}>
               <p>
-                <FaPhoneAlt className={styles.icon} /> 07123 456789
+                <FaPhoneAlt className={styles.icon} /> {patientData.phone}
               </p>
               <p>
-                <FaEnvelope className={styles.icon} /> jane.moore@hello.com
+                <FaEnvelope className={styles.icon} /> {patientData.email}
               </p>
               <p>
-                <FaMapMarkerAlt className={styles.icon} /> 15 Trevelyan Avenue,
-                London
+                <FaMapMarkerAlt className={styles.icon} />{patientData.district}, {patientData.city}, {patientData.gov}
               </p>
             </div>
           </div>
@@ -77,7 +93,7 @@ const Patient = () => {
                     <span className={styles.label}>Gender:</span>
                   </div>
                   <div>
-                    <span className={styles.valueLarge}>Female</span>
+                    <span className={styles.valueLarge}>{patientData.gender}</span>
                   </div>
                 </div>
                 <div className={styles.overviewRow}>
@@ -85,7 +101,7 @@ const Patient = () => {
                     <span className={styles.label}>Date of Birth:</span>
                   </div>
                   <div>
-                    <span className={styles.valueLarge}>10/03/1987</span>
+                    <span className={styles.valueLarge}>{patientData.dateOfBirth}</span>
                   </div>
                 </div>
                 <div className={styles.overviewRow}>
@@ -94,7 +110,7 @@ const Patient = () => {
                   </div>
                   <div>
                     <span className={styles.valueLarge}>
-                      Hayfever, crayfish
+                    {patientData.allergies}
                     </span>
                   </div>
                 </div>
@@ -105,15 +121,15 @@ const Patient = () => {
                     <span className={styles.label}>Blood Type:</span>
                   </div>
                   <div>
-                    <span className={styles.valueLarge}>B+</span>
+                    <span className={styles.valueLarge}>{patientData.bloodType}</span>
                   </div>
                 </div>
                 <div className={styles.overviewRow}>
                   <div>
-                    <span className={styles.label}>Previous Visit:</span>
+                    <span className={styles.label}>Total Visits:</span>
                   </div>
                   <div>
-                    <span className={styles.valueLarge}>25/11/2020</span>
+                    <span className={styles.valueLarge}>{patientData.totalVisits}</span>
                   </div>
                 </div>
                 <div className={styles.overviewRow}>
