@@ -1,4 +1,5 @@
 const Doctor = require("../models/doctorModel");
+const asyncHandler = require("express-async-handler");
 
 function generateDailySlots(startHour, endHour) {
   const slots = [];
@@ -44,11 +45,51 @@ async function addSlot(doctorId, day, startTime, endTime) {
   );
 }
 
-async function bookSlot(doctorId, day, startTime, endTime) {
-  await Doctor.updateOne(
-    { _id: doctorId, "thisWeekAvailability.day": day },
-    { $pull: { "thisWeekAvailability.$.slots": { startTime, endTime } } }
-  );
-}
+const removeBookedSlot = asyncHandler(async (doctorId, date, startTime) => {
+  const appointmentDate = new Date(date);
+  const dayIndex = appointmentDate.getDay();
+  const dayNames = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const dayName = dayNames[dayIndex];
 
-module.exports = { addSlot, bookSlot, generateWeeklySlots };
+  // Find the doctor
+  const doctor = await Doctor.findOne({ userId: doctorId });
+
+  if (!doctor) {
+    throw new Error("Doctor not found");
+  }
+
+  // Find the availability for the given day
+  const dayAvailability = doctor.thisWeekAvailability.find(
+    (availability) => availability.day === dayName
+  );
+
+  if (!dayAvailability) {
+    throw new Error(`No availability defined for ${dayName}`);
+  }
+
+  // Find the slot to remove
+  const slotIndex = dayAvailability.slots.findIndex(
+    (slot) => slot.startTime === startTime
+  );
+
+  if (slotIndex === -1) {
+    throw new Error(`Slot starting at ${startTime} on ${dayName} not found`);
+  }
+
+  // Remove the slot
+  dayAvailability.slots.splice(slotIndex, 1);
+
+  // Save the updated document
+  await doctor.save();
+  return { message: "Slot removed successfully" };
+});
+
+module.exports = { addSlot, generateWeeklySlots, removeBookedSlot };

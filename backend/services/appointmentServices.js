@@ -1,7 +1,8 @@
 const Appointment = require("../models/appointmentModel");
 const factory = require("./handlersFactory");
 const asyncHandler = require("express-async-handler");
-const Slot = require("../models/slotModel");
+const { removeBookedSlot } = require("../utils/slotsCreators");
+const Doctor = require("../models/doctorModel");
 
 //@desc     get list of  appointments
 //@route    POST /api/v1/appointments
@@ -24,12 +25,16 @@ exports.createAppointment = factory.createOne(Appointment);
 exports.bookAppointment = asyncHandler(async (req, res, next) => {
   const patientId = req.body.patientId || req.user.id;
   const { doctorId, date, notes, startTime, endTime } = req.body;
+  removeBookedSlot(doctorId, date, startTime);
+  const doctor = await Doctor.findOne({ userId: doctorId });
+  doctor.currentPatients.push(patientId);
   const appointment = await Appointment.create({
     patientId,
     doctorId,
     date,
     startTime,
     endTime,
+    notes,
   });
   res.status(201).json({
     status: "success",

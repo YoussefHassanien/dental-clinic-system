@@ -86,12 +86,6 @@ exports.bookAppointmentValidator = [
       if (!doctor) {
         return Promise.reject("Doctor not found");
       }
-      if (
-        doctor.thisWeekAvailability[0] > req.body.startTime ||
-        doctor.thisWeekAvailability[1] < req.body.endTime
-      ) {
-        return Promise.reject("Doctor is not availble at this time");
-      }
     })
     .custom(async (value, { req }) => {
       const appointments = await Appointment.find({
@@ -116,8 +110,36 @@ exports.bookAppointmentValidator = [
         }
       }
     }),
-  check("startTime").notEmpty().withMessage("Start time is required"),
-  check("endTime").notEmpty().withMessage("Start time is required"),
+  check("startTime")
+    .notEmpty()
+    .withMessage("Start hour is required")
+    .matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
+    .withMessage("Start hour must be in HH:mm format (24-hour)"),
+  check("endTime")
+    .notEmpty()
+    .withMessage("End hour is required")
+    .matches(/^([01]\d|2[0-3]):([0-5]\d)$/)
+    .withMessage("End hour must be in HH:mm format (24-hour)")
+    .custom((value, { req }) => {
+      const [startHour, startMinute] = req.body.startTime
+        .split(":")
+        .map(Number);
+      const [endHour, endMinute] = value.split(":").map(Number);
+      if (
+        endHour < startHour ||
+        (endHour === startHour && endMinute <= startMinute)
+      ) {
+        throw new Error("End hour must be greater than start hour");
+      }
+      return true;
+    })
+    .custom((value, { req }) => {
+      const doctor = Doctor.findOne({ userId: req.user.id });
+      if (!doctor) {
+        throw new Error("Doctor not found");
+      }
+      return true;
+    }),
   check("status")
     .optional()
     .notEmpty()
@@ -128,13 +150,56 @@ exports.bookAppointmentValidator = [
     .withMessage("Date is required")
     .isDate()
     .withMessage("Invalid date")
-    .custom((value) => {
+    .custom(async (value, { req }) => {
       const appointmentDate = new Date(value);
-      if (appointmentDate < Date.now()) {
+
+      if (appointmentDate < new Date()) {
         throw new Error("The appointment date has already passed");
       }
+
+      const dayIndex = appointmentDate.getDay();
+      const dayNames = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      const dayName = dayNames[dayIndex];
+
+      const doctor = await Doctor.findOne({ userId: req.body.doctorId });
+
+      if (!doctor) {
+        throw new Error("Doctor not found");
+      }
+
+      const dayAvailability = doctor.thisWeekAvailability.find(
+        (availability) => availability.day === dayName
+      );
+
+      if (!dayAvailability) {
+        throw new Error(`No availability defined for ${dayName}`);
+      }
+
+      if (!dayAvailability.slots || dayAvailability.slots.length === 0) {
+        throw new Error(`No slots available on ${dayName}`);
+      }
+      const requestedStartTime = req.body.startTime;
+      const slotAvailable = dayAvailability.slots.some(
+        (slot) => slot.startTime === requestedStartTime
+      );
+
+      if (!slotAvailable) {
+        throw new Error(
+          `The requested slot at ${requestedStartTime} is unavailable`
+        );
+      }
+
       return true;
     }),
+
   check("notes").optional().notEmpty().withMessage("you provided empty notes"),
 
   validatorMiddleware,
