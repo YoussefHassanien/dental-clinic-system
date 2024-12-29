@@ -3,6 +3,7 @@ const {
   userStatistics,
   appointmentStatistics,
   feedBackStatistics,
+  patientStatistics,
 } = require("../services/statisticsServices");
 
 const { auth, allowedTo } = require("../services/authServices");
@@ -14,5 +15,6 @@ router
   .route("/appointments")
   .get(auth, allowedTo("admin"), appointmentStatistics);
 router.route("/feedbacks").get(auth, allowedTo("admin"), feedBackStatistics);
+router.route("/patients").get(auth, allowedTo("admin"), patientStatistics);
 
 module.exports = router;

@@ -2,7 +2,11 @@ const User = require("../models/userModel");
 const asyncHandler = require("express-async-handler");
 const Appointment = require("../models/appointmentModel");
 const Feedback = require("../models/feedbackModel");
+const Patient = require("../models/patientModel");
 
+//@desc     user statistics
+//@route    POST /api/v1/statistics/pate
+//@access   Private(admin)
 exports.userStatistics = asyncHandler(async (req, res, next) => {
   const users = await User.find();
   const usersCount = users.length;
@@ -22,6 +26,9 @@ exports.userStatistics = asyncHandler(async (req, res, next) => {
   });
 });
 
+//@desc     appointments statistics
+//@route    POST /api/v1/statistics/pate
+//@access   Private(admin)
 exports.appointmentStatistics = asyncHandler(async (req, res, next) => {
   const appointments = await Appointment.find();
   const appointmentsCount = appointments.length;
@@ -49,6 +56,9 @@ exports.appointmentStatistics = asyncHandler(async (req, res, next) => {
   });
 });
 
+//@desc     feedback statistics
+//@route    POST /api/v1/statistics/pate
+//@access   Private(admin)
 exports.feedBackStatistics = asyncHandler(async (req, res, next) => {
   const feedbacks = await Feedback.find();
   const feedbacksCount = feedbacks.length;
@@ -64,6 +74,27 @@ exports.feedBackStatistics = asyncHandler(async (req, res, next) => {
       feedbacksCount,
       positiveFeedbacks,
       negativeFeedbacks,
+    },
+  });
+});
+
+//@desc     patient statistics
+//@route    POST /api/v1/statistics/patients
+//@access   Private(admin)
+exports.patientStatistics = asyncHandler(async (req, res, next) => {
+  const patients = await Patient.find();
+  const patientsCount = patients.length;
+  const firstTimePatients = patients.filter(
+    (patient) => patient.totalVisits <= 1
+  ).length;
+  const oldPatients = patientsCount - firstTimePatients;
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      patientsCount,
+      firstTimePatients,
+      oldPatients,
     },
   });
 });
