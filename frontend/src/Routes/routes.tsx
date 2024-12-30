@@ -8,7 +8,6 @@ import RegisterPage from "../Pages/Register/registerPage";
 import ProtectedRoute from "./routeProtection";
 import Patient from "../Pages/PatientProfile/Patient";
 import Admin from "../Pages/Admin/Admin";
-import PatientsTable from "../Pages/Admin/PatientsTable";
 
 export const routes = [
   {
@@ -65,9 +64,4 @@ export const routes = [
     name: "Admin",
   },
 
-  {
-    path: "/patientsTable",
-    element: <PatientsTable />,
-    name: "PatientsTable",
-  },
 ];
