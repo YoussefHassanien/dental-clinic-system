@@ -1,24 +1,22 @@
-const express = require("express");
 const fs = require("fs");
 const use = require("@tensorflow-models/universal-sentence-encoder");
 const tf = require("@tensorflow/tfjs-node");
 const asyncHandler = require("express-async-handler");
 
-// Load documents
+const path = require("path");
+
 let documents = [];
+// Construct the path to the JSON file relative to this file
+const documentPath = path.join(__dirname, "../data/document.json");
+
 try {
-  documents = JSON.parse(
-    fs.readFileSync(
-      "/Users/omarrrefaat/Desktop/dental-clinic-system-1/backend/services/document.json",
-      "utf8"
-    )
-  );
+  documents = JSON.parse(fs.readFileSync(documentPath, "utf8"));
   console.log("Documents loaded successfully!");
 } catch (error) {
-  console.error("Error loading documents:", error);
+  console.error("Error loading documents:", error.message);
+  documents = [];
 }
 
-// Helper to calculate cosine similarity
 function cosineSimilarity(vecA, vecB) {
   const dotProduct = vecA.reduce((sum, val, i) => sum + val * vecB[i], 0);
   const magnitudeA = Math.sqrt(vecA.reduce((sum, val) => sum + val * val, 0));
@@ -26,7 +24,6 @@ function cosineSimilarity(vecA, vecB) {
   return dotProduct / (magnitudeA * magnitudeB);
 }
 
-// Load Universal Sentence Encoder model once at server start
 let model;
 use
   .load()
