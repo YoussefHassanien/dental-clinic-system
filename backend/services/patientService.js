@@ -3,6 +3,8 @@ const factory = require("./handlersFactory");
 const ApiError = require("../utils/apiError");
 const Patient = require("../models/patientModel");
 const Wallet = require("../models/walletModel");
+const Doctor = require("../models/doctorModel");
+const User = require("../models/userModel");
 
 // @desc    Get list of patients
 // @route   GET /api/v1/patients
@@ -43,6 +45,24 @@ exports.getLoggedPatientData = asyncHandler(async (req, res, next) => {
   }
   const patientPlain = patient.toObject();
   const userPlain = user.toObject();
+  let doctors = await Doctor.find({ currentPatients: req.user._id });
+  const currentDoctors = await Promise.all(
+    doctors.map(async (doctor) => {
+      const user = await User.findById(doctor.userId);
+      return {
+        firstname: user.fName,
+        lastname: user.lName,
+        specialization: doctor.specialities,
+        rating: doctor.rating,
+        appointmentFee: doctor.appointmentFee,
+        email: user.email,
+      };
+    })
+  );
+
+  if (doctors.length === 0) {
+    currentDoctors = "no current doctors";
+  }
   let wallet;
   if (patient.wallet !== "not provided") {
     wallet = await Wallet.findById(patient.wallet);
@@ -51,9 +71,10 @@ exports.getLoggedPatientData = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: {
-      doctorProfile: {
+      Profile: {
         ...userPlain,
         ...patientPlain,
+        currentDoctors,
         wallet: wallet || "not provided",
       },
     },

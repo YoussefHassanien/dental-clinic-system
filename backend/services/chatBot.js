@@ -6,7 +6,6 @@ const asyncHandler = require("express-async-handler");
 const path = require("path");
 
 let documents = [];
-// Construct the path to the JSON file relative to this file
 const documentPath = path.join(__dirname, "../data/document.json");
 
 try {

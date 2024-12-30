@@ -46,12 +46,14 @@ exports.updatePatientValidator = [
     .isMongoId()
     .withMessage("Invalid id"),
   check("bloodType")
+    .optional()
     .notEmpty()
     .withMessage("Blood type is required")
     .isIn(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"])
     .withMessage("Invalid blood type"),
 
   check("allergies")
+    .optional()
     .isArray()
     .withMessage("Allergies must be an array of strings"),
   check("wallet")
