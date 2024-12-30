@@ -38,3 +38,33 @@ export const getDoctorsCardsInfo = async (): Promise<Doctor[]> => {
     return [];
   }
 };
+
+export const getDoctorAvailability = async (id: string, token: string) => {
+  try {
+    const response = await fetch(`${doctorsAPI}/${id}/slots`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch available slots");
+    }
+
+    const fetchedData = await response.json();
+    const formattedData: { [key: string]: string[] } = {};
+    fetchedData.data.availability.forEach(
+      (item: { day: string; slots: { startTime: string }[] }) => {
+        formattedData[item.day] = item.slots.map(
+          (slot: { startTime: string }) => `${slot.startTime}`
+        );
+      }
+    );
+    return formattedData;
+  } catch (error) {
+    console.error("Error fetching doctors' availability:", error);
+    return {};
+  }
+};

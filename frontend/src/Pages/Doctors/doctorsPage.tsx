@@ -3,13 +3,13 @@ import Navbar from "../../Common/Components/Navbar/navbar";
 import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 import Footer from "../../Common/Components/Footer/footer";
 import ReusableCard from "../../Common/Components/Reusable-Card/reusableCard";
-import { Doctor, availableSlots } from "./constants";
+import { Doctor } from "./constants";
 import Button from "../../Common/Components/Button/button";
 import ReactPaginate from "react-paginate";
 import Loading from "../../Common/Components/Loading/loading";
 import SuccessMessage from "../../Common/Components/Success-Message/successMessage";
 import ErrorMessage from "../../Common/Components/Error-Message/errorMessage";
-import { getDoctorsCardsInfo } from "./services";
+import { getDoctorsCardsInfo, getDoctorAvailability } from "./services";
 import { useAuthContext } from "../../Common/Contexts/Auth/AuthHook";
 
 const DoctorsPage: React.FC = () => {
@@ -26,11 +26,12 @@ const DoctorsPage: React.FC = () => {
     day: string;
     hour: string;
   } | null>(null);
+  const [doctorAvailableSlots, setdoctorAvailableSlots] = useState({});
 
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
   const [isDoctorCardsLoading, setIsDoctorCardsLoading] = useState(true);
-  // const [isDoctorAvailabilityLoading, setIsDoctorAvailabilityLoading] =
-  //   useState(true);
+  const [isDoctorAvailabilityLoading, setIsDoctorAvailabilityLoading] =
+    useState(true);
   const itemsPerPage = 6;
 
   const paginatedDoctors =
@@ -54,6 +55,21 @@ const DoctorsPage: React.FC = () => {
         console.error("Error fetching doctors:", error);
       });
   }, []);
+
+  useEffect(() => {
+    if (selectedDoctor) {
+      getDoctorAvailability(selectedDoctor.id, user?.token ?? "")
+        .then((availability) => {
+          if (availability) {
+            setdoctorAvailableSlots(availability);
+            setIsDoctorAvailabilityLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching doctor availability:", error);
+        });
+    }
+  }, [selectedDoctor, user?.token]);
 
   useEffect(() => {
     let updatedDoctors = [...doctors];
@@ -312,7 +328,16 @@ const DoctorsPage: React.FC = () => {
                         {/* Rating and Top Rated Badge */}
                         <div className="flex items-center space-x-2 text-yellow-500">
                           <p className="text-sm font-sans">
-                            ⭐⭐⭐⭐⭐ {doctor.rating} (Reviews)
+                            {doctor.rating <= 1
+                              ? "⭐"
+                              : doctor.rating <= 2
+                              ? "⭐⭐"
+                              : doctor.rating <= 3
+                              ? "⭐⭐⭐"
+                              : doctor.rating <= 4
+                              ? "⭐⭐⭐⭐"
+                              : "⭐⭐⭐⭐⭐"}{" "}
+                            {doctor.rating} (Reviews)
                           </p>
                           {doctor.topRated && (
                             <span className="text-xs font-semibold">
@@ -340,8 +365,16 @@ const DoctorsPage: React.FC = () => {
                     {/* Appointment */}
                     <div className="text-sm text-gray-700 mb-4 font-sans">
                       <p>
-                        🕒 Nearest Appointment:
-                        {` ${doctor.appointment.toLocaleDateString()} ${doctor.appointment.toLocaleTimeString()}`}
+                        🕒 Nearest Appointment:{" "}
+                        {new Intl.DateTimeFormat("en-US", {
+                          weekday: "long",
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                        }).format(new Date(doctor.appointment))}
                       </p>
                     </div>
                     <div className="flex flex-row justify-center items-center">
@@ -439,29 +472,33 @@ const DoctorsPage: React.FC = () => {
               {/* Display Available Slots by Day */}
               <div className="mt-4 w-full">
                 <h3 className="font-semibold mb-2">Available Slots:</h3>
-                {availableSlots && Object.keys(availableSlots).length > 0 ? (
+                {isDoctorAvailabilityLoading && <Loading />}
+                {doctorAvailableSlots &&
+                Object.keys(doctorAvailableSlots).length > 0 ? (
                   <div className="space-y-4">
-                    {Object.entries(availableSlots).map(([day, hours]) => (
-                      <div key={day}>
-                        <h4 className="font-medium mb-2">{day}</h4>
-                        <div className="grid grid-cols-8 gap-2">
-                          {hours.map((hour, index) => (
-                            <button
-                              key={index}
-                              className={`px-2 py-1 border border-gray-300 rounded font-sans ${
-                                selectedSlot?.day === day &&
-                                selectedSlot?.hour === hour
-                                  ? "bg-green-500 text-white"
-                                  : "hover:bg-customBlue"
-                              }`}
-                              onClick={() => setSelectedSlot({ day, hour })}
-                            >
-                              {hour}
-                            </button>
-                          ))}
+                    {Object.entries(doctorAvailableSlots).map(
+                      ([day, hours]) => (
+                        <div key={day}>
+                          <h4 className="font-medium mb-2">{day}</h4>
+                          <div className="grid grid-cols-8 gap-2">
+                            {(hours as string[]).map((hour, index) => (
+                              <button
+                                key={index}
+                                className={`px-2 py-1 border border-gray-300 rounded font-sans ${
+                                  selectedSlot?.day === day &&
+                                  selectedSlot?.hour === hour
+                                    ? "bg-green-500 text-white"
+                                    : "hover:bg-customBlue"
+                                }`}
+                                onClick={() => setSelectedSlot({ day, hour })}
+                              >
+                                {hour}
+                              </button>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      )
+                    )}
                   </div>
                 ) : (
                   <p>No slots available</p>
