@@ -6,6 +6,9 @@ import DoctorProfilePage from "../Pages/DoctorProfile/doctorsProfile";
 import LoginPage from "../Pages/Login/loginPage";
 import RegisterPage from "../Pages/Register/registerPage";
 import ProtectedRoute from "./routeProtection";
+import Patient from "../Pages/PatientProfile/Patient";
+import Admin from "../Pages/Admin/Admin";
+import PatientsTable from "../Pages/Admin/PatientsTable";
 
 export const routes = [
   {
@@ -46,5 +49,25 @@ export const routes = [
     path: "/register",
     element: <RegisterPage />,
     name: "Register",
+  },
+  {
+    path: "/patient-profile",
+    element: (
+      <ProtectedRoute requiredRole="patient">
+        <Patient />
+      </ProtectedRoute>
+    ),
+    name: "Patient Profile",
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
+    name: "Admin",
+  },
+
+  {
+    path: "/patientsTable",
+    element: <PatientsTable />,
+    name: "PatientsTable",
   },
 ];

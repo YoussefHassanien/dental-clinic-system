@@ -221,3 +221,26 @@ export const doctorsInterests = [
   "Tooth Restoration",
   "Wisdom Teeth Removal",
 ];
+
+export interface Doctor {
+  name: string;
+  specialty: string;
+  yearsOfExperience: number;
+  description: string;
+  rating: number;
+  sessions: number;
+  interests: string[];
+  appointment: Date;
+  topRated: boolean;
+  gender: string;
+}
+
+export const availableSlots = {
+  Monday: ["9:00 AM", "10:30 AM", "2:00 PM", "4:00 PM"],
+  Tuesday: ["11:00 AM", "1:00 PM"],
+  Wednesday: ["10:00 AM", "3:00 PM", "4:30 PM"],
+  Thursday: ["9:00 AM", "11:00 AM", "2:00 PM"],
+  Friday: ["10:00 AM", "1:30 PM", "3:00 PM"],
+  Saturday: ["9:00 AM", "11:00 AM"],
+  Sunday: ["10:00 AM", "12:00 PM", "3:00 PM"],
+};

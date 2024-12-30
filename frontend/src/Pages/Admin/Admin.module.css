@@ -1,0 +1,274 @@
+.container {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 1.5rem;
+}
+
+.wrapper {
+  max-width: 80rem;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 9999px;
+  background-color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.greeting {
+  color: #0f172a;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.date {
+  color: #334155;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.statsContent {
+  color: white;
+}
+
+.statsLabel {
+  font-size: 0.875rem;
+  opacity: 0.9;
+}
+
+.statsValue {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.statsCardBlue {
+  background: linear-gradient(135deg, #2563eb, #1e40af);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.1);
+}
+
+.statsCardYellow {
+  background: linear-gradient(135deg, #ca8a04, #854d0e);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(202, 138, 4, 0.1);
+}
+
+.statsCardRed {
+  background: linear-gradient(135deg, #dc2626, #991b1b);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.1);
+}
+
+.statsCardGreen {
+  background: linear-gradient(135deg, #16a34a, #166534);
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(22, 163, 74, 0.1);
+}
+
+.mainGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.card {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cardActions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.cardTitle {
+  color: #0f172a;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+}
+
+.addButton {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #2563eb;
+  color: white;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.addButton:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+}
+
+.viewAll {
+  color: #2563eb;
+  font-size: 0.875rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.doctorsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  min-height: 12rem;
+}
+
+.doctorCard {
+  background-color: #ffffff;
+  padding: 0.75rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  border: 1px solid #e2e8f0;
+}
+
+.doctorCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.doctorImage {
+  width: 100%;
+  height: 6rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.doctorName {
+  color: #0f172a;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.doctorSpecialty {
+  color: #64748b;
+  font-size: 0.75rem;
+}
+
+.patientsContent {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  height: 12rem;
+}
+
+.patientStats {
+  position: relative;
+  width: 8rem;
+  height: 8rem;
+}
+
+.patientCircle {
+  width: 100%;
+  height: 100%;
+  border-radius: 9999px;
+  border: 4px solid #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.patientTotal {
+  text-align: center;
+  color: #0f172a;
+}
+
+.patientLabel {
+  font-size: 0.875rem;
+  color: #334155;
+}
+
+.patientCount {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.patientLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.legendDotBlue {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background-color: #2563eb;
+}
+
+.legendDotRed {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 9999px;
+  background-color: #dc2626;
+}
+
+.legendText {
+  color: #334155;
+  font-weight: 500;
+}
+
+.chartContainer {
+  height: 12rem;
+}
