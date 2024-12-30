@@ -36,6 +36,10 @@ const appointmentSchema = new mongoose.Schema(
       type: String,
       required: [true, "end time required"],
     },
+    paid: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );

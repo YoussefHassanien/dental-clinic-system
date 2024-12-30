@@ -6,6 +6,8 @@ const {
   createAppointment,
   deleteAppointment,
   bookAppointment,
+  doctorResponse,
+  getloggedPatientAppointments,
 } = require("../services/appointmentServices");
 const {
   createAppointmentValidator,
@@ -13,6 +15,7 @@ const {
   updateAppointmentValidator,
   deleteAppointmentValidator,
   bookAppointmentValidator,
+  doctorResponseValidator,
 } = require("../utils/validators/appointmentValidator");
 const { auth, allowedTo } = require("../services/authServices");
 
@@ -25,6 +28,12 @@ router
 router
   .route("/book")
   .post(auth, allowedTo("patient"), bookAppointmentValidator, bookAppointment);
+router
+  .route("/response")
+  .put(auth, allowedTo("doctor"), doctorResponseValidator, doctorResponse);
+router
+  .route("/patient")
+  .get(auth, allowedTo("patient"), getloggedPatientAppointments);
 router
   .route("/:id")
   .get(getAppointmentValidator, getAppointment)

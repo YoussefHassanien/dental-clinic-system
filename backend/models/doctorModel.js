@@ -18,6 +18,10 @@ const doctorSchema = new mongoose.Schema(
       ref: "Patient",
       default: [],
     },
+    appointmentFee: {
+      type: String,
+      default: 200,
+    },
     rating: {
       type: Number,
       min: 1,
