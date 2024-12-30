@@ -5,8 +5,8 @@ const { removeBookedSlot, addBookedSlot } = require("../utils/slotsCreators");
 const Doctor = require("../models/doctorModel");
 const Wallet = require("../models/walletModel");
 const Patient = require("../models/patientModel");
-const { TbPlaystationSquare } = require("react-icons/tb");
-const { STORAGE_TYPES } = require("natural");
+// const { TbPlaystationSquare } = require("react-icons/tb");
+// const { STORAGE_TYPES } = require("natural");
 
 //@desc     get list of  appointments
 //@route    POST /api/v1/appointments

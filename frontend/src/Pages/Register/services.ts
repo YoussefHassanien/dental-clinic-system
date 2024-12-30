@@ -62,7 +62,6 @@ export const handleRegister = async (
         bloodType: "O+",
       }),
     });
-
     if (!response.ok) {
       throw new Error("Could not register you, please try again later");
     }
