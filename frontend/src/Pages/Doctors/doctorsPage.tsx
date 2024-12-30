@@ -32,6 +32,7 @@ const DoctorsPage: React.FC = () => {
   const [isDoctorCardsLoading, setIsDoctorCardsLoading] = useState(true);
   const [isDoctorAvailabilityLoading, setIsDoctorAvailabilityLoading] =
     useState(true);
+  const [paymentType, setPaymentType] = useState("");
   const itemsPerPage = 6;
 
   const paginatedDoctors =
@@ -384,6 +385,48 @@ const DoctorsPage: React.FC = () => {
                         text="Please log in first"
                       />
                     </div>
+                    {user && (
+                      <div className="flex flex-row space-x-4 p-2 font-serif items-center mb-2">
+                        <div className="flex flex-row justify-between p-2 font-serif items-center w-full rounded-md border-2">
+                          <p
+                            className={`${
+                              paymentType === `cash-${index}`
+                                ? "text-customBlue"
+                                : "text-gray-400"
+                            } text-md font-serif`}
+                          >
+                            Pay in cash
+                          </p>
+                          <input
+                            type="radio"
+                            name={`paymentType-${index}`}
+                            value="cash"
+                            checked={paymentType === `cash-${index}`}
+                            onChange={() => setPaymentType(`cash-${index}`)}
+                            required={true}
+                          />
+                        </div>
+                        <div className="flex flex-row justify-between p-2 font-serif items-center w-full rounded-md border-2">
+                          <p
+                            className={`${
+                              paymentType === `wallet-${index}`
+                                ? "text-customBlue"
+                                : "text-gray-400"
+                            } text-md font-serif`}
+                          >
+                            Pay with wallet
+                          </p>
+                          <input
+                            type="radio"
+                            name={`paymentType-${index}`}
+                            value="wallet"
+                            checked={paymentType === `wallet-${index}`}
+                            onChange={() => setPaymentType(`wallet-${index}`)}
+                            required={true}
+                          />
+                        </div>
+                      </div>
+                    )}
                     <div className="flex flex-row justify-center w-full">
                       <Button
                         text="Book Now"
