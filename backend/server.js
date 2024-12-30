@@ -21,6 +21,7 @@ const appointmentRoute = require("./routes/appointmentRoute");
 const documentRoute = require("./routes/documnetRoute");
 const requestRoute = require("./routes/requestRoute");
 const statisticsRoute = require("./routes/statisticsRoute");
+const chatbotRoute = require("./routes/chatbotRoute");
 const contactusRoute = require("./routes/contactusRoute");
 const treatmentplanRoute = require("./routes/treatmentplanRoute");
 // database configuration
@@ -52,8 +53,10 @@ app.use("/api/v1/appointments", appointmentRoute);
 app.use("/api/v1/documents", documentRoute);
 app.use("/api/v1/requests", requestRoute);
 app.use("/api/v1/statistics", statisticsRoute);
+app.use("/api/v1/chatbot", chatbotRoute);
 app.use("/api/v1/contactus", contactusRoute);
 app.use("/api/v1/treatmentplans", treatmentplanRoute);
+
 
 // handle unvalid routes
 app.all("*", (req, res, next) => {
