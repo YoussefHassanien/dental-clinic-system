@@ -204,3 +204,30 @@ exports.bookAppointmentValidator = [
 
   validatorMiddleware,
 ];
+
+exports.doctorResponseValidator = [
+  check("status")
+    .notEmpty()
+    .withMessage("Status is required")
+    .isIn(["approved", "rejected"])
+    .withMessage("Invalid status"),
+  check("appointmentId")
+    .notEmpty()
+    .withMessage("Appointment ID is required")
+    .isMongoId()
+    .withMessage("Invalid appointment ID")
+    .custom(async (value) => {
+      const appointment = await Appointment.findById(value);
+      if (!appointment) {
+        return Promise.reject("Appointment not found");
+      }
+      if (appointment.status !== "pending") {
+        return Promise.reject("Appointment is already responded to");
+      }
+      if (appointment.doctorId.toString() !== req.user.id) {
+        return Promise.reject("You are not the doctor of this appointment");
+      }
+      return true;
+    }),
+  validatorMiddleware,
+];

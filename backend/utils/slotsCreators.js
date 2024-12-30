@@ -92,4 +92,55 @@ const removeBookedSlot = asyncHandler(async (doctorId, date, startTime) => {
   return { message: "Slot removed successfully" };
 });
 
-module.exports = { addSlot, generateWeeklySlots, removeBookedSlot };
+const addBookedSlot = asyncHandler(
+  async (doctorId, date, startTime, endTime) => {
+    const appointmentDate = new Date(date);
+    const dayIndex = appointmentDate.getDay();
+    const dayNames = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    const dayName = dayNames[dayIndex];
+
+    // Find the doctor
+    const doctor = await Doctor.findOne({ userId: doctorId });
+
+    if (!doctor) {
+      throw new Error("Doctor not found");
+    }
+
+    // Find the availability for the given day
+    const dayAvailability = doctor.thisWeekAvailability.find(
+      (availability) => availability.day === dayName
+    );
+
+    // Check if the slot already exists
+    const slotExists = dayAvailability.slots.some(
+      (slot) => slot.startTime === startTime
+    );
+
+    if (slotExists) {
+      throw new Error(
+        `Slot starting at ${startTime} on ${dayName} already exists`
+      );
+    }
+
+    dayAvailability.slots.push({ startTime, endTime });
+
+    await doctor.save();
+    console.log("Slot added successfully");
+    return { message: "Slot added successfully" };
+  }
+);
+
+module.exports = {
+  addSlot,
+  generateWeeklySlots,
+  removeBookedSlot,
+  addBookedSlot,
+};
