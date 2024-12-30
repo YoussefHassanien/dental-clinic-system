@@ -223,18 +223,29 @@ export const doctorsInterests = [
 ];
 
 export interface Doctor {
+  id: string;
   name: string;
-  specialty: string;
   yearsOfExperience: number;
-  description: string;
   rating: number;
   sessions: number;
-  interests: string[];
+  specialities: string[];
   appointment: Date;
   topRated: boolean;
   gender: string;
+  picture: string;
 }
-
+export interface DoctorAPIResponse {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  yearsOfExperience: number;
+  rating: number;
+  totalNumberOfSessions: number;
+  specialities: string[];
+  nearestAppointment: string;
+  gender: string;
+  profilePicture: string;
+}
 export const availableSlots = {
   Monday: ["9:00 AM", "10:30 AM", "2:00 PM", "4:00 PM"],
   Tuesday: ["11:00 AM", "1:00 PM"],

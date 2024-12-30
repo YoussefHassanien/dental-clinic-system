@@ -3,75 +3,96 @@ import Navbar from "../../Common/Components/Navbar/navbar";
 import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 import Footer from "../../Common/Components/Footer/footer";
 import ReusableCard from "../../Common/Components/Reusable-Card/reusableCard";
-import { doctors, Doctor, availableSlots } from "./constants";
+import { Doctor, availableSlots } from "./constants";
 import Button from "../../Common/Components/Button/button";
 import ReactPaginate from "react-paginate";
-// import Loading from "../../Common/Components/Loading/loading";
+import Loading from "../../Common/Components/Loading/loading";
 import SuccessMessage from "../../Common/Components/Success-Message/successMessage";
+import ErrorMessage from "../../Common/Components/Error-Message/errorMessage";
+import { getDoctorsCardsInfo } from "./services";
+import { useAuthContext } from "../../Common/Contexts/Auth/AuthHook";
 
 const DoctorsPage: React.FC = () => {
+  const { user } = useAuthContext();
   const [selectedFilter, setSelectedFilter] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
-  const [currentDoctors, setCurrentDoctors] = useState(doctors);
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<{
     day: string;
     hour: string;
   } | null>(null);
 
   const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isDoctorCardsLoading, setIsDoctorCardsLoading] = useState(true);
+  // const [isDoctorAvailabilityLoading, setIsDoctorAvailabilityLoading] =
+  //   useState(true);
   const itemsPerPage = 6;
 
-  const paginatedDoctors = currentDoctors.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
-  );
+  const paginatedDoctors =
+    filteredDoctors.length > 0
+      ? filteredDoctors.slice(
+          currentPage * itemsPerPage,
+          (currentPage + 1) * itemsPerPage
+        )
+      : [];
 
   useEffect(() => {
-    let filteredDoctors = doctors;
+    getDoctorsCardsInfo()
+      .then((doctorsData) => {
+        if (doctorsData) {
+          setDoctors(doctorsData);
+          setFilteredDoctors(doctorsData);
+          setIsDoctorCardsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching doctors:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    let updatedDoctors = [...doctors];
 
     if (selectedFilter === "female") {
-      filteredDoctors = doctors.filter((doctor) => doctor.gender === "female");
+      updatedDoctors = doctors.filter((doctor) => doctor.gender === "female");
     } else if (selectedFilter === "male") {
-      filteredDoctors = doctors.filter((doctor) => doctor.gender === "male");
+      updatedDoctors = doctors.filter((doctor) => doctor.gender === "male");
     } else if (selectedFilter === "rating") {
-      filteredDoctors = [...doctors].sort((a, b) => b.rating - a.rating);
+      updatedDoctors = [...doctors].sort((a, b) => b.rating - a.rating);
     } else if (selectedFilter === "nearestAppointment") {
-      filteredDoctors = [...doctors].sort(
+      updatedDoctors = [...doctors].sort(
         (a, b) =>
           new Date(a.appointment).getTime() - new Date(b.appointment).getTime()
       );
     } else if (selectedFilter === "sessions") {
-      filteredDoctors = [...doctors].sort((a, b) => b.sessions - a.sessions);
+      updatedDoctors = [...doctors].sort((a, b) => b.sessions - a.sessions);
     }
 
     if (searchTerm) {
-      filteredDoctors = filteredDoctors.filter((doctor) =>
+      updatedDoctors = updatedDoctors.filter((doctor) =>
         doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    setCurrentDoctors(filteredDoctors);
-    setCurrentPage(0); // Reset to first page after applying filter or search
-  }, [selectedFilter, searchTerm]);
+    setFilteredDoctors(updatedDoctors);
+    setCurrentPage(0); // Reset to the first page
+  }, [selectedFilter, searchTerm, doctors]);
 
-  const handleBookNow = (doctor: {
-    name: string;
-    specialty: string;
-    yearsOfExperience: number;
-    description: string;
-    rating: number;
-    sessions: number;
-    interests: string[];
-    appointment: Date;
-    topRated: boolean;
-    gender: string;
-  }) => {
-    setSelectedDoctor(doctor);
-    setShowPopup(true);
+  const handleBookNow = (doctor: Doctor) => {
+    if (!user) {
+      setShowErrorMessage(true);
+      setTimeout(() => {
+        setShowErrorMessage(false);
+      }, 2000);
+    } else {
+      setSelectedDoctor(doctor);
+      setShowPopup(true);
+    }
   };
 
   const closePopup = () => {
@@ -231,7 +252,7 @@ const DoctorsPage: React.FC = () => {
                   onClick={() => {
                     setSearchTerm("");
                     setSelectedFilter("");
-                    setCurrentDoctors(doctors);
+                    setDoctors(doctors);
                   }}
                   width="w-3/5"
                 />
@@ -241,7 +262,7 @@ const DoctorsPage: React.FC = () => {
         </ReusableCard>
         {/* Doctors Container */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6 shadow-lg mb-5 grid-rows-2">
-          {/* {isLoading && <Loading />} */}
+          {isDoctorCardsLoading && <Loading />}
           {paginatedDoctors &&
             paginatedDoctors.map((doctor, index) => (
               <div
@@ -304,14 +325,14 @@ const DoctorsPage: React.FC = () => {
 
                     {/* Interests Section */}
                     <div className="mb-4">
-                      {doctor.interests.map((interest, index) => (
+                      {doctor.specialities.map((speciality, index) => (
                         <span
                           key={index}
                           className={`inline-block ${
                             index % 2 === 0 ? "bg-green-100" : "bg-gray-100"
                           } text-gray-600 px-3 py-1 rounded-full text-xs mr-2`}
                         >
-                          {interest}
+                          {speciality}
                         </span>
                       ))}
                     </div>
@@ -322,6 +343,13 @@ const DoctorsPage: React.FC = () => {
                         🕒 Nearest Appointment:
                         {` ${doctor.appointment.toLocaleDateString()} ${doctor.appointment.toLocaleTimeString()}`}
                       </p>
+                    </div>
+                    <div className="flex flex-row justify-center items-center">
+                      {" "}
+                      <ErrorMessage
+                        isVisible={showErrorMessage}
+                        text="Please log in first"
+                      />
                     </div>
                     <div className="flex flex-row justify-center w-full">
                       <Button
@@ -371,7 +399,7 @@ const DoctorsPage: React.FC = () => {
             />
           </svg>
         }
-        pageCount={Math.ceil(currentDoctors.length / itemsPerPage)}
+        pageCount={Math.ceil(doctors.length / itemsPerPage)}
         onPageChange={(selectedPage: { selected: number }) => {
           setCurrentPage(selectedPage.selected);
         }}
