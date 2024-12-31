@@ -4,32 +4,24 @@ import Navbar from "../../Common/Components/Navbar/navbar";
 import Footer from "../../Common/Components/Footer/footer";
 import ReusableCard from "../../Common/Components/Reusable-Card/reusableCard";
 import SuccessMessage from "../../Common/Components/Success-Message/successMessage";
-import { getAppointments, getDoctorsNearestAppointments } from "./services";
+import {
+  getAppointments,
+  getDoctorsNearestAppointments,
+  bookAppointment,
+  getReceptionistData,
+} from "./services";
 import { useAuthContext } from "../../Common/Contexts/Auth/AuthHook";
 import { Appointment } from "./constants";
-
-// Mock data to replace external service calls
-const MOCK_PATIENT_DATA = {
-  title: "Mr.",
-  fName: "John",
-  lName: "Doe",
-  phone: "+1 234 567 8900",
-  email: "john.doe@example.com",
-  district: "Downtown",
-  city: "Metropolis",
-  gov: "State",
-  gender: "Male",
-  dateOfBirth: "1990-01-01",
-  allergies: "None",
-  bloodType: "O+",
-  totalVisits: 12,
-};
+import ErrorMessage from "../../Common/Components/Error-Message/errorMessage";
+import Loading from "../../Common/Components/Loading/loading";
 
 const ReceptionistPage: React.FC = () => {
   const { user } = useAuthContext();
+  const [receptionistData, setReceptionistData] = useState({});
   const [activeTab, setActiveTab] = useState("Appointments");
   const [doctorsNearestAppointment, setDoctorsNearestAppointment] = useState<
     {
+      doctorId: string;
       doctorName: string;
       doctorEmail: string;
       doctorPhone: string;
@@ -37,11 +29,15 @@ const ReceptionistPage: React.FC = () => {
     }[]
   >([]);
   const [todayAppointments, setTodayAppointment] = useState<Appointment[]>([]);
-  const [patientData] = useState(MOCK_PATIENT_DATA);
   const [patientEmail, setPatientEmail] = useState("");
+  const [errorMessageText, setErrorMessageText] = useState("");
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const [doctorId, setDoctorId] = useState("");
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [appointmentStartTime, setAppointmentStartTime] = useState("");
+  const [showReceptionistInfoLoading, setShowReceptionistInfoLoading] =
+    useState(true);
+  const [showAppointmentsLoading, setshowAppointmentsLoading] = useState(true);
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -51,6 +47,10 @@ const ReceptionistPage: React.FC = () => {
         user?.token || ""
       );
       setDoctorsNearestAppointment(nearestAppointments);
+      const receptionist = await getReceptionistData(user?.token || "");
+      setReceptionistData(receptionist);
+      setShowReceptionistInfoLoading(false);
+      setshowAppointmentsLoading(false);
     };
     fetchAppointments();
   }, [user?.token]);
@@ -82,21 +82,26 @@ const ReceptionistPage: React.FC = () => {
                   d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
                 />
               </svg>
+              {showReceptionistInfoLoading && <Loading />}
               <h2 className="text-2xl font-bold text-customBlue">
-                {patientData.title} {patientData.fName} {patientData.lName}
+                {receptionistData.gender === "female" ? "Ms." : "Mr."}{" "}
+                {receptionistData.fName} {receptionistData.lName}
               </h2>
             </div>
             <div className="text-lg flex flex-col w-[400px] items-center space-y-2 pb-3">
               <div className="flex flex-row items-center justify-center w-full">
-                <div>📞</div> <p className="font-sans">{patientData.phone}</p>
+                <div>📞</div>{" "}
+                <p className="font-sans">{receptionistData.phone}</p>
               </div>
               <div className="flex flex-row items-center justify-center w-full space-x-1">
-                <div>✉️</div> <p className="font-sans">{patientData.email}</p>
+                <div>✉️</div>{" "}
+                <p className="font-sans">{receptionistData.email}</p>
               </div>
               <div className="flex flex-row items-center justify-center w-full">
                 <div>📍</div>{" "}
                 <p className="font-sans">
-                  {patientData.district}, {patientData.city}, {patientData.gov}
+                  {receptionistData.district}, {receptionistData.city},{" "}
+                  {receptionistData.gov}
                 </p>
               </div>
             </div>
@@ -125,16 +130,30 @@ const ReceptionistPage: React.FC = () => {
                     id="doctorId"
                     className="text-gray-400 rounded-md border-2 p-2 w-full font-sans"
                     value={doctorId}
-                    onChange={(e) => setDoctorId(e.target.value)}
+                    onChange={(e) => {
+                      const selectedDoctorId = e.target.value;
+                      setDoctorId(selectedDoctorId);
+
+                      // Find the nearest appointment for the selected doctor
+                      const selectedDoctor = doctorsNearestAppointment.find(
+                        (doctor) => doctor.doctorId === selectedDoctorId
+                      );
+
+                      // Set the nearest appointment start time if a doctor is selected
+                      if (selectedDoctor) {
+                        setAppointmentStartTime(
+                          selectedDoctor.nearestStartTime
+                        );
+                      } else {
+                        setAppointmentStartTime(""); // Reset if no doctor is selected
+                      }
+                    }}
                     required={true}
                   >
-                    <option value="">Doctors</option>
-                    {todayAppointments.map((d, idx) => (
-                      <option
-                        key={idx}
-                        value={`${d.doctor.firstname} ${d.doctor.lastname}`}
-                      >
-                        {d.doctor.firstname} {d.doctor.lastname}
+                    <option value="Doctors">Doctors</option>
+                    {doctorsNearestAppointment.map((d) => (
+                      <option key={d.doctorId} value={`${d.doctorId}`}>
+                        {d.doctorName}
                       </option>
                     ))}
                   </select>
@@ -148,6 +167,7 @@ const ReceptionistPage: React.FC = () => {
                     required={true}
                     value={appointmentStartTime}
                     onChange={(e) => setAppointmentStartTime(e.target.value)}
+                    readOnly
                   />
                 </div>
               </form>
@@ -155,16 +175,44 @@ const ReceptionistPage: React.FC = () => {
                 text="Appointment booked successfully"
                 isVisible={showSuccessMessage}
               />
+              <ErrorMessage
+                text={errorMessageText}
+                isVisible={showErrorMessage}
+              />
               <div className="flex flex-row justify-center items-center p-2 w-full">
                 {" "}
                 <button
                   className="bg-customBlue text-white w-full p-2 rounded-md hover:bg-black transition-colors duration-300 ease-in-out"
                   type="submit"
-                  onClick={() => {
-                    setShowSuccessMessage(true);
-                    setTimeout(() => {
-                      setShowSuccessMessage(false);
-                    }, 3000);
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    if (!patientEmail || !doctorId || !appointmentStartTime) {
+                      setErrorMessageText("Please fill all fields");
+                      setShowErrorMessage(true);
+                      setTimeout(() => {
+                        setShowErrorMessage(false);
+                      }, 3000);
+                      return;
+                    }
+
+                    const isAppointmentBooked = await bookAppointment(
+                      user?.token || "",
+                      doctorId,
+                      patientEmail,
+                      appointmentStartTime
+                    );
+                    if (isAppointmentBooked) {
+                      setShowSuccessMessage(true);
+                      setTimeout(() => {
+                        setShowSuccessMessage(false);
+                      }, 3000);
+                    } else {
+                      setErrorMessageText("Failed to book appointment");
+                      setShowErrorMessage(true);
+                      setTimeout(() => {
+                        setShowErrorMessage(false);
+                      }, 3000);
+                    }
                   }}
                 >
                   Book Now
@@ -239,6 +287,7 @@ const ReceptionistPage: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody>
+                      {showAppointmentsLoading && <Loading />}
                       {activeTab === "Appointments" &&
                         todayAppointments.map((appointment, index) => (
                           <tr
@@ -262,6 +311,7 @@ const ReceptionistPage: React.FC = () => {
                             </td>
                           </tr>
                         ))}
+
                       {activeTab === "Doctors" &&
                         doctorsNearestAppointment.map((doctor, index) => (
                           <tr
@@ -274,7 +324,7 @@ const ReceptionistPage: React.FC = () => {
                             <td className="p-2.5 text-left border-b border-gray-200">
                               {doctor.doctorEmail}
                             </td>
-                            <td className="p-2.5 text-left border-b border-gray-200">
+                            <td className="p-2.5 text-left border-b border-gray-200 font-sans">
                               {doctor.doctorPhone}
                             </td>
                             <td className="p-2.5 text-left border-b border-gray-200 font-sans">
