@@ -46,7 +46,7 @@ exports.getLoggedPatientData = asyncHandler(async (req, res, next) => {
   const patientPlain = patient.toObject();
   const userPlain = user.toObject();
   let doctors = await Doctor.find({ currentPatients: req.user._id });
-  const currentDoctors = await Promise.all(
+  let currentDoctors = await Promise.all(
     doctors.map(async (doctor) => {
       const user = await User.findById(doctor.userId);
       return {

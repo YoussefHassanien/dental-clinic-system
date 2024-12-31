@@ -6,6 +6,7 @@ const ApiError = require("../utils/apiError");
 const { uploadSingleImage } = require("../middlewares/uploadImageMiddleware");
 const createToken = require("../utils/createToken");
 const User = require("../models/userModel");
+const sharp = require("sharp");
 
 // Upload single image
 exports.uploadUserImage = uploadSingleImage("profileImg");
@@ -22,7 +23,7 @@ exports.resizeImage = asyncHandler(async (req, res, next) => {
       .toFile(`uploads/users/${filename}`);
 
     // Save image into our db
-    req.body.profileImg = filename;
+    req.body.profileImg = "uploads/users/" + filename;
   }
 
   next();

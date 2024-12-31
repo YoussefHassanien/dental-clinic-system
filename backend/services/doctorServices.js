@@ -23,7 +23,7 @@ exports.resizeImage = asyncHandler(async (req, res, next) => {
       .toFile(`uploads/doctors/${filename}`);
 
     // Save image into our db
-    req.body.profileImg = filename;
+    req.body.profileImg = "uploads/doctors/" + filename;
   }
 
   next();
