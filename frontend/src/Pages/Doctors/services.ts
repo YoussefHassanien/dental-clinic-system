@@ -1,4 +1,5 @@
 const doctorsAPI = import.meta.env.VITE_GET_DOCTORS_INFO_API;
+const bookAppointmentAPI = import.meta.env.VITE_BOOK_APPOINTMENT_API;
 import { Doctor, DoctorAPIResponse } from "./constants.ts";
 
 export const getDoctorsCardsInfo = async (): Promise<Doctor[]> => {
@@ -56,15 +57,52 @@ export const getDoctorAvailability = async (id: string, token: string) => {
     const fetchedData = await response.json();
     const formattedData: { [key: string]: string[] } = {};
     fetchedData.data.availability.forEach(
-      (item: { day: string; slots: { startTime: string }[] }) => {
+      (item: {
+        day: string;
+        slots: { startTime: string; endTime: string }[];
+      }) => {
         formattedData[item.day] = item.slots.map(
-          (slot: { startTime: string }) => `${slot.startTime}`
+          (slot: { startTime: string; endTime: string }) =>
+            `${slot.startTime}-${slot.endTime}`
         );
       }
     );
     return formattedData;
-  } catch (error) {
-    console.error("Error fetching doctors' availability:", error);
+  } catch {
     return {};
+  }
+};
+
+export const bookAppointment = async (
+  id: string,
+  date: string,
+  startTime: string,
+  endTime: string,
+  pay: boolean,
+  token: string
+) => {
+  try {
+    const response = await fetch(`${bookAppointmentAPI}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `bearer ${token}`,
+      },
+      body: JSON.stringify({
+        doctorId: id,
+        date,
+        startTime,
+        endTime,
+        pay,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to book appointment");
+    }
+
+    return true;
+  } catch {
+    return false;
   }
 };

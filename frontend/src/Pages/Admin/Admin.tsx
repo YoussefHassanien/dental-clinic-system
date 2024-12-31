@@ -1,12 +1,25 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import Navbar from "../../Common/Components/Navbar/navbar";
 import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 import styles from './Admin.module.css';
 import { DollarSign, Users, Stethoscope, Calendar, ChevronRight, UserPlus, Trash2, User2, Phone, Mail, GraduationCap, Clock, Package2, Building, MapPin, Package, AlertCircle, CalendarClock } from 'lucide-react';
-
+import {get_current_statistics} from "./services"
 
 const AdminPage = () => {
+
+  const [Statistics, setStatistics] = useState({});
+    useEffect(() => {
+      let token= localStorage.getItem("token")
+      
+      if (token){
+       
+       token=JSON.parse(token)   
+       get_current_statistics(token).then((data)=>setStatistics(data.data.data)).catch((e)=>alert("something went wrong"))
+      }
+      
+    }, []);
+
   const mockVisitorData = [
     { name: 'Mon', value: 400 },
     { name: 'Tue', value: 300 },
@@ -270,7 +283,7 @@ const AdminPage = () => {
                 <Users size={24} className="opacity-90" />
                 <div className={styles.statsLabel}>Total Patients</div>
               </div>
-              <div className={styles.statsValue}>600</div>
+              <div className={styles.statsValue}>{Statistics.patientsCount}</div>
             </div>
           </div>
           <div className={styles.statsCardRed}>
@@ -340,7 +353,7 @@ const AdminPage = () => {
                     </svg>
                     <div className={styles.circleText}>
                       <div className={styles.patientLabel}>Total Patients</div>
-                      <div className={styles.patientCount}>784,670</div>
+                      <div className={styles.patientCount}>74500</div>
                     </div>
                   </div>
                 </div>

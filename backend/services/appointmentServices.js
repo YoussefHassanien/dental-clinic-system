@@ -6,6 +6,7 @@ const Doctor = require("../models/doctorModel");
 const Wallet = require("../models/walletModel");
 const Patient = require("../models/patientModel");
 
+
 //@desc     get list of  appointments
 //@route    POST /api/v1/appointments
 //@access   Private

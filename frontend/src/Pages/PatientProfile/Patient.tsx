@@ -31,7 +31,7 @@ const Patient = () => {
 
       // Fetch patient data
       get_current_patient(token)
-        .then((data) => setpatientData(data.data.doctorProfile))
+        .then((data) => setpatientData(data.data.Profile))
         .catch((e) => alert("Something went wrong while fetching patient data"));
 
       // Fetch patient reports
