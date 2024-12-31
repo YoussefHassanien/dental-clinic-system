@@ -76,46 +76,49 @@ exports.nearestReservationtOfEveryDoctor = asyncHandler(
     const today = dayNames[dayIndex];
 
     const nearestSlots = await Promise.all(
-      doctors.map(async (doctor) => {
-        doctorData = await User.findById(doctor.userId);
-        // Find today's availability for the doctor
-        const todayAvailability = doctor.thisWeekAvailability.find(
-          (availability) => availability.day === today
-        );
+      doctors
+        .filter((doctor) => {
+          const todayAvailability = doctor.thisWeekAvailability.find(
+            (availability) => availability.day === today
+          );
+          return todayAvailability && todayAvailability.slots.length;
+        })
+        .map(async (doctor) => {
+          doctorData = await User.findById(doctor.userId);
+          // Find today's availability for the doctor
+          const todayAvailability = doctor.thisWeekAvailability.find(
+            (availability) => availability.day === today
+          );
 
-        if (!todayAvailability || !todayAvailability.slots.length) {
-          return { doctorId: doctor._id, nearestStartTime: null }; // No availability today
-        }
+          // Find the nearest start time from today's slots
+          const currentTime = new Date(); // Current time
+          const nearestSlot = todayAvailability.slots
+            .filter((slot) => {
+              // Parse start time to Date object for comparison
+              const slotTime = new Date(
+                `${currentTime.toDateString()} ${slot.startTime}`
+              );
+              return slotTime > currentTime;
+            })
+            .sort((a, b) => {
+              // Sort slots by start time
+              const timeA = new Date(
+                `${currentTime.toDateString()} ${a.startTime}`
+              );
+              const timeB = new Date(
+                `${currentTime.toDateString()} ${b.startTime}`
+              );
+              return timeA - timeB;
+            })[0]; // Get the earliest slot
 
-        // Find the nearest start time from today's slots
-        const currentTime = new Date(); // Current time
-        const nearestSlot = todayAvailability.slots
-          .filter((slot) => {
-            // Parse start time to Date object for comparison
-            const slotTime = new Date(
-              `${currentTime.toDateString()} ${slot.startTime}`
-            );
-            return slotTime > currentTime; // Only consider future slots
-          })
-          .sort((a, b) => {
-            // Sort slots by start time
-            const timeA = new Date(
-              `${currentTime.toDateString()} ${a.startTime}`
-            );
-            const timeB = new Date(
-              `${currentTime.toDateString()} ${b.startTime}`
-            );
-            return timeA - timeB;
-          })[0]; // Get the earliest slot
-
-        return {
-          doctorId: doctor.userId,
-          doctorName: doctorData.fName + " " + doctorData.lName,
-          doctorEmail: doctorData.email,
-          doctorPhone: doctorData.phone,
-          nearestStartTime: nearestSlot ? nearestSlot.startTime : "no slots",
-        };
-      })
+          return {
+            doctorId: doctor.userId,
+            doctorName: doctorData.fName + " " + doctorData.lName,
+            doctorEmail: doctorData.email,
+            doctorPhone: doctorData.phone,
+            nearestStartTime: nearestSlot ? nearestSlot.startTime : "no slots",
+          };
+        })
     );
     res.status(200).json({
       status: "success",
