@@ -5,8 +5,7 @@ const { removeBookedSlot, addBookedSlot } = require("../utils/slotsCreators");
 const Doctor = require("../models/doctorModel");
 const Wallet = require("../models/walletModel");
 const Patient = require("../models/patientModel");
-// const { TbPlaystationSquare } = require("react-icons/tb");
-// const { STORAGE_TYPES } = require("natural");
+
 
 //@desc     get list of  appointments
 //@route    POST /api/v1/appointments
@@ -80,8 +79,10 @@ exports.doctorResponse = asyncHandler(async (req, res, next) => {
   const appointment = await Appointment.findById(appointmentId);
   const doctor = await Doctor.findOne({ userId: doctorId });
   if (status === "approved") {
-    doctor.currentPatients.push(appointment.patientId);
-    doctor.save();
+    if (!doctor.currentPatients.includes(appointment.patientId)) {
+      doctor.currentPatients.push(appointment.patientId);
+      await doctor.save();
+    }
   } else if (status === "rejected") {
     addBookedSlot(
       doctorId,

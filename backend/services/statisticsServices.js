@@ -13,7 +13,9 @@ exports.userStatistics = asyncHandler(async (req, res, next) => {
   const patientsCount = users.filter((user) => user.role === "patient").length;
   const doctorsCount = users.filter((user) => user.role === "doctor").length;
   const adminsCount = users.filter((user) => user.role === "admin").length;
-  const staffCount = users.filter((user) => user.role === "staff").length;
+  const staffCount = users.filter(
+    (user) => user.role === "reseptionist"
+  ).length;
   res.status(200).json({
     status: "success",
     data: {
@@ -36,13 +38,13 @@ exports.appointmentStatistics = asyncHandler(async (req, res, next) => {
     (appointment) => appointment.status === "pending"
   ).length;
   const confirmedAppointments = appointments.filter(
-    (appointment) => appointment.status === "confirmed"
+    (appointment) => appointment.status === "approved"
   ).length;
   const completedAppointments = appointments.filter(
     (appointment) => appointment.status === "completed"
   ).length;
   const cancelledAppointments = appointments.filter(
-    (appointment) => appointment.status === "cancelled"
+    (appointment) => appointment.status === "rejected"
   ).length;
   res.status(200).json({
     status: "success",

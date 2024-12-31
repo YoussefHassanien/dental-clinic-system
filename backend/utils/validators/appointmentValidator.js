@@ -3,6 +3,7 @@ const validatorMiddleware = require("../../middlewares/validatorMiddleware");
 const Patient = require("../../models/patientModel");
 const Doctor = require("../../models/doctorModel");
 const Appointment = require("../../models/appointmentModel");
+const Wallet = require("../../models/walletModel");
 
 exports.createAppointmentValidator = [
   check("patientId")
@@ -151,12 +152,10 @@ exports.bookAppointmentValidator = [
     .isDate()
     .withMessage("Invalid date")
     .custom(async (value, { req }) => {
-      const appointmentDate = new Date(value);
-
-      if (appointmentDate < new Date()) {
+      const appointmentDate = new Date(`${value}T${req.body.startTime}`);
+      if (appointmentDate.getTime() < Date.now()) {
         throw new Error("The appointment date has already passed");
       }
-
       const dayIndex = appointmentDate.getDay();
       const dayNames = [
         "Sunday",
@@ -198,6 +197,24 @@ exports.bookAppointmentValidator = [
       }
 
       return true;
+    }),
+  check("pay")
+    .optional()
+    .isBoolean()
+    .withMessage("pay must be a boolean")
+    .custom(async (value, { req }) => {
+      if (value) {
+        const wallet = await Wallet.findOne({ userId: req.user.id });
+        const doctor = await Doctor.findOne({ userId: req.body.doctorId });
+        console.log(wallet);
+        if (!wallet) {
+          throw new Error("Wallet not found");
+        }
+        if (wallet.credit < doctor.appointmentFee) {
+          throw new Error("Insufficient balance");
+        }
+        return true;
+      }
     }),
 
   check("notes").optional().notEmpty().withMessage("you provided empty notes"),

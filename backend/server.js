@@ -24,7 +24,7 @@ const statisticsRoute = require("./routes/statisticsRoute");
 // const chatbotRoute = require("./routes/chatbotRoute");
 const contactusRoute = require("./routes/contactusRoute");
 const treatmentplanRoute = require("./routes/treatmentplanRoute");
-const reseptionistRoute = require("./routes/reseptionistRoute");
+const receptionistRoute = require("./routes/receptionistRoute");
 // database configuration
 dbconnection();
 
@@ -57,7 +57,7 @@ app.use("/api/v1/statistics", statisticsRoute);
 // app.use("/api/v1/chatbot", chatbotRoute);
 app.use("/api/v1/contactus", contactusRoute);
 app.use("/api/v1/treatmentplans", treatmentplanRoute);
-app.use("/api/v1/reseptionist", reseptionistRoute);
+app.use("/api/v1/receptionist", receptionistRoute);
 
 
 // handle unvalid routes
