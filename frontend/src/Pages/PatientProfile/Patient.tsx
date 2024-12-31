@@ -67,7 +67,7 @@ const Patient = () => {
               <FaEdit className={styles.editIcon} />
             </div>
             <div className={styles.profileImageContainer}>
-              <img src="https://via.placeholder.com/150" alt="Jane Moore" className={styles.profileImageLarge} />
+              <img src={patientData.profileImg} alt="Jane Moore" className={styles.profileImageLarge} />
               <h2 className={styles.profileName}>{patientData.title} {patientData.fName} {patientData.lName}</h2>
             </div>
             <div className={styles.contactDetails}>
