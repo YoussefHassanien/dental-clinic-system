@@ -16,6 +16,8 @@ import {
 } from "./services";
 import { useAuthContext } from "../../Common/Contexts/Auth/AuthHook";
 import { getNearestDateOfWeekday } from "../../Utils/helpers";
+// import doctorPicture from "../../assets/doctor-417da2de-7d9e-426d-b644-121802af5870-1734477022935.jpeg";
+// import doctorProfilePicture from "../../../../backend"
 
 const DoctorsPage: React.FC = () => {
   const { user } = useAuthContext();
@@ -316,7 +318,7 @@ const DoctorsPage: React.FC = () => {
                     {/* Top Section: Doctor Image, Name, Specialty, and Rating */}
                     <div className="flex items-center gap-4 mb-4">
                       {/* Doctor Avatar (placeholder icon) */}
-                      <svg
+                      {/* <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -329,7 +331,12 @@ const DoctorsPage: React.FC = () => {
                           strokeLinejoin="round"
                           d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
                         />
-                      </svg>
+                      </svg> */}
+                      <img
+                        src={`/${doctor.picture}`}
+                        alt="doctor-picture"
+                        className="size-20 rounded-full"
+                      />
 
                       <div>
                         {/* Name and Sessions */}

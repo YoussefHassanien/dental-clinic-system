@@ -32,7 +32,7 @@ export const getDoctorsCardsInfo = async (): Promise<Doctor[]> => {
         picture: item.profilePicture,
       })
     );
-
+    console.log("Doctors' cards info:", formattedData);
     return formattedData;
   } catch (error) {
     console.error("Error fetching doctors' cards info:", error);
