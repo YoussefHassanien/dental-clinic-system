@@ -318,16 +318,7 @@
   height: 1.25rem;
 }
 
-.patientsContent {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  background: linear-gradient(135deg, #f8fafc, #ffffff);
-  padding: 1.5rem;
-  border-radius: 1rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
-}
+
 
 .patientsContent:hover {
   transform: translateY(-5px);
@@ -652,4 +643,75 @@
 .suppliersTable tbody tr:hover,
 .supplyRequestsTable tbody tr:hover {
   background-color: rgba(241, 245, 249, 0.8);
+}
+
+
+/* Patient Card Styles */
+.patientCard {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  height:12rem;
+}
+
+.patientInfo {
+  flex: 1;
+}
+
+.patientTitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 0.5rem;
+}
+
+.patientTotal {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 1rem;
+}
+
+.patientTypes {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.patientType {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.typeIndicator {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+}
+
+.patientActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  color: #0f172a;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+  min-width: 200px;
+}
+
+.actionButton:hover {
+  background-color: #f1f5f9;
+  transform: translateX(2px);
 }

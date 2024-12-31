@@ -5,20 +5,44 @@ import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 import styles from './Admin.module.css';
 import { DollarSign, Users, Stethoscope, Calendar, ChevronRight, UserPlus, Trash2, User2, Phone, Mail, GraduationCap, Clock, Package2, Building, MapPin, Package, AlertCircle, CalendarClock } from 'lucide-react';
 import {get_current_statistics} from "./services"
+import {get_appointment_statistics} from "./services"
+import {get_list_of_doctors} from "./services"
+import {get_list_of_requests} from "./services"
+import doctorImage1 from "../../assets/picture_maleDR.png"
+import doctorImage2 from "../../assets/picture_maleDR2.png"
+import doctorImage3 from "../../assets/picture_maleDR3.png"
+import doctorImage4 from "../../assets/picture_maleDR4.png"
+
 
 const AdminPage = () => {
 
   const [Statistics, setStatistics] = useState({});
-    useEffect(() => {
-      let token= localStorage.getItem("token")
-      
-      if (token){
-       
-       token=JSON.parse(token)   
-       get_current_statistics(token).then((data)=>setStatistics(data.data.data)).catch((e)=>alert("something went wrong"))
-      }
-      
-    }, []);
+  const [DoctorList, setDoctorList] = useState([]);
+  const [requestList, setrequestList] = useState([]);
+  const [AppointmentStatistics, setAppointmentStatistics] = useState([]);
+      useEffect(() => {
+        let token = localStorage.getItem("token");
+        if (token) {
+          token = JSON.parse(token);
+
+          
+          get_appointment_statistics(token)
+          .then((reports) => setAppointmentStatistics(reports.data)) 
+          .catch((e) => console.log("Something went wrong while fetching reports"));
+    
+          // Fetch patient data
+          get_current_statistics(token).then((data)=>setStatistics(data.data)).catch((e)=>alert("something went wrong"))
+     
+          get_list_of_doctors(token)
+          .then((result) => setDoctorList(result.data)) 
+          .catch((e) => console.log("Something went wrong while fetching reports"));
+
+          get_list_of_requests(token)
+          .then((request) => setrequestList(request.data)) 
+          .catch((e) => console.log("Something went wrong while fetching reports"));
+          
+        }
+      }, []);
 
   const mockVisitorData = [
     { name: 'Mon', value: 400 },
@@ -41,44 +65,14 @@ const AdminPage = () => {
   ];
 
   const bestDoctors = [
-    { name: 'Dr. Sarah', img: '/api/placeholder/64/64', specialty: 'Dentist' },
-    { name: 'Dr. John', img: '/api/placeholder/64/64', specialty: 'Surgeon' },
-    { name: 'Dr. Emily', img: '/api/placeholder/64/64', specialty: 'Orthodontist' },
-    { name: 'Dr. Michael', img: '/api/placeholder/64/64', specialty: 'Periodontist' },
+    { name: 'Dr. Joe', img: doctorImage1, specialty: 'Dentist' },
+    { name: 'Dr. John', img: doctorImage2, specialty: 'Surgeon' },
+    { name: 'Dr. Mark', img: doctorImage3, specialty: 'Orthodontist' },
+    { name: 'Dr. Michael', img: doctorImage4, specialty: 'Periodontist' },
   ];
+  
 
-  const doctors = [
-    {
-      id: 1,
-      name: 'Dr. Sarah Smith',
-      specialty: 'General Dentistry',
-      phone: '+1 (555) 123-4567',
-      email: 'dr.sarah@dentalclinic.com',
-      experience: '8 years',
-      availability: 'Mon-Fri',
-      qualification: 'DDS, University of Michigan'
-    },
-    {
-      id: 2,
-      name: 'Dr. John Davis',
-      specialty: 'Oral Surgery',
-      phone: '+1 (555) 234-5678',
-      email: 'dr.john@dentalclinic.com',
-      experience: '12 years',
-      availability: 'Mon-Thu',
-      qualification: 'DMD, Harvard University'
-    },
-    {
-      id: 3,
-      name: 'Dr. Emily Wilson',
-      specialty: 'Orthodontics',
-      phone: '+1 (555) 345-6789',
-      email: 'dr.emily@dentalclinic.com',
-      experience: '10 years',
-      availability: 'Tue-Sat',
-      qualification: 'DDS, NYU'
-    }
-  ];
+  
 
   const patients = [
     {
@@ -214,32 +208,7 @@ const AdminPage = () => {
     },
   ];
 
-  const supplyRequests = [
-    {
-      id: 1,
-      supplier: 'DentalTech Solutions',
-      item: 'Dental Chairs',
-      quantity: 5,
-      requestDate: '2024-12-01',
-      status: 'Pending',
-    },
-    {
-      id: 2,
-      supplier: 'SmileCare Supplies',
-      item: 'Brackets and Wires',
-      quantity: 100,
-      requestDate: '2024-11-28',
-      status: 'Approved',
-    },
-    {
-      id: 3,
-      supplier: 'ProDental Innovations',
-      item: 'Crown Materials',
-      quantity: 20,
-      requestDate: '2024-11-25',
-      status: 'Delivered',
-    },
-  ];
+ 
   
   
   
@@ -301,7 +270,7 @@ const AdminPage = () => {
                 <Calendar size={24} className="opacity-90" />
                 <div className={styles.statsLabel}>Appointments</div>
               </div>
-              <div className={styles.statsValue}>80</div>
+              <div className={styles.statsValue}>{AppointmentStatistics?.appointmentsCount}</div>
             </div>
           </div>
         </div>
@@ -324,69 +293,68 @@ const AdminPage = () => {
               </div>
             </div>
 
+            {/* Patient */}
             <div className={styles.card}>
-              <div className={styles.cardHeader}>
-                <h2 className={styles.cardTitle}>Patients</h2>
-              </div>
-              <div className={styles.patientsContent}>
-                <div className={styles.patientCircleSection}>
-                  <div className={styles.patientCircle}>
-                    <svg className="w-full h-full transform -rotate-90">
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="60"
-                        fill="none"
-                        stroke="#dc2626"
-                        strokeWidth="8"
-                      />
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="60"
-                        fill="none"
-                        stroke="#3b82f6"
-                        strokeWidth="8"
-                        strokeDasharray="377"
-                        strokeDashoffset="94.25"
-                      />
-                    </svg>
-                    <div className={styles.circleText}>
-                      <div className={styles.patientLabel}>Total Patients</div>
-                      <div className={styles.patientCount}>74500</div>
-                    </div>
-                  </div>
+                <div className={styles.cardHeader}>
+                  <h2 className={styles.cardTitle}>Patients</h2>
                 </div>
-
-                <div className={styles.patientInfoSection}>
-                  <div className={styles.patientLegend}>
-                    <div className={styles.legendItem}>
-                      <div className={`${styles.legendDot} ${styles.legendDotBlue}`}></div>
-                      <div className={styles.legendText}>New</div>
-                    </div>
-                    <div className={styles.legendItem}>
-                      <div className={`${styles.legendDot} ${styles.legendDotRed}`}></div>
-                      <div className={styles.legendText}>Treatment</div>
-                    </div>
+                <div className={styles.patientCard}>
+                  <div className={styles.patientCircleSection}>
+                      <div className={styles.patientCircle}>
+                        <svg className="w-full h-full transform -rotate-90">
+                          <circle
+                            cx="64"
+                            cy="64"
+                            r="60"
+                            fill="none"
+                            stroke="#dc2626"
+                            strokeWidth="8"
+                          />
+                          <circle
+                            cx="64"
+                            cy="64"
+                            r="60"
+                            fill="none"
+                            stroke="#3b82f6"
+                            strokeWidth="8"
+                            strokeDasharray="377"
+                            strokeDashoffset="94.25"
+                          />
+                        </svg>
+                        <div className={styles.circleText}>
+                          <div className={styles.patientLabel}>Total Patients</div>
+                          <div className={styles.patientCount}>{Statistics.patientsCount}</div>
+                        </div>
+                      </div>
                   </div>
 
-                  <div className={styles.navigationButtons}>
-                    <button onClick={() => handleNavigation('/patients')} className={styles.navButton}>
-                      View Patients
-                      <ChevronRight size={16} />
+                  <div className={styles.patientInfo}>
+                    <div className={styles.patientTitle}>Total Patients</div>
+                    <div className={styles.patientTotal}>{Statistics.patientsCount}</div>
+                    <div className={styles.patientTypes}>
+                      <div className={styles.patientType}>
+                        <div className={styles.typeIndicator} style={{ backgroundColor: '#3b82f6' }}></div>
+                        <span>New</span>
+                      </div>
+                      <div className={styles.patientType}>
+                        <div className={styles.typeIndicator} style={{ backgroundColor: '#dc2626' }}></div>
+                        <span>Treatment</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={styles.patientActions}>
+                    <button className={styles.actionButton}>
+                      View Patients <ChevronRight size={16} />
                     </button>
-                    <button onClick={() => handleNavigation('/suppliers')} className={styles.navButton}>
-                      View Suppliers
-                      <ChevronRight size={16} />
+                    <button className={styles.actionButton}>
+                      View Suppliers <ChevronRight size={16} />
                     </button>
-                    <button onClick={() => handleNavigation('/supply-requests')} className={styles.navButton}>
-                      Supply Requests
-                      <ChevronRight size={16} />
+                    <button className={styles.actionButton}>
+                      Supply Requests <ChevronRight size={16} />
                     </button>
                   </div>
                 </div>
               </div>
-            </div>
           </div>
 
           <div className="flex flex-col gap-8">
@@ -445,49 +413,49 @@ const AdminPage = () => {
                   <th>Contact</th>
                   <th>Email</th>
                   <th>Experience</th>
-                  <th>Availability</th>
-                  <th>Qualification</th>
+                  <th>Rating</th>
+                  <th>ID</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {doctors.map((doctor) => (
-                  <tr key={doctor.id}>
+                  {DoctorList.map((doctor) => (
+                  <tr key={doctor.userId}>
                     <td>
                       <div className={styles.cellWithIcon}>
                         <User2 className={styles.doctorIcon} />
-                        {doctor.name}
+                        {`${doctor.firstName} ${doctor.lastName}`}
                       </div>
                     </td>
-                    <td>{doctor.specialty}</td>
+                    <td>{doctor.specialities.join(", ")}</td>
                     <td>
                       <div className={styles.cellWithIcon}>
                         <Phone className={styles.contactIcon} />
-                        {doctor.phone}
+                        {doctor.phone || "N/A"}
                       </div>
                     </td>
                     <td>
                       <div className={styles.cellWithIcon}>
                         <Mail className={styles.emailIcon} />
-                        {doctor.email}
+                        {doctor.email || "N/A"}
                       </div>
                     </td>
                     <td>
                       <div className={styles.cellWithIcon}>
                         <Clock className={styles.experienceIcon} />
-                        {doctor.experience}
+                        {doctor.yearsOfExperience} years
                       </div>
                     </td>
                     <td>
                       <div className={styles.cellWithIcon}>
                         <Calendar className={styles.availabilityIcon} />
-                        {doctor.availability}
+                        {doctor.rating}
                       </div>
                     </td>
                     <td>
                       <div className={styles.cellWithIcon}>
                         <GraduationCap className={styles.qualificationIcon} />
-                        {doctor.qualification}
+                        {doctor.userId}
                       </div>
                     </td>
                     <td>
@@ -650,31 +618,29 @@ const AdminPage = () => {
             <table className={styles.supplyRequestsTable}>
               <thead>
                 <tr>
-                  <th>Supplier</th>
-                  <th>Item</th>
-                  <th>Quantity</th>
+                  <th>Doctor ID</th>
+                  <th>Item ID</th>
                   <th>Request Date</th>
                   <th>Status</th>
                 </tr>
               </thead>
               <tbody>
-                {supplyRequests.map((request) => (
-                  <tr key={request.id}>
-                    <td>{request.supplier}</td>
-                    <td>{request.item}</td>
-                    <td>{request.quantity}</td>
-                    <td>{request.requestDate}</td>
+                {requestList.map((request) => (
+                  <tr key={request._id}>
+                    <td>{request.doctorId}</td>
+                    <td>{request.materialId}</td>
+                    <td>{new Date(request.createdAt).toLocaleDateString()}</td>
                     <td>
                       <span
                         className={`${styles.statusBadge} ${
-                          request.status === 'Pending'
+                          request.status === 'pending'
                             ? styles.statusPending
-                            : request.status === 'Approved'
+                            : request.status === 'approved'
                             ? styles.statusApproved
                             : styles.statusDelivered
                         }`}
                       >
-                        {request.status}
+                        {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                       </span>
                     </td>
                   </tr>
