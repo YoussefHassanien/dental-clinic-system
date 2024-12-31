@@ -4,6 +4,7 @@ const loginAPI = import.meta.env.VITE_STATISTICS_API;
 const appointmentAPI = import.meta.env.VITE_APPOINTMENTS_STATISTICS_API;
 const listOfDoctorAPI= import.meta.env.VITE_GET_LIST_OF_DOCTORS
 const listOfRequestAPI= import.meta.env.VITE_GET_LIST_OF_REQUESTS
+const listOfSUPPLIERSAPI= import.meta.env.VITE_GET_LIST_OF_SUPPLIERS
 
 export const get_current_statistics = async (token:string) => {
   try {
@@ -103,6 +104,38 @@ export const get_list_of_doctors = async (token:string) => {
         const request = await response.json();
        
         return request
+    
+        
+       
+      } catch(e) {
+        
+        throw e
+      }
+      
+    };
+
+
+    export const get_list_of_suppliers = async (token:string) => {
+      try {
+        const response = await fetch(`${listOfSUPPLIERSAPI}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json", 
+            "Authorization" : `bearer ${token}`   
+    
+          },
+          
+        });
+        if (!response.ok) {
+          throw new Error("list of suppliers fail");
+        }
+    
+        const suppliers = await response.json();
+        console.log(suppliers);
+        console.log(token);
+        
+       
+        return suppliers
     
         
        

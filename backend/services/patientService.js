@@ -80,3 +80,20 @@ exports.getLoggedPatientData = asyncHandler(async (req, res, next) => {
     },
   });
 });
+
+// @desc    Get list of patients with specific data
+// @route   GET /api/v1/patients/summary
+// @access  public
+exports.getPatientsSummary = asyncHandler(async (req, res, next) => {
+  const patients = await Patient.find().populate('userId', 'fName lName email phone');
+  const summary = patients.map(patient => ({
+    name: `${patient.userId.fName} ${patient.userId.lName}`,
+    email: patient.userId.email,
+    phone: patient.userId.phone,
+    allergies: patient.allergies
+  }));
+  res.status(200).json({
+    status: 'success',
+    data: summary
+  });
+});

@@ -8,6 +8,7 @@ import {get_current_statistics} from "./services"
 import {get_appointment_statistics} from "./services"
 import {get_list_of_doctors} from "./services"
 import {get_list_of_requests} from "./services"
+import {get_list_of_suppliers} from "./services"
 import doctorImage1 from "../../assets/picture_maleDR.png"
 import doctorImage2 from "../../assets/picture_maleDR2.png"
 import doctorImage3 from "../../assets/picture_maleDR3.png"
@@ -18,12 +19,18 @@ const AdminPage = () => {
 
   const [Statistics, setStatistics] = useState({});
   const [DoctorList, setDoctorList] = useState([]);
+  const [SupplierList, setSupplierList] = useState([]);
   const [requestList, setrequestList] = useState([]);
   const [AppointmentStatistics, setAppointmentStatistics] = useState([]);
       useEffect(() => {
         let token = localStorage.getItem("token");
         if (token) {
           token = JSON.parse(token);
+
+          get_list_of_suppliers(token)
+          .then((suppliers) => setSupplierList(suppliers.data)) 
+          .catch((e) => console.log("Something went wrong while fetching reports"));
+
 
           
           get_appointment_statistics(token)
@@ -399,10 +406,7 @@ const AdminPage = () => {
               <User2 className={styles.titleIcon} />
               <h2 className={styles.cardTitle}>Staff Directory</h2>
             </div>
-            <button onClick={handleAdd} className={styles.addDoctorButton}>
-              <UserPlus className={styles.addIcon} />
-              Add Doctor
-            </button>
+           
           </div>
           <div className={styles.tableWrapper}>
             <table className={styles.staffTable}>
@@ -543,68 +547,57 @@ const AdminPage = () => {
         </div>
 
         {/* Suppliers Table */}
-        <div className={styles.suppliersTableCard}>
-          <div className={styles.cardHeader}>
-            <div className={styles.titleWithIcon}>
-              <Building className={styles.titleIcon} />
-              <h2 className={styles.cardTitle}>Dental Suppliers Directory</h2>
+          <div className={styles.suppliersTableCard}>
+            <div className={styles.cardHeader}>
+              <div className={styles.titleWithIcon}>
+                <Building className={styles.titleIcon} />
+                <h2 className={styles.cardTitle}>Dental Suppliers Directory</h2>
+              </div>
+            </div>
+            <div className={styles.suppliersTableWrapper}>
+              <table className={styles.suppliersTable}>
+                <thead>
+                  <tr>
+                    <th>Supplier Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Location</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {SupplierList.map((supplier) => (
+                    <tr key={supplier.id}>
+                      <td>
+                        <div className={styles.cellWithIcon}>
+                          <Building className={styles.supplierIcon} />
+                          {supplier.name}
+                        </div>
+                      </td>
+                        <td>
+                        <div className={styles.cellWithIcon}>
+                          <Phone className={styles.contactIcon} />
+                          {supplier.phone}
+                        </div>
+                      </td>
+                      <td>
+                        <div className={styles.cellWithIcon}>
+                          <Mail className={styles.emailIcon} />
+                          {supplier.email || "N/A"} {/* You can adjust if email is part of the data */}
+                        </div>
+                      </td>
+                      <td>
+                        <div className={styles.cellWithIcon}>
+                          <MapPin className={styles.locationIcon} />
+                          {supplier.address}
+                        </div>
+                      </td>
+                      
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-          <div className={styles.suppliersTableWrapper}>
-            <table className={styles.suppliersTable}>
-              <thead>
-                <tr>
-                  <th>Supplier Name</th>
-                  <th>Category</th>
-                  <th>Phone</th>
-                  <th>Email</th>
-                  <th>Location</th>
-                  <th>Last Order</th>
-                  <th>Total Spend</th>
-                </tr>
-              </thead>
-              <tbody>
-                {suppliers.map((supplier) => (
-                  <tr key={supplier.id}>
-                    <td>
-                      <div className={styles.cellWithIcon}>
-                        <Building className={styles.supplierIcon} />
-                        {supplier.name}
-                      </div>
-                    </td>
-                    <td>{supplier.category}</td>
-                    <td>
-                      <div className={styles.cellWithIcon}>
-                        <Phone className={styles.contactIcon} />
-                        {supplier.phone}
-                      </div>
-                    </td>
-                    <td>
-                      <div className={styles.cellWithIcon}>
-                        <Mail className={styles.emailIcon} />
-                        {supplier.email}
-                      </div>
-                    </td>
-                    <td>
-                      <div className={styles.cellWithIcon}>
-                        <MapPin className={styles.locationIcon} />
-                        {supplier.location}
-                      </div>
-                    </td>
-                    <td>{supplier.lastOrderDate}</td>
-                    <td>
-                      <div className={styles.cellWithIcon}>
-                        <DollarSign className={styles.moneyIcon} />
-                        ${supplier.totalSpend.toLocaleString()}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
 
         {/* Supply Requests Table */}
         <div className={styles.supplyRequestsTableCard}>
