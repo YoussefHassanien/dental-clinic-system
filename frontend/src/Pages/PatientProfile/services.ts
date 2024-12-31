@@ -44,7 +44,7 @@ export const get_current_patient_report = async (token: string) => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `bearer ${token}`,
       },
     });
     if (!response.ok) {

@@ -59,8 +59,12 @@ export const routes = [
     name: "Patient Profile",
   },
   {
-    path: "/admin",
-    element: <Admin />,
+    path: "/admin-profile",
+    element: (
+      <ProtectedRoute requiredRole="admin">
+        <Admin />
+      </ProtectedRoute>
+    ),
     name: "Admin",
   },
 
