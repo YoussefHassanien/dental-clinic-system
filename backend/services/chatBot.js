@@ -1,6 +1,6 @@
 const fs = require("fs");
 const use = require("@tensorflow-models/universal-sentence-encoder");
-const tf = require("@tensorflow/tfjs-node");
+// const tf = require("@tensorflow/tfjs-node");
 const asyncHandler = require("express-async-handler");
 
 const path = require("path");

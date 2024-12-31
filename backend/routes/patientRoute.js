@@ -6,6 +6,7 @@ const {
   updatePatient,
   deletPatient,
   getLoggedPatientData,
+  getPatientsSummary,
 } = require("../services/patientService");
 
 const {
@@ -23,6 +24,7 @@ const router = express.Router();
 router.use("/:patientId/documents", documentRoute);
 router.use("/me", auth, getLoggedPatientData);
 router.route("/").get(getPatients).post(createPatientValidator, createPatient);
+router.route("/summary").get(getPatientsSummary);
 
 router
   .route("/:id")
