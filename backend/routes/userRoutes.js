@@ -2,8 +2,6 @@ const express = require("express");
 const {
   getUser,
   getUsers,
-  uploadUserImage,
-  resizeImage,
   createUser,
   updateUser,
   changeUserPassword,
@@ -21,6 +19,11 @@ const {
   deleteUserValidator,
   updateUserPasswordValidator,
 } = require("../utils/validators/userValidators.js");
+const {
+  uploadUserImage,
+  resizeImage,
+  updateUserImage,
+} = require("../utils/images");
 const { auth } = require("../services/authServices.js");
 
 const router = express.Router();
@@ -33,7 +36,7 @@ router
 router
   .route("/:id")
   .get(getUserValidator, getUser)
-  .put(uploadUserImage, resizeImage, updateUserValidator, updateUser)
+  .put(uploadUserImage, updateUserImage, updateUserValidator, updateUser)
   .delete(deleteUserValidator, deleteUser);
 router.put(
   "/change-password/:id",

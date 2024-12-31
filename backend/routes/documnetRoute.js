@@ -1,8 +1,6 @@
 const express = require("express");
 const {
   createDocument,
-  uploadDocumentFile,
-  saveDocumentFile,
   getAllDocument,
   updateDocument,
   deleteDocument,
@@ -16,6 +14,8 @@ const {
   updateDocumentValidator,
   deleteDocumentValidator,
 } = require("../utils/validators/documentValidator.js");
+
+const { uploadDocumentFile, saveDocumentFile } = require("../utils/images.js");
 
 const router = express.Router({ mergeParams: true });
 

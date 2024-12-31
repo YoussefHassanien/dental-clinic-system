@@ -5,6 +5,7 @@ const {
   signupValidator,
   loginValidator,
 } = require("../utils/validators/authValidator");
+// const { uploadUserImage, resizeImage } = require("../utils/images");
 
 const router = express.Router();
 

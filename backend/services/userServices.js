@@ -1,33 +1,9 @@
 const asyncHandler = require("express-async-handler");
-const { v4: uuidv4 } = require("uuid");
 const bcrypt = require("bcryptjs");
 const factory = require("./handlersFactory");
 const ApiError = require("../utils/apiError");
-const { uploadSingleImage } = require("../middlewares/uploadImageMiddleware");
 const createToken = require("../utils/createToken");
 const User = require("../models/userModel");
-const sharp = require("sharp");
-
-// Upload single image
-exports.uploadUserImage = uploadSingleImage("profileImg");
-
-// Image processing
-exports.resizeImage = asyncHandler(async (req, res, next) => {
-  const filename = `user-${uuidv4()}-${Date.now()}.jpeg`;
-
-  if (req.file) {
-    await sharp(req.file.buffer)
-      .resize(600, 600)
-      .toFormat("jpeg")
-      .jpeg({ quality: 95 })
-      .toFile(`uploads/users/${filename}`);
-
-    // Save image into our db
-    req.body.profileImg = "uploads/users/" + filename;
-  }
-
-  next();
-});
 
 // @desc    Get list of users
 // @route   GET /api/v1/users
@@ -74,6 +50,7 @@ exports.updateUser = asyncHandler(async (req, res, next) => {
   if (!document) {
     return next(new ApiError(`No document for this id ${req.params.id}`, 404));
   }
+  document.save();
   res.status(200).json({ data: document });
 });
 

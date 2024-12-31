@@ -7,8 +7,6 @@ const {
   updateDoctor,
   deleteDoctor,
   createDoctor,
-  uploadUserImage,
-  resizeImage,
   getLoggedDoctorData,
   addNextWeekSlots,
   getDoctorAvailability,
@@ -23,6 +21,8 @@ const {
   deleteDoctorValidator,
   addNextWeekSlotsValidator,
 } = require("../utils/validators/doctorValidator.js");
+
+const { uploadUserImage, resizeImage } = require("../utils/images");
 
 const { auth, allowedTo } = require("../services/authServices");
 
