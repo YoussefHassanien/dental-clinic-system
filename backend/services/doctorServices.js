@@ -1,33 +1,10 @@
 const asyncHandler = require("express-async-handler");
-const { v4: uuidv4 } = require("uuid");
 const factory = require("./handlersFactory");
-const sharp = require("sharp");
 const ApiError = require("../utils/apiError");
-const { uploadSingleImage } = require("../middlewares/uploadImageMiddleware");
 const User = require("../models/userModel");
 const Doctor = require("../models/doctorModel");
 const Appointment = require("../models/appointmentModel");
 const { generateWeeklySlots } = require("../utils/slotsCreators");
-
-// Upload single image
-exports.uploadUserImage = uploadSingleImage("profileImg");
-// Image processing
-exports.resizeImage = asyncHandler(async (req, res, next) => {
-  const filename = `doctor-${uuidv4()}-${Date.now()}.jpeg`;
-
-  if (req.file) {
-    await sharp(req.file.buffer)
-      .resize(600, 600)
-      .toFormat("jpeg")
-      .jpeg({ quality: 95 })
-      .toFile(`uploads/doctors/${filename}`);
-
-    // Save image into our db
-    req.body.profileImg = "uploads/doctors/" + filename;
-  }
-
-  next();
-});
 
 exports.getDoctorByUserId = asyncHandler(async (req, res, next) => {
   const doctor = await Doctor.findOne({ userId: req.params.id });
