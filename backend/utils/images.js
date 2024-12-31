@@ -41,7 +41,7 @@ exports.resizeImage = asyncHandler(async (req, res, next) => {
         .jpeg({ quality: 95 })
         .toFile(filePath);
 
-      req.body.profileImg = "uploads/user/" + filename; // Save relative path
+      req.body.profileImg = "uploads/users/" + filename; // Save relative path
       console.log("Image saved successfully!");
       next();
     } catch (error) {
