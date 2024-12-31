@@ -15,7 +15,7 @@ exports.uploadUserImage = uploadSingleImage("profileImg");
 
 // Image processing
 exports.resizeImage = asyncHandler(async (req, res, next) => {
-  const filename = `doctor-${uuidv4()}-${Date.now()}.jpeg`;
+  const filename = `user-${uuidv4()}-${Date.now()}.jpeg`;
   const directoryPath = path.join(
     __dirname,
     "../../frontend/public/uploads/users"

@@ -32,6 +32,7 @@ router
   .route("/")
   .get(auth, getUsers)
   .post(uploadUserImage, resizeImage, createUserValidator, createUser);
+router.route("/me").get(auth, getLoggedUserData, getUser);
 
 router
   .route("/:id")
