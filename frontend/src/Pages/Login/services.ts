@@ -29,7 +29,7 @@ export const handleLogin = async (
 
     localStorage.setItem("user", JSON.stringify(data.role));
     localStorage.setItem("token", JSON.stringify(data.token));
-
+    console.log(data.token);
     dispatch({ type: "LOGIN", payload: data });
 
     navigate(`/${data.role}-profile`);

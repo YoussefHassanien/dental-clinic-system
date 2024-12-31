@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 import Navbar from "../../Common/Components/Navbar/navbar";
 import Footer from "../../Common/Components/Footer/footer";
 import ReusableCard from "../../Common/Components/Reusable-Card/reusableCard";
 import SuccessMessage from "../../Common/Components/Success-Message/successMessage";
+import { getAppointments, getDoctorsNearestAppointments } from "./services";
+import { useAuthContext } from "../../Common/Contexts/Auth/AuthHook";
+import { Appointment } from "./constants";
 
 // Mock data to replace external service calls
 const MOCK_PATIENT_DATA = {
@@ -23,23 +26,34 @@ const MOCK_PATIENT_DATA = {
 };
 
 const ReceptionistPage: React.FC = () => {
+  const { user } = useAuthContext();
   const [activeTab, setActiveTab] = useState("Appointments");
+  const [doctorsNearestAppointment, setDoctorsNearestAppointment] = useState<
+    {
+      doctorName: string;
+      doctorEmail: string;
+      doctorPhone: string;
+      nearestStartTime: string;
+    }[]
+  >([]);
+  const [todayAppointments, setTodayAppointment] = useState<Appointment[]>([]);
   const [patientData] = useState(MOCK_PATIENT_DATA);
   const [patientEmail, setPatientEmail] = useState("");
   const [doctorId, setDoctorId] = useState("");
-  const doctorsIds = ["D1", "D2", "D3"]; // Example doctor IDs
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [appointmentStartTime, setAppointmentStartTime] = useState("");
-  const services: string[] = [
-    "Braces",
-    "Cavity Fillings",
-    "Cavity Prevention",
-    "Clear Aligners",
-    "Cosmetic Dentistry",
-    "Dental Bonding",
-    "Dental Bridges",
-    "Dental Cleaning",
-  ];
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const appointments = await getAppointments(user?.token || "");
+      setTodayAppointment(appointments);
+      const nearestAppointments = await getDoctorsNearestAppointments(
+        user?.token || ""
+      );
+      setDoctorsNearestAppointment(nearestAppointments);
+    };
+    fetchAppointments();
+  }, [user?.token]);
 
   return (
     <div className="flex flex-col justify-start items-center relative max-w-full h-screen font-serif">
@@ -114,10 +128,13 @@ const ReceptionistPage: React.FC = () => {
                     onChange={(e) => setDoctorId(e.target.value)}
                     required={true}
                   >
-                    <option value="">Doctors Ids</option>
-                    {doctorsIds.map((d) => (
-                      <option key={d} value={d}>
-                        {d}
+                    <option value="">Doctors</option>
+                    {todayAppointments.map((d, idx) => (
+                      <option
+                        key={idx}
+                        value={`${d.doctor.firstname} ${d.doctor.lastname}`}
+                      >
+                        {d.doctor.firstname} {d.doctor.lastname}
                       </option>
                     ))}
                   </select>
@@ -203,35 +220,68 @@ const ReceptionistPage: React.FC = () => {
                             </th>
                           </>
                         )}
+                        {activeTab === "Doctors" && (
+                          <>
+                            <th className="p-2.5 text-left border-b border-gray-200 bg-[#f5f7fa] font-bold text-[#3f4449]">
+                              Name
+                            </th>
+                            <th className="p-2.5 text-left border-b border-gray-200 bg-[#f5f7fa] font-bold text-[#3f4449]">
+                              Email
+                            </th>
+                            <th className="p-2.5 text-left border-b border-gray-200 bg-[#f5f7fa] font-bold text-[#3f4449]">
+                              Phone
+                            </th>
+                            <th className="p-2.5 text-left border-b border-gray-200 bg-[#f5f7fa] font-bold text-[#3f4449]">
+                              Nearest Appointment
+                            </th>
+                          </>
+                        )}
                       </tr>
                     </thead>
                     <tbody>
-                      <tr className="even:bg-gray-50">
-                        <td className="p-2.5 text-left border-b border-gray-200">
-                          {"Dr. Ahmed"}
-                        </td>
-                        <td className="p-2.5 text-left border-b border-gray-200">
-                          {"Omar Refaat"}
-                        </td>
-                        <td className="p-2.5 text-left border-b border-gray-200">
-                          {services.map((service, index) => (
-                            <span
-                              key={service}
-                              className={`block m-2 ${
-                                index % 2 === 0 ? "bg-green-100" : "bg-blue-100"
-                              } rounded-md text-center`}
-                            >
-                              {service}
-                            </span>
-                          ))}
-                        </td>
-                        <td className="p-2.5 text-left border-b border-gray-200">
-                          {"16:00 PM"}
-                        </td>
-                        <td className="p-2.5 text-left border-b border-gray-200">
-                          {"Yes"}
-                        </td>
-                      </tr>
+                      {activeTab === "Appointments" &&
+                        todayAppointments.map((appointment, index) => (
+                          <tr
+                            key={index}
+                            className={index % 2 === 0 ? "even:bg-gray-50" : ""}
+                          >
+                            <td className="p-2.5 text-left border-b border-gray-200">
+                              {`${appointment.doctor.firstname} ${appointment.doctor.lastname}`}
+                            </td>
+                            <td className="p-2.5 text-left border-b border-gray-200">
+                              {`${appointment.patient.firstname} ${appointment.patient.lastname}`}
+                            </td>
+                            <td className="p-2.5 text-left border-b border-gray-200">
+                              {appointment.service.name}
+                            </td>
+                            <td className="p-2.5 text-left border-b border-gray-200 font-sans">
+                              {appointment.startTime}
+                            </td>
+                            <td className="p-2.5 text-left border-b border-gray-200">
+                              {`${appointment.paid ? "Yes" : "No"}`}
+                            </td>
+                          </tr>
+                        ))}
+                      {activeTab === "Doctors" &&
+                        doctorsNearestAppointment.map((doctor, index) => (
+                          <tr
+                            key={index}
+                            className={index % 2 === 0 ? "even:bg-gray-50" : ""}
+                          >
+                            <td className="p-2.5 text-left border-b border-gray-200">
+                              {doctor.doctorName}
+                            </td>
+                            <td className="p-2.5 text-left border-b border-gray-200">
+                              {doctor.doctorEmail}
+                            </td>
+                            <td className="p-2.5 text-left border-b border-gray-200">
+                              {doctor.doctorPhone}
+                            </td>
+                            <td className="p-2.5 text-left border-b border-gray-200 font-sans">
+                              {doctor.nearestStartTime}
+                            </td>
+                          </tr>
+                        ))}
                     </tbody>
                   </table>
                 </div>
