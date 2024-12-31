@@ -120,31 +120,31 @@ export const coFoundersData = [
     imageSrc: founderImage2,
   },
   {
-    name: "Michael Brown",
+    name: "Mahmoud Nasr",
     title: "CFO",
     description:
-      "Michael is a financial expert with a strong background in healthcare finance. He ensures the financial stability and growth of DentiPlus Clinics.",
+      "Mahmoud is a financial expert with a strong background in healthcare finance. He ensures the financial stability and growth of DentiPlus Clinics.",
     imageSrc: founderImage1,
   },
   {
-    name: "Emily Davis",
+    name: "Omar Refaat",
     title: "COO",
     description:
-      "Emily is an operations specialist with extensive experience in healthcare management. She oversees the day-to-day operations of DentiPlus Clinics.",
+      "Omar is an operations specialist with extensive experience in healthcare management. He oversees the day-to-day operations of DentiPlus Clinics.",
     imageSrc: founderImage2,
   },
   {
-    name: "David Wilson",
+    name: "Mohamed Galal",
     title: "CMO",
     description:
-      "David is a marketing professional with a focus on healthcare marketing strategies. He is responsible for promoting DentiPlus Clinics and attracting new patients.",
+      "Mohamed is a marketing professional with a focus on healthcare marketing strategies. He is responsible for promoting DentiPlus Clinics and attracting new patients.",
     imageSrc: founderImage1,
   },
   {
-    name: "Jessica Lee",
+    name: "Malak Eltuny",
     title: "CIO",
     description:
-      "Jessica is an IT expert with a background in healthcare information systems. She manages the technology infrastructure of DentiPlus Clinics.",
+      "Malak is an IT expert with a background in healthcare information systems. She manages the technology infrastructure of DentiPlus Clinics.",
     imageSrc: founderImage2,
   },
 ];
