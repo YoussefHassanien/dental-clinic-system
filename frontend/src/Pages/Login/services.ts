@@ -26,14 +26,12 @@ export const handleLogin = async (
     }
 
     const data = await response.json();
-    console.log(data)
 
     localStorage.setItem("user", JSON.stringify(data.role));
     localStorage.setItem("token", JSON.stringify(data.token));
 
     dispatch({ type: "LOGIN", payload: data });
 
-    
     navigate(`/${data.role}-profile`);
   } catch {
     setIsErrorVisible(true);

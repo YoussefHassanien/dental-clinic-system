@@ -8,6 +8,7 @@ import RegisterPage from "../Pages/Register/registerPage";
 import ProtectedRoute from "./routeProtection";
 import Patient from "../Pages/PatientProfile/Patient";
 import Admin from "../Pages/Admin/Admin";
+import ReceptionistPage from "../Pages/Receptionist/receptionist";
 
 export const routes = [
   {
@@ -67,5 +68,13 @@ export const routes = [
     ),
     name: "Admin",
   },
-
+  {
+    path: "/receptionist-profile",
+    element: (
+      <ProtectedRoute requiredRole="receptionist">
+        <ReceptionistPage />
+      </ProtectedRoute>
+    ),
+    name: "Receptionist Page",
+  },
 ];
