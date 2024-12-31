@@ -3,6 +3,7 @@ import SubNavbar from "../../Common/Components/Sub-Navbar/subNavbar";
 import Navbar from "../../Common/Components/Navbar/navbar";
 import Footer from "../../Common/Components/Footer/footer";
 import ReusableCard from "../../Common/Components/Reusable-Card/reusableCard";
+import SuccessMessage from "../../Common/Components/Success-Message/successMessage";
 
 // Mock data to replace external service calls
 const MOCK_PATIENT_DATA = {
@@ -27,6 +28,18 @@ const ReceptionistPage: React.FC = () => {
   const [patientEmail, setPatientEmail] = useState("");
   const [doctorId, setDoctorId] = useState("");
   const doctorsIds = ["D1", "D2", "D3"]; // Example doctor IDs
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [appointmentStartTime, setAppointmentStartTime] = useState("");
+  const services: string[] = [
+    "Braces",
+    "Cavity Fillings",
+    "Cavity Prevention",
+    "Clear Aligners",
+    "Cosmetic Dentistry",
+    "Dental Bonding",
+    "Dental Bridges",
+    "Dental Cleaning",
+  ];
 
   return (
     <div className="flex flex-col justify-start items-center relative max-w-full h-screen font-serif">
@@ -38,7 +51,7 @@ const ReceptionistPage: React.FC = () => {
       <hr className="bg-gray-100 -translate-y-[14px] w-full mb-10" />
       <div className="flex w-full justify-start items-start flex-row space-x-8 px-5">
         {/* Left Panel */}
-        <div className="flex flex-col items-center justify-start space-y-8">
+        <div className="flex flex-col items-center justify-start space-y-16 mb-10 shadow-lg rounded-md">
           <ReusableCard backgroundColor="white">
             <div className="flex flex-col items-center mb-2.5 w-[400px]">
               <svg
@@ -82,7 +95,7 @@ const ReceptionistPage: React.FC = () => {
               </h3>
               <hr className="bg-gray-100 w-5/6 my-4" />
               <form className="w-full">
-                <div className="flex flex-row justify-center items-center">
+                <div className="flex flex-row justify-center items-center p-2">
                   <input
                     type="text"
                     id="patientEmail"
@@ -93,9 +106,6 @@ const ReceptionistPage: React.FC = () => {
                     onChange={(e) => setPatientEmail(e.target.value)}
                   />
                 </div>
-                <p className="text-gray-600 text-sm font-serif p-2">
-                  Date of Birth
-                </p>
                 <div className="flex flex-row space-x-4 p-2 font-serif items-center">
                   <select
                     id="doctorId"
@@ -112,7 +122,37 @@ const ReceptionistPage: React.FC = () => {
                     ))}
                   </select>
                 </div>
+                <div className="flex flex-row justify-center items-center p-2">
+                  <input
+                    type="text"
+                    id="startTime"
+                    className="text-gray-400 rounded-md border-2 p-2 w-full"
+                    placeholder="Appointment Start Time"
+                    required={true}
+                    value={appointmentStartTime}
+                    onChange={(e) => setAppointmentStartTime(e.target.value)}
+                  />
+                </div>
               </form>
+              <SuccessMessage
+                text="Appointment booked successfully"
+                isVisible={showSuccessMessage}
+              />
+              <div className="flex flex-row justify-center items-center p-2 w-full">
+                {" "}
+                <button
+                  className="bg-customBlue text-white w-full p-2 rounded-md hover:bg-black transition-colors duration-300 ease-in-out"
+                  type="submit"
+                  onClick={() => {
+                    setShowSuccessMessage(true);
+                    setTimeout(() => {
+                      setShowSuccessMessage(false);
+                    }, 3000);
+                  }}
+                >
+                  Book Now
+                </button>
+              </div>
             </div>
           </ReusableCard>
         </div>
@@ -120,78 +160,15 @@ const ReceptionistPage: React.FC = () => {
         {/* Right Panel */}
         <div className="w-full text-center bg-white rounded-lg shadow-md">
           <div className="p-5 text-left">
-            <h3 className="text-[23px] font-bold text-[#3f4449] mb-4">
-              Overview:
-            </h3>
-            <div className="flex flex-col gap-8 p-5">
-              <div className="flex justify-between gap-5">
-                <div className="flex-1 flex flex-col gap-2.5">
-                  <span className="text-lg font-bold text-[#747373]">
-                    Gender:
-                  </span>
-                  <span className="text-[23px] font-bold text-customBlue">
-                    {patientData.gender}
-                  </span>
-                </div>
-                <div className="flex-1 flex flex-col gap-2.5">
-                  <span className="text-lg font-bold text-[#747373]">
-                    Date of Birth:
-                  </span>
-                  <span className="text-[23px] font-bold text-customBlue">
-                    {patientData.dateOfBirth}
-                  </span>
-                </div>
-                <div className="flex-1 flex flex-col gap-2.5">
-                  <span className="text-lg font-bold text-[#747373]">
-                    Allergies:
-                  </span>
-                  <span className="text-[23px] font-bold text-customBlue">
-                    {patientData.allergies}
-                  </span>
-                </div>
-              </div>
-              <div className="flex justify-between gap-5">
-                <div className="flex-1 flex flex-col gap-2.5">
-                  <span className="text-lg font-bold text-[#747373]">
-                    Blood Type:
-                  </span>
-                  <span className="text-[23px] font-bold text-customBlue">
-                    {patientData.bloodType}
-                  </span>
-                </div>
-                <div className="flex-1 flex flex-col gap-2.5">
-                  <span className="text-lg font-bold text-[#747373]">
-                    Total Visits:
-                  </span>
-                  <span className="text-[23px] font-bold text-customBlue">
-                    {patientData.totalVisits}
-                  </span>
-                </div>
-                <div className="flex-1 flex flex-col gap-2.5">
-                  <span className="text-lg font-bold text-[#747373]">
-                    Next Visit:
-                  </span>
-                  <span className="text-[23px] font-bold text-customBlue">
-                    09/12/2020
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-5 text-left">
             <div className="flex gap-2.5 flex-wrap">
               {[
                 { icon: "📅", text: "Appointments" },
                 { icon: "👨‍⚕️", text: "Doctors" },
-                { icon: "💊", text: "Treatment" },
-                { icon: "🧪", text: "Tests & Lab Results" },
-                { icon: "📄", text: "Billing" },
               ].map(({ icon, text }) => (
                 <button
                   key={text}
                   onClick={() => setActiveTab(text)}
-                  className="flex-1 bg-[#3a8ddf] hover:bg-[#2a76b3] text-white border-none rounded cursor-pointer px-4 py-2.5 flex items-center justify-center gap-1.5"
+                  className="flex-1 bg-customBlue hover:bg-black text-white border-none rounded cursor-pointer px-4 py-2.5 flex items-center justify-center gap-1.5 transition-colors duration-300 ease-in-out"
                 >
                   <span className="mr-1.5">{icon}</span> {text}
                 </button>
@@ -210,13 +187,19 @@ const ReceptionistPage: React.FC = () => {
                         {activeTab === "Appointments" && (
                           <>
                             <th className="p-2.5 text-left border-b border-gray-200 bg-[#f5f7fa] font-bold text-[#3f4449]">
-                              Time
-                            </th>
-                            <th className="p-2.5 text-left border-b border-gray-200 bg-[#f5f7fa] font-bold text-[#3f4449]">
                               Doctor
                             </th>
                             <th className="p-2.5 text-left border-b border-gray-200 bg-[#f5f7fa] font-bold text-[#3f4449]">
-                              Action
+                              Patient
+                            </th>
+                            <th className="p-2.5 text-left border-b border-gray-200 bg-[#f5f7fa] font-bold text-[#3f4449]">
+                              Services
+                            </th>
+                            <th className="p-2.5 text-left border-b border-gray-200 bg-[#f5f7fa] font-bold text-[#3f4449]">
+                              Time
+                            </th>
+                            <th className="p-2.5 text-left border-b border-gray-200 bg-[#f5f7fa] font-bold text-[#3f4449]">
+                              Paid
                             </th>
                           </>
                         )}
@@ -225,13 +208,28 @@ const ReceptionistPage: React.FC = () => {
                     <tbody>
                       <tr className="even:bg-gray-50">
                         <td className="p-2.5 text-left border-b border-gray-200">
-                          09:00
+                          {"Dr. Ahmed"}
                         </td>
                         <td className="p-2.5 text-left border-b border-gray-200">
-                          Dr. Smith
+                          {"Omar Refaat"}
                         </td>
                         <td className="p-2.5 text-left border-b border-gray-200">
-                          Details
+                          {services.map((service, index) => (
+                            <span
+                              key={service}
+                              className={`block m-2 ${
+                                index % 2 === 0 ? "bg-green-100" : "bg-blue-100"
+                              } rounded-md text-center`}
+                            >
+                              {service}
+                            </span>
+                          ))}
+                        </td>
+                        <td className="p-2.5 text-left border-b border-gray-200">
+                          {"16:00 PM"}
+                        </td>
+                        <td className="p-2.5 text-left border-b border-gray-200">
+                          {"Yes"}
                         </td>
                       </tr>
                     </tbody>
