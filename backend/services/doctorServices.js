@@ -141,6 +141,8 @@ exports.getDoctors = asyncHandler(async (req, res, next) => {
         lastName: doctor.lName,
         userId: doctor.id,
         gender: doctor.gender,
+        email: doctor.email,
+        phone: doctor.phone,
         totalNumberOfSessions: doctorProfile.numberOfSessions || 0,
         rating: doctorProfile.rating,
         specialities: doctorProfile.specialities || ["Not provided"],
