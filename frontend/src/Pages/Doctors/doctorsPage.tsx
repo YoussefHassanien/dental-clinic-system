@@ -9,8 +9,13 @@ import ReactPaginate from "react-paginate";
 import Loading from "../../Common/Components/Loading/loading";
 import SuccessMessage from "../../Common/Components/Success-Message/successMessage";
 import ErrorMessage from "../../Common/Components/Error-Message/errorMessage";
-import { getDoctorsCardsInfo, getDoctorAvailability } from "./services";
+import {
+  getDoctorsCardsInfo,
+  getDoctorAvailability,
+  bookAppointment,
+} from "./services";
 import { useAuthContext } from "../../Common/Contexts/Auth/AuthHook";
+import { getNearestDateOfWeekday } from "../../Utils/helpers";
 
 const DoctorsPage: React.FC = () => {
   const { user } = useAuthContext();
@@ -22,6 +27,7 @@ const DoctorsPage: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
+  const [showBookingErrorMessage, setShowBookingErrorMessage] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState<{
     day: string;
     hour: string;
@@ -44,31 +50,26 @@ const DoctorsPage: React.FC = () => {
       : [];
 
   useEffect(() => {
-    getDoctorsCardsInfo()
-      .then((doctorsData) => {
-        if (doctorsData) {
-          setDoctors(doctorsData);
-          setFilteredDoctors(doctorsData);
-          setIsDoctorCardsLoading(false);
-        }
-      })
-      .catch((error) => {
-        console.error("Error fetching doctors:", error);
-      });
+    getDoctorsCardsInfo().then((doctorsData) => {
+      if (doctorsData) {
+        setDoctors(doctorsData);
+        setFilteredDoctors(doctorsData);
+        setIsDoctorCardsLoading(false);
+      }
+    });
   }, []);
 
   useEffect(() => {
     if (selectedDoctor) {
-      getDoctorAvailability(selectedDoctor.id, user?.token ?? "")
-        .then((availability) => {
+      setIsDoctorAvailabilityLoading(true);
+      getDoctorAvailability(selectedDoctor.id, user?.token ?? "").then(
+        (availability) => {
           if (availability) {
             setdoctorAvailableSlots(availability);
             setIsDoctorAvailabilityLoading(false);
           }
-        })
-        .catch((error) => {
-          console.error("Error fetching doctor availability:", error);
-        });
+        }
+      );
     }
   }, [selectedDoctor, user?.token]);
 
@@ -117,6 +118,29 @@ const DoctorsPage: React.FC = () => {
     setSelectedDoctor(null);
     setShowSuccessMessage(false);
     setSelectedSlot(null);
+  };
+
+  const handleConfirmBooking = () => {
+    if (selectedSlot) {
+      const [startTime, endTime] = selectedSlot.hour.split("-");
+      bookAppointment(
+        selectedDoctor?.id ?? "",
+        getNearestDateOfWeekday(selectedSlot.day),
+        startTime,
+        endTime,
+        paymentType.includes("wallet") ? true : false,
+        user?.token ?? ""
+      ).then((response) => {
+        if (response) {
+          setShowSuccessMessage(true);
+        } else {
+          setShowBookingErrorMessage(true);
+          setTimeout(() => {
+            setShowBookingErrorMessage(false);
+          }, 2000);
+        }
+      });
+    }
   };
 
   return (
@@ -522,7 +546,25 @@ const DoctorsPage: React.FC = () => {
                     {Object.entries(doctorAvailableSlots).map(
                       ([day, hours]) => (
                         <div key={day}>
-                          <h4 className="font-medium mb-2">{day}</h4>
+                          {/* Highlight the selected day and date in green */}
+                          <h4
+                            className={` mb-2 ${
+                              selectedSlot?.day === day
+                                ? "text-green-500"
+                                : "text-black"
+                            }`}
+                          >
+                            {`${day}, `}
+                            <span
+                              className={`font-sans ${
+                                selectedSlot?.day === day
+                                  ? "text-green-500"
+                                  : "text-black"
+                              }`}
+                            >
+                              {getNearestDateOfWeekday(day)}
+                            </span>
+                          </h4>
                           <div className="grid grid-cols-8 gap-2">
                             {(hours as string[]).map((hour, index) => (
                               <button
@@ -551,12 +593,16 @@ const DoctorsPage: React.FC = () => {
                 text="Your booking request is sent, A confirmation email will be sent once accepted"
                 isVisible={showSuccessMessage}
               ></SuccessMessage>
+              <ErrorMessage
+                text="Insuficient wallet credit, Please recharge and try again"
+                isVisible={showBookingErrorMessage}
+              ></ErrorMessage>
               <div className="flex justify-between flex-row w-full mt-4">
                 <Button
                   text="Confirm"
                   width="w-2/5"
                   onClick={() => {
-                    setShowSuccessMessage(true);
+                    handleConfirmBooking();
                   }}
                 />
                 <Button text="Cancel" width="w-2/5" onClick={closePopup} />

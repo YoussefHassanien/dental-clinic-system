@@ -7,7 +7,6 @@ interface AuthState {
 
 export interface AuthAction {
   type: "LOGIN" | "LOGOUT";
-
   payload?: { role: string; token: string } | null;
 }
 
@@ -28,12 +27,12 @@ export const AuthContextProvider = ({ children }: { children: ReactNode }) => {
   });
 
   useEffect(() => {
-    const user = localStorage.getItem("user")
-      ? JSON.parse(localStorage.getItem("user") as string)
-      : null;
-
-    if (user) {
-      dispatch({ type: "LOGIN", payload: user });
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const user = JSON.parse(storedUser) as { role: string; token: string };
+      if (user && user.role && user.token) {
+        dispatch({ type: "LOGIN", payload: user });
+      }
     }
   }, []);
 
