@@ -142,11 +142,11 @@ const HomePage: React.FC = () => {
       <ReusableCarousel content={2}>
         {coFoundersData.map((founder, index) => (
           <div key={index}>
-            <ReusableCard>
-              <div className="bg-white text-black w-[600px] h-[400px] rounded-xl shadow-lg overflow-hidden">
+            <ReusableCard backgroundColor="white">
+              <div className="bg-white text-black w-[600px] shadow-lg overflow-hidden">
                 {/* Team Members Image */}
                 <img
-                  className="w-full h-2/5 object-cover"
+                  className="w-full h-auto object-cover aspect-[16/9]"
                   src={founder.imageSrc}
                   alt="Founder Image"
                 />

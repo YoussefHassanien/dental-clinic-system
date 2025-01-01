@@ -3,7 +3,9 @@ import secondPatientImage from "../../assets/smile2.jpg";
 import thirdPatientImage from "../../assets/smile3.jpg";
 import whoWeAreImage from "../../assets/dental-care.jpg";
 import founderImage1 from "../../assets/founder1.jpg";
-import founderImage2 from "../../assets/founder2.jpg";
+import founderImage2 from "../../assets/founder2.jpeg";
+import founderImage3 from "../../assets/founder3.jpg";
+import founderImage4 from "../../assets/founder4.jpg";
 
 export const infoCardsData = [
   {
@@ -113,10 +115,10 @@ export const coFoundersData = [
     imageSrc: founderImage1,
   },
   {
-    name: "Sarah Johnson",
+    name: "Ghada Tarek",
     title: "CTO",
     description:
-      "Sarah is an experienced Software Engineer with expertise in developing innovative healthcare solutions. She is dedicated to improving patient outcomes through technology.",
+      "Ghada is an experienced Software Engineer with expertise in developing innovative healthcare solutions. She is dedicated to improving patient outcomes through technology.",
     imageSrc: founderImage2,
   },
   {
@@ -124,7 +126,7 @@ export const coFoundersData = [
     title: "CFO",
     description:
       "Mahmoud is a financial expert with a strong background in healthcare finance. He ensures the financial stability and growth of DentiPlus Clinics.",
-    imageSrc: founderImage1,
+    imageSrc: founderImage3,
   },
   {
     name: "Omar Refaat",
@@ -138,7 +140,7 @@ export const coFoundersData = [
     title: "CMO",
     description:
       "Mohamed is a marketing professional with a focus on healthcare marketing strategies. He is responsible for promoting DentiPlus Clinics and attracting new patients.",
-    imageSrc: founderImage1,
+    imageSrc: founderImage4,
   },
   {
     name: "Malak Eltuny",
